@@ -65,14 +65,7 @@ class mcp_ban
 			if (confirm_box(true))
 			{
 				$apply = $tmm->apply_multi_mod($multimod, $topic_id, $forum_id);
-				if(!$apply)
-				{
-					$message = $user->lang['TMM_FAIL'];
-				}
-				else
-				{
-					$message = $user->lang['TMM_PASS'];
-				}
+				$message = $user->lang[(($apply) ? 'TMM_PASS' : 'TMM_FAIL')];
 				$back_link = append_sid($phpbb_root_path . 'viewtopic.' . $phpEx, "f={$forum_id}&amp;t={$topic_id}");
 				trigger_error($message . $back_link)
 			}
