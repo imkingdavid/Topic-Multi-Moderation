@@ -7,7 +7,6 @@
 *-------------------------------------------------------------------
 *	Script info:
 * Version:		1.0.0 - "TMM"
-* SVN ID:		$Id$
 * Copyright:	(C) 2010 | David, House, Comkid
 * License:		http://opensource.org/licenses/gpl-2.0.php | GNU Public License v2
 * Package:		phpBB3

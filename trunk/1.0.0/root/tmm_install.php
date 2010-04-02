@@ -7,7 +7,6 @@
 *-------------------------------------------------------------------
 *	Script info:
 * Version:		1.0.0 - "TMM"
-* SVN ID:		$Id: tmm_install.php 18 2010-03-30 03:17:09Z imkingdavid $
 * Copyright:	(C) 2010 | David, House, Comkid
 * License:		http://opensource.org/licenses/gpl-2.0.php | GNU Public License v2
 * Package:		phpBB3

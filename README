@@ -1,0 +1,27 @@
+/**
+*
+*===================================================================
+*
+*  phpBB Topic Multi Moderation -- README
+*-------------------------------------------------------------------
+*	Script info:
+* Version:		1.0.0 - "TMM"
+* Copyright:	(C) 2010 | David, House, Comkid
+* License:		http://opensource.org/licenses/gpl-2.0.php | GNU Public License v2
+* Package:		phpBB3
+*
+*===================================================================
+*
+*/
+
+This MOD allows moderators on a phpBB-powered forum to perform multiple
+moderation actions in fewer clicks. This allows moderation to occur
+more efficiently and can be a big help on larger board.
+
+Implemented moderation actions include:
+	locking a topic
+	moving a topic
+	copying a topic
+	replying to a topic
+	stickying a topic
+	adding a topic prefix (new feature not present in phpBB by default)
