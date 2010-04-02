@@ -73,7 +73,7 @@ class mcp_tmm
 			}
 			else
 			{
-				if(!empty($row['tmm_prefix_id'])
+				if(!empty($row['tmm_prefix_id']))
 				{
 					$actions['tmm_prefix_id'] = true;
 					$prefixes = explode(',', $row['tmm_prefix_id']);
