@@ -26,7 +26,7 @@ if (!defined('IN_PHPBB'))
 /**
 * @package mcp
 */
-class mcp_ban
+class mcp_tmm
 {
 	var $u_action;
 

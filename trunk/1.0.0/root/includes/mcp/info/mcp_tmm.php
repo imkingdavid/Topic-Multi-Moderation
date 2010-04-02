@@ -18,7 +18,7 @@
 /**
 * @package module_install
 */
-class mcp_ban_info
+class mcp_tmm_info
 {
 	function module()
 	{
