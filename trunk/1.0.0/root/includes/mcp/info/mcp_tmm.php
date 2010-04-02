@@ -27,7 +27,7 @@ class mcp_tmm_info
 			'title'		=> 'MCP_TMM',
 			'version'	=> '1.0.0',
 			'modes'		=> array(
-				'index'		=> array('title' => 'MCP_TMM', 'auth' => 'acl_m_tmm', 'cat' => array('MCP_TMM')),
+				'index'		=> array('title' => 'MCP_TMM', 'auth' => 'acl_m_', 'cat' => array('MCP_TMM')),
 			),
 		);
 	}
