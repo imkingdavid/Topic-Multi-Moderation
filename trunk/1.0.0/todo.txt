@@ -1,4 +1,7 @@
 Todo List:
 -Change file headers to the fancy one provided by House -DONE
 -Force Copyrights in ACP -DONE
--Put stuff on the Todo list ;)
+-Finish up multi-mods
+-Possibly rethink prefix implementation;
+--don't allow the same prefix multiple times
+---comkid suggested check box instead of dropdown
