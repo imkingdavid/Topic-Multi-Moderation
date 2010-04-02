@@ -33,9 +33,9 @@ class mcp_tmm
 	function main($id, $mode)
 	{
 		global $config, $db, $user, $auth, $template, $cache;
-		global $phpbb_root_path, $phpEx;
+		global $phpbb_root_path, $phpEx, $table_prefix;
 
-		$user->add_lang('mods/tmm.php');
+		$user->add_lang('mods/tmm');
 		include($phpbb_root_path . 'includes/functions_tmm.' . $phpEx);
 		include($phpbb_root_path . 'includes/tmm_constants.'. $phpEx);
 		$tmm = new tmm;
@@ -68,14 +68,14 @@ class mcp_tmm
 			{
 				if($row[$possible_action] == 1)
 				{
-					$actions[$possible_action] = true;
+					$actions[] = $possible_action;
 				}
 			}
 			else
 			{
 				if(!empty($row['tmm_prefix_id']))
 				{
-					$actions['tmm_prefix_id'] = true;
+					$actions['tmm_prefix_id'] = 'tmm_prefix_id';
 					$prefixes = explode(',', $row['tmm_prefix_id']);
 					$prefix_string = $tmm->parse_prefix_array($prefixes);
 				}
@@ -85,10 +85,15 @@ class mcp_tmm
 		$prefix_string = (isset($prefix_string)) ? $prefix_string : '';
 		if (confirm_box(true))
 		{
-			$apply = $tmm->apply_multi_mod($multimod, $topic_id, $forum_id);
+			if(!$topic_id)
+			{
+				trigger_error('INVALID_TOPIC_ID');
+			}
+			$apply = $tmm->apply_tmm($multimod, $topic_id, $forum_id);
 			$message = $user->lang[(($apply) ? 'TMM_PASS' : 'TMM_FAIL')];
 			$back_link = append_sid($phpbb_root_path . 'viewtopic.' . $phpEx, "f={$forum_id}&amp;t={$topic_id}");
-			trigger_error($message . $back_link)
+			$back_link = sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $back_link . '">', '</a>');
+			trigger_error($message . '<br />' . $back_link);
 		}
 		else
 		{
@@ -101,10 +106,12 @@ class mcp_tmm
 			$message = '';
 			foreach($actions AS $action)
 			{
-				$action = strtoupper($action);
-				$message .= '<li>';
-				$message .= ($action == 'TMM_PREFIX_ID') ? sprintf($user->lang[$action], $prefix_string) : $user->lang[$action];
-				$message .= '</li>';
+				if(!is_numeric($action))
+				{
+					$action = strtoupper($action);
+					$message .= ($action == 'TMM_PREFIX_ID') ? sprintf($user->lang['TMM_PREFIX_ID'], $prefix_string) : $user->lang[$action];
+					$message .= '<br />';
+				}
 			}
 			$user->lang['APPLY_TMM_CONFIRM'] = sprintf($user->lang['APPLY_TMM_CONFIRM'], $message);
 			//display mode
@@ -112,6 +119,6 @@ class mcp_tmm
 		}
 
 		// Define language vars
-		$this->page_title = 'MCP_TMM'];
+		$this->page_title = 'MCP_TMM';
 	}
 }

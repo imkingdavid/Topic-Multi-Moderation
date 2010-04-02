@@ -44,16 +44,22 @@ $lang = array_merge($lang, array(
 	'APPLIED_PREFIXES'			=> 'Applied Prefixes',
 	'APPLIED_PREFIXES_EXPLAIN'	=> 'These prefixes are already applied to this topic.',
 	
+	'INVALID_MULTI_MOD'			=> 'No multi-mod specified.',
+	'INVALID_TOPIC_ID'			=> 'No topic specified.',
+	
 	'ADD'						=> 'Add Prefix',
 	'CLEAR'						=> 'Remove All',
 	'REMOVE'					=> 'Remove Checked',
 	
 	'APPLY_TMM'					=> 'Apply Multi-Mod',
-	'APPLY_TMM_CONFIRM'			=> 'The following actions will be performed:<br /><ul>%1$s</ul>', //The placeholder should be replaced by <li></li> elements, one for each action
+	'APPLY_TMM_CONFIRM'			=> 'The following actions will be performed:<br />%1$s',
 	'TMM_PREFIX_ID'				=> 'Prefixes applied: %1$s',
 	'TMM_LOCK'					=> 'Topic Locked',
 	'TMM_STICKY'				=> 'Topic Stickied',
 	'TMM_MOVE'					=> 'Topic Moved',
 	'TMM_COPY'					=> 'Topic Copied',
 	'TMM_AUTOREPLY_BOOL'		=> 'Reply posted to topic',
+	
+	'TMM_PASS'					=> 'The multi-mod has been applied successfully',
+	'TMM_FAIL'					=> 'The multi-mod could not be applied',
 ));

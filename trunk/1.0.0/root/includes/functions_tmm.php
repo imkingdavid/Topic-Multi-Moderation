@@ -46,7 +46,7 @@ class tmm
 		// make sure the multi-mod exists
 		if(!$row)
 		{
-			trigger_error($user->lang['GENERAL_ERROR']);
+			trigger_error("INVALID_MULTI_MOD");
 		}
 		//Get information about the topic itself
 		$sql = 'SELECT *
@@ -58,7 +58,7 @@ class tmm
 		// make sure the topic exists
 		if(!$topicrow)
 		{
-			trigger_error($user->lang['GENERAL_ERROR']);
+			trigger_error("INVALID_TOPIC_ID");
 		}
 		
 		//Check each mutli-mod action to see if it should be done.
@@ -71,20 +71,20 @@ class tmm
 				$this->error[] = $user->lang['AUTOREPLY_ERROR'];
 			}
 		}
-		if($row['prefix_id'] != '')
+		if($row['tmm_prefix_id'] != '')
 		{
 			// Allow for multiple prefixes to be applied with one multi-mod ^_^
-			$prefixes = explode(',', $row['prefix_id']);
+			$prefixes = explode(',', $row['tmm_prefix_id']);
 			$fails = 0;
 			foreach($prefixes AS $prefix)
 			{
-				$pre = $this->apply_prefix($row['prefix_id'], $topic_id);
+				$pre = $this->apply_prefix($prefix, $topic_id);
 				if(!$pre)
 				{
 					$fails++;
 				}
 			}
-			if($fails > 0)
+			if($fails != 0)
 			{
 				$this->error[] = sprintf($user->lang['PREFIX_ERROR'], $fails);
 			}
