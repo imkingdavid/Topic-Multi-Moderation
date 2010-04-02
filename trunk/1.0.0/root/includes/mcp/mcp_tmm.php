@@ -41,7 +41,7 @@ class mcp_ban
 		$tmm = new tmm;
 
 		$this->tpl_name = 'mcp_tmm';
-		$multimod = $db->sql_escape(request_var('multimod', 0));
+		$multimod = $db->sql_escape(request_var('multimod', (int) 0));
 		$forum_id = request_var('f', 0);
 		$topic_id = request_var('t', 0);
 		
