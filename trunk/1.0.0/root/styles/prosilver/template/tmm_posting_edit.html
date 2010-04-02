@@ -1,0 +1,13 @@
+<!-- IF PREFIX_SELECT -->
+    <dl style="clear: left;">
+    	<dt><label for="prefix">{L_PREFIX_SELECT}:</label><br />{L_PREFIX_SELECT_EXPLAIN}</dt>
+        <dd>{PREFIX_SELECT} <input type="submit" name="prefix_add" class="button2" value="{L_ADD}" /></dd>
+    </dl>
+<!-- ENDIF -->
+<!-- IF APPLIED_PREFIXES -->
+    <dl style="clear: left;">
+        <dt><label for="prefix_remove">{L_APPLIED_PREFIXES}</label><br />{L_APPLIED_PREFIXES_EXPLAIN}</dt>
+        <dd>{APPLIED_PREFIXES}</dd>
+        <dd><input type="submit" name="prefix_remove" class="button1" value="{L_REMOVE}" /> <input type="submit" name="prefix_clear" class="button2" value="{L_CLEAR}" /></dd>
+    </dl>
+<!-- ENDIF -->

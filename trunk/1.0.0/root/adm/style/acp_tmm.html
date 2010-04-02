@@ -1,0 +1,126 @@
+<!-- INCLUDE overall_header.html -->
+<a name="maincontent"></a>
+<h1>{L_ACP_TMM}</h1>                                        
+<p>{L_ACP_TMM_EXPLAIN}</p>
+<!-- INCLUDE acp_tmm_version_check.html -->
+
+<form id="tmm" method="post" action="{U_ACTION}">
+    <fieldset>
+<!-- IF S_EDIT -->                                
+        <legend>{L_ACP_TMM_ADD_EDIT}</legend>
+        <dl>
+            <dt><label for="title">{L_ACP_TMM_TITLE}:</label></dt>
+            <dd><input name="title" type="text" id="title" value="{TMM_TITLE}" maxlength="255" /></dd>
+        </dl>
+        <dl>
+            <dt><label for="desc">{L_ACP_TMM_DESC}:</label></dt>
+            <dd><input name="desc" type="text" id="title" value="{TMM_DESC}" maxlength="255" /></dd>
+        </dl>
+        <dl>
+            <dt><label for="prefix_id">{L_ACP_PREFIX_TITLE}:</label><br /></dt>
+            <dd><select name="prefix_id[]" size="5" multiple="multiple">{PREFIX_SELECT}</select></dd>
+        </dl>
+        <dl>
+            <dt><label for="lock_option">{L_LOCK}:</label><br /></dt>
+            <dd><input name="lock_option" type="radio" value="1" {LOCK_YES} />{L_YES}&nbsp;<input name="lock_option" type="radio" value="0" {LOCK_NO} />{L_NO}</dd>
+        </dl>
+        <dl>
+            <dt><label for="sticky_option">{L_STICKY}:</label><br /></dt>
+            <dd><input name="sticky_option" type="radio" value="1" {STICKY_YES} />{L_YES}&nbsp;<input name="sticky_option" type="radio" value="0" {STICKY_NO} />{L_NO}</dd>
+        </dl>
+        <dl>
+            <dt><label for="move_option">{L_MOVE}:</label><br /></dt>
+            <dd><input name="move_option" type="radio" value="1" {MOVE_YES} />{L_YES}&nbsp;<input name="move_option" type="radio" value="0" {MOVE_NO} />{L_NO}</dd>
+        </dl>
+        <dl>
+            <dt><label for="movewhere">{L_WHERE}:</label><br /></dt>
+            <dd><input type="text" name="movewhere" value="{MOVEID}" /></dd>
+        </dl>
+        <dl>
+            <dt><label for="copy_option">{L_COPY}:</label><br /></dt>
+            <dd><input name="copy_option" type="radio" value="1" {COPY_YES} />{L_YES}&nbsp;<input name="copy_option" type="radio" value="0" {COPY_NO} />{L_NO}</dd>
+        </dl>
+        <dl>
+            <dt><label for="copywhere">{L_WHERE}:</label><br /></dt>
+            <dd><input type="text" name="copywhere" value="{COPYID}" /></dd>
+        </dl>
+        <dl>
+            <dt><label for="autoreply">{L_AUTOREPLY}</label><br /></dt>
+            <dd><input name="autoreply" type="radio" value="1" {AUTOREPLY_BOOL_YES} />{L_YES}&nbsp;<input name="autoreply" type="radio" value="0" {AUTOREPLY_BOOL_NO} />{L_NO}
+        </dl>
+        <dl>
+            <dt><label for="autoresponse">{L_AUTORESPONSE}:</label><br />{BBCODEALLOW}</dt>
+            <dd><textarea name="autoresponse">{AUTORESPONSE}</textarea></dd>
+        </dl>
+        <dl>
+        	<dt><label for="autoreply_poster">{L_AUTOREPLY_POSTER}</label><br />{L_AUTOREPLY_POSTER_EXPLAIN}</dt>
+            <dd><input type="text" name="autoreply_poster" value="{AUTOREPLY_POSTER}" /></dd>
+        </dl>
+        <dl>
+            <dt><label for="forums">{L_FORUMS}:</label></dt>
+            <dd><select size="5" name="forum_id[]" multiple="multiple">{FORUM_LIST}</select>
+        </dl>
+        <dl>
+        	<dt><label for="groups">{L_GROUPS}:</label></dt>
+            <dd><select size="5" name="group_id[]" multiple="multiple">{GROUP_SELECT}</select>
+        </dl>
+        <dl>
+        	<dt><label for="users">{L_USERS}:</label></dt>
+            <dd><input type="text" name="user_ids" value="{USER_ID}" /></dd>
+        </dl>
+        <p class="submit-buttons">
+            <input type="hidden" name="tmm_id" value="{TMM_ID}" />
+            <input class="button1" type="submit" id="submit" name="create" value="{L_SUBMIT}" />&nbsp;
+            <input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+            {S_FORM_TOKEN}
+        </p>
+<!-- ELSE -->
+        <legend>{L_ACP_TMM_MANAGE}</legend>
+        <!-- IF S_NOROWS_EXIST -->
+            <table cellspacing="1">
+                <col class="row1" />
+                <tr>
+                    <td>{L_NOROWS_TMM}</td>
+                </tr>
+            </table>
+        <!-- ELSE IF .tmm_row -->
+            <table cellspacing="1">
+                <col class="row1" /><col class="row1" /><col class="row2" />
+            <thead>
+            <tr>
+                <th>{L_ACP_TMM_MANAGE}</th>
+                <th>{L_PREFIXES}</th>
+                <th>{L_OPTIONS}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- BEGIN tmm_row -->
+                <tr>
+                    <td>
+                        <strong>{tmm_row.TMM_TITLE}</strong><BR /><i>{tmm_row.TMM_DESC}</i>
+                    </td>
+                    <td>
+                        <!-- BEGIN prefix -->
+                            <span style="color:#{tmm_row.prefix.COLOR};font-weight:bold;">{tmm_row.prefix.PREFIX_TITLE}</span>
+                        <!-- END prefix -->
+                    </td>
+                    <td style="width: 80px; text-align: center; white-space: nowrap;">
+                        <a href="{tmm_row.U_EDIT}">{ICON_EDIT}</a> <a href="{tmm_row.U_DELETE}">{ICON_DELETE}</a>
+                    </td>
+                </tr>
+            <!-- END tmm_row -->
+            </tbody>
+            </table>
+    
+        <!-- ENDIF -->
+    
+        <p class="quick">
+            <input type="hidden" name="action" value="add" />
+            <input type="text" name="title" value="" />
+            <input class="button2" name="submit" id="submit" type="submit" value="{L_ACP_TMM_ADD}" />
+            {S_FORM_TOKEN}
+        </p>
+<!-- ENDIF -->
+	</fieldset>
+</form>
+<!-- INCLUDE overall_footer.html -->
