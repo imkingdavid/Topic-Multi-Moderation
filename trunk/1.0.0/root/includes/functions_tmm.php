@@ -353,6 +353,32 @@ class tmm
 	}
 	
 	/*
+	Generates a string of parsed prefixes using input of array
+	
+	Parameters
+		$prefix_array	- Array of prefix ids
+	
+	Return
+		$prefix_string	- String of parsed prefixes
+	*/
+	function parse_prefix_array($prefix_array)
+	{
+		if(!is_array($prefix_array))
+		{
+			return false;
+		}
+		if(empty($prefix_array))
+		{
+			return '';
+		}
+		$prefix_string = '';
+		foreach($prefix_array AS $prefix)
+		{
+			$prefix_string .= $this->parse_prefix($prefix);
+		}
+		return $prefix_string;
+	}
+	/*
 	Applies the specified prefix to the topic. Normally called within apply_multi_mod() method.
 	
 	Parameters
