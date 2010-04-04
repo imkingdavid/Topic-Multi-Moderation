@@ -300,7 +300,7 @@ $user->add_lang('mods/tmm');
 			<action type="after-add"><![CDATA[//! Begin TMM
 	'TOPIC_PREFIX'	=> $tmm->load_topic_prefixes($topic_data['topic_id']),
 	'TMM_SELECT'	=> $tmm->get_tmm_dropdown($topic_data['forum_id']),
-	'S_TMM_ACTION' 	=> append_sid("{$phpbb_root_path}mcp.$phpEx", "f=$forum_id&amp;t=$topic_id&amp;start=$start&amp;multimod=1&amp;redirect=" . urlencode(str_replace('&amp;', '&', $viewtopic_url)), true, $user->session_id),
+	'S_TMM_ACTION' 	=> append_sid("{$phpbb_root_path}mcp.$phpEx", "i=tmm&amp;f=$forum_id&amp;t=$topic_id&amp;start=$start&amp;multimod=1&amp;redirect=" . urlencode(str_replace('&amp;', '&', $viewtopic_url)), true, $user->session_id),
 	//! End TMM]]></action>
 		</edit>
 	</open>
