@@ -219,7 +219,7 @@ class tmm
 			$username = $user->data['username'];
 		}
 		$autoreply_text = utf8_normalize_nfc($text);
-		
+		$autoreply_text = decode_message($autoreply_text);
 		// variables to hold the parameters for submit_post
 		$poll = $uid = $bitfield = $options = ''; 
 		generate_text_for_storage($autoreply_text, $uid, $bitfield, $options, $bbcode, true, $smilies);		

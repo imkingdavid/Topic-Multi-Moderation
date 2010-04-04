@@ -72,11 +72,13 @@ class acp_tmm
 					$prefix_select = $tmm->get_prefix_select(0);
 					$parents_list = make_forum_select(0, false, false, false, false);
 					$thisaction = ($action == 'add') ? $action : $action . '&amp;id=' . $tmm_id;
+					$group_options = $tmm->get_group_select(0);
 					$template->assign_vars(array(
 						'S_EDIT'		=> true,
 						'TMM_TITLE'		=> request_var('title', '', true),
 						'FORUM_LIST'	=> $parents_list,
 						'PREFIX_SELECT'	=> $prefix_select,
+						'GROUP_SELECT'	=> $group_options,
 						'U_ACTION'		=> $this->u_action . '&amp;action=' . $thisaction,
 					));
 					$actions = array('LOCK', 'STICKY', 'MOVE', 'COPY', 'AUTOREPLY_BOOL');
@@ -145,22 +147,25 @@ class acp_tmm
 					$fid = implode(',', $forum_id);
 					$gid = implode(',', $group_id);
 					$pid = implode(',', $prefix_id);
-
+					$autoreply_text = request_var('autoresponse', '', true);
+			//		$uid = $bitfield = $options = '';
+			//		generate_text_for_storage($autoreply_text, $uid, $bitfield, $options, true, true, true);
 					$data = array(
-						'tmm_title'		=> utf8_normalize_nfc(request_var('title', '')),
-						'desc'			=> utf8_normalize_nfc(request_var('desc', '')),
-						'prefix_id'		=> $pid,
-						'forum_id'		=> $fid,
-						'group_id'		=> $gid,
-						'user_ids'		=> request_var('user_ids', ''),
-						'lock_option'	=> (int) request_var('lock_option', '0'),
-						'sticky_option'	=> (int) request_var('sticky_option', '0'),
-						'copy_option'	=> (int) request_var('copy_option', '0'),
-						'copywhere'		=> (int) request_var('copywhere', '0'),
-						'move_option'	=> (int) request_var('move_option', '0'),
-						'movewhere'		=> (int) request_var('movewhere', '0'),
-						'autoresponse'	=> request_var('autoresponse', ''),
-						'autoreply'		=> (int) request_var('autoreply', '0'),
+						'tmm_title'			=> stripslashes(utf8_normalize_nfc(request_var('title', ''))),
+						'desc'				=> stripslashes(utf8_normalize_nfc(request_var('desc', ''))),
+						'prefix_id'			=> $pid,
+						'forum_id'			=> $fid,
+						'group_id'			=> $gid,
+						'user_ids'			=> request_var('user_ids', ''),
+						'lock_option'		=> (int) request_var('lock_option', 0),
+						'sticky_option'		=> (int) request_var('sticky_option', 0),
+						'copy_option'		=> (int) request_var('copy_option', 0),
+						'copywhere'			=> (int) request_var('copywhere', 0),
+						'move_option'		=> (int) request_var('move_option', 0),
+						'movewhere'			=> (int) request_var('movewhere', 0),
+						'autoresponse'		=> $autoreply_text,
+						'autoreply'			=> (int) request_var('autoreply', 0),
+						'autoreply_poster'	=> (int) request_var('autoreply_poster', 0),
 					);
 					$sql_ary = array(
 						'tmm_title'				=> $data['tmm_title'],
@@ -177,6 +182,7 @@ class acp_tmm
 						'tmm_copy_dest_id'		=> $data['copywhere'],
 						'tmm_autoreply_text'	=> $data['autoresponse'],
 						'tmm_autoreply_bool'	=> $data['autoreply'],
+						'tmm_autoreply_poster'	=> $data['autoreply_poster'],
 					);					
 					$type = ($action == 'add') ? 'new' : 'update';
 					$u_action = $this->u_action;
