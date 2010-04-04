@@ -147,9 +147,6 @@ class acp_tmm
 					$fid = implode(',', $forum_id);
 					$gid = implode(',', $group_id);
 					$pid = implode(',', $prefix_id);
-					$autoreply_text = request_var('autoresponse', '', true);
-			//		$uid = $bitfield = $options = '';
-			//		generate_text_for_storage($autoreply_text, $uid, $bitfield, $options, true, true, true);
 					$data = array(
 						'tmm_title'			=> stripslashes(utf8_normalize_nfc(request_var('title', ''))),
 						'desc'				=> stripslashes(utf8_normalize_nfc(request_var('desc', ''))),
@@ -163,7 +160,7 @@ class acp_tmm
 						'copywhere'			=> (int) request_var('copywhere', 0),
 						'move_option'		=> (int) request_var('move_option', 0),
 						'movewhere'			=> (int) request_var('movewhere', 0),
-						'autoresponse'		=> $autoreply_text,
+						'autoresponse'		=> request_var('autoresponse', ''),
 						'autoreply'			=> (int) request_var('autoreply', 0),
 						'autoreply_poster'	=> (int) request_var('autoreply_poster', 0),
 					);

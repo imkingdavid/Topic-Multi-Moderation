@@ -137,7 +137,7 @@ class tmm_admin extends tmm
 		global $db, $user;
 		foreach($tmm_options AS $option => $value)
 		{
-			$data[$option] = $db->sql_escape($value);
+			$data[$option] = $value;
 		}
 		if($mode == 'new')
 		{

@@ -22,15 +22,15 @@
         </dl>
         <dl>
             <dt><label for="lock_option">{L_LOCK}:</label><br /></dt>
-            <dd><input name="lock_option" type="radio" value="1" {LOCK_YES} />{L_YES}&nbsp;<input name="lock_option" type="radio" value="0" {LOCK_NO} />{L_NO}</dd>
+            <dd><label><input name="lock_option" type="radio" class="radio" value="1" {LOCK_YES} />&nbsp;{L_YES}</label><label>&nbsp;<input name="lock_option" type="radio" class="radio" value="0" {LOCK_NO} />&nbsp;{L_NO}</label></dd>
         </dl>
         <dl>
             <dt><label for="sticky_option">{L_STICKY}:</label><br /></dt>
-            <dd><input name="sticky_option" type="radio" value="1" {STICKY_YES} />{L_YES}&nbsp;<input name="sticky_option" type="radio" value="0" {STICKY_NO} />{L_NO}</dd>
+            <dd><label><input name="sticky_option" type="radio" class="radio" value="1" {STICKY_YES} />&nbsp;{L_YES}</label><label>&nbsp;<input name="sticky_option" type="radio" class="radio" value="0" {STICKY_NO} />&nbsp;{L_NO}</label></dd>
         </dl>
         <dl>
             <dt><label for="move_option">{L_MOVE}:</label><br /></dt>
-            <dd><input name="move_option" type="radio" value="1" {MOVE_YES} />{L_YES}&nbsp;<input name="move_option" type="radio" value="0" {MOVE_NO} />{L_NO}</dd>
+            <dd><label><input name="move_option" type="radio" class="radio" value="1" {MOVE_YES} />&nbsp;{L_YES}</label><label>&nbsp;<input name="move_option" type="radio" class="radio" value="0" {MOVE_NO} />&nbsp;{L_NO}</label></dd>
         </dl>
         <dl>
             <dt><label for="movewhere">{L_WHERE}:</label><br /></dt>
@@ -38,7 +38,7 @@
         </dl>
         <dl>
             <dt><label for="copy_option">{L_COPY}:</label><br /></dt>
-            <dd><input name="copy_option" type="radio" value="1" {COPY_YES} />{L_YES}&nbsp;<input name="copy_option" type="radio" value="0" {COPY_NO} />{L_NO}</dd>
+            <dd><label><input name="copy_option" type="radio" class="radio" value="1" {COPY_YES} />&nbsp;{L_YES}</label><label>&nbsp;<input name="copy_option" type="radio" class="radio" value="0" {COPY_NO} />&nbsp;{L_NO}</label></dd>
         </dl>
         <dl>
             <dt><label for="copywhere">{L_WHERE}:</label><br /></dt>
@@ -46,11 +46,11 @@
         </dl>
         <dl>
             <dt><label for="autoreply">{L_AUTOREPLY}</label><br /></dt>
-            <dd><input name="autoreply" type="radio" value="1" {AUTOREPLY_BOOL_YES} />{L_YES}&nbsp;<input name="autoreply" type="radio" value="0" {AUTOREPLY_BOOL_NO} />{L_NO}
+            <dd><label><input name="autoreply" type="radio" class="radio" value="1" {AUTOREPLY_BOOL_YES} />&nbsp;{L_YES}</label><label>&nbsp;<input name="autoreply" type="radio" class="radio" value="0" {AUTOREPLY_BOOL_NO} />&nbsp;{L_NO}</label></dd>
         </dl>
         <dl>
             <dt><label for="autoresponse">{L_AUTORESPONSE}:</label></dt>
-            <dd><textarea name="autoresponse">{AUTORESPONSE}</textarea></dd>
+            <dd><textarea name="autoresponse" cols="10" rows="10">{AUTORESPONSE}</textarea></dd>
         </dl>
         <dl>
         	<dt><label for="autoreply_poster">{L_AUTOREPLY_POSTER}</label><br />{L_AUTOREPLY_POSTER_EXPLAIN}</dt>
