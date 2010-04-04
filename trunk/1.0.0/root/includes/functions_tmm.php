@@ -34,7 +34,7 @@ class tmm
 	*/
 	function apply_tmm($mod_id, $topic_id, $forum_id)
 	{
-		global $db, $template, $user, $phpbb_root_path;
+		global $db, $template, $user, $phpbb_root_path, $phpEx;
 		
 		//Get the information about the multi-mod
 		$sql = 'SELECT *
@@ -107,7 +107,7 @@ class tmm
 		}
 		if($row['tmm_copy'] == 1)
 		{
-			$copy = $this->copy_topic($topid_id, $row['tmm_copy_dest_id'], $topicrow['forum_id']);
+			$copy = $this->copy_topic($topic_id, $row['tmm_copy_dest_id'], $topicrow['forum_id']);
 			if(!$copy)
 			{
 				$this->error[] = $user->lang['COPY_ERROR'];
@@ -115,13 +115,17 @@ class tmm
 		}
 		if($row['tmm_move'] == 1)
 		{
-			$move = $this->move_topics($topic_id, $row['tmm_move_dest_id'], $topicrow['forum_id']);
+			if(!function_exists('move_topics'))
+			{
+				include_once($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
+			}
+			$move = move_topics($topic_id, $row['tmm_move_dest_id'], $topicrow['forum_id'], true);
 			if(!$move)
 			{
 				$this->error[] = $user->lang['MOVE_ERROR'];
 			}
 		}
-		return (empty($this->error)) ? true : $this->error;
+		return (empty($this->error)) ? true : false;
 	}
 	
 	/*
@@ -214,7 +218,7 @@ class tmm
 		{
 			$username = $user->data['username'];
 		}
-		$autoreply_text = utf8_normalize_nfc($autoreply_text);
+		$autoreply_text = utf8_normalize_nfc($text);
 		
 		// variables to hold the parameters for submit_post
 		$poll = $uid = $bitfield = $options = ''; 
@@ -591,8 +595,7 @@ class tmm
 	Parameters
 		$forum_id	- (optional) ID of the forum to look in; if 0, pull from all prefixes
 		$type		- (optional) either single or multiple; type of select box
-		$prefix_ids	- (optional) IDs to preselect
-	
+		$prefix_ids	- (optional) prefixes to be preselected
 	Return
 		Returns nothing if no prefixes are available; else returns HTML code for select box
 	*/

@@ -60,6 +60,14 @@ $lang = array_merge($lang, array(
 	'TMM_COPY'					=> 'Topic Copied',
 	'TMM_AUTOREPLY_BOOL'		=> 'Reply posted to topic',
 	
+	//Errors
+	'AUTOREPLY_ERROR'			=> 'Could not add reply',
+	'LOCK_ERROR'				=> 'Could not lock topic',
+	'STICK_ERROR'				=> 'Could not sticky topic',
+	'COPY_ERROR'				=> 'Could not copy topic',
+	'MOVE_ERROR'				=> 'Could not move topic',
+	'PREFIX_ERROR'				=> 'Could not apply prefix(es)',
+	
 	'TMM_PASS'					=> 'The multi-mod has been applied successfully',
-	'TMM_FAIL'					=> 'The multi-mod could not be applied',
+	'TMM_FAIL'					=> 'Some parts of the multi-mod could not be applied. They are listed below.',
 ));

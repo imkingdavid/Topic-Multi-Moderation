@@ -41,7 +41,7 @@ class mcp_tmm
 		$tmm = new tmm;
 
 		$this->tpl_name = 'mcp_tmm';
-		$multimod = request_var('multimod', (int) 0);
+		$multimod = request_var('tmm_select', (int) 0);
 		$forum_id = request_var('f', (int) 0);
 		$topic_id = request_var('t', (int) 0);
 		
@@ -90,7 +90,18 @@ class mcp_tmm
 				trigger_error('INVALID_TOPIC_ID');
 			}
 			$apply = $tmm->apply_tmm($multimod, $topic_id, $forum_id);
-			$message = $user->lang[(($apply) ? 'TMM_PASS' : 'TMM_FAIL')];
+			if(!$apply)
+			{
+				$message = $user->lang['TMM_FAIL'] . '<br />';
+				foreach($tmm->error AS $error)
+				{
+					$message .= $error . '<br />';
+				}
+			}
+			else
+			{
+				$message = $user->lang['TMM_PASS'];
+			}
 			$back_link = append_sid($phpbb_root_path . 'viewtopic.' . $phpEx, "f={$forum_id}&amp;t={$topic_id}");
 			$back_link = sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $back_link . '">', '</a>');
 			trigger_error($message . '<br />' . $back_link);
@@ -99,7 +110,7 @@ class mcp_tmm
 		{
 			$s_hidden_fields = build_hidden_fields(array(
 				'submit'    => true,
-				'multimod' => $multimod,
+				'tmm_select' => $multimod,
 				)
 			);
 			// empty message thing

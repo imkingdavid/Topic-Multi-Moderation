@@ -233,9 +233,12 @@ if($mode == 'edit' && ($post_data['topic_first_post_id'] == $post_id))
 	// Get list of applied prefixes
 	$prefixes = $tmm->load_topic_prefixes($topic_id, 'array');
 	$prefixed = '';
-	foreach($prefixes AS $prefix)
+	if(!empty($prefixes))
 	{
-		$prefixed .= $tmm->parse_prefix_instance($prefix) . ' <input type="checkbox" name="prefix[]" value="' . $prefix . '" /><br />';
+		foreach($prefixes AS $prefix)
+		{
+			$prefixed .= $tmm->parse_prefix_instance($prefix) . ' <input type="checkbox" name="prefix[]" value="' . $prefix . '" /><br />';
+		}
 	}
 	$prefixed = (empty($prefixed)) ? false : $prefixed;
 	$template->assign_var('APPLIED_PREFIXES', $prefixed);
