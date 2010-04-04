@@ -299,7 +299,7 @@ $user->add_lang('mods/tmm');
 			<find><![CDATA[	'TOPIC_POSTER'	=> $topic_data['topic_poster'],]]></find>
 			<action type="after-add"><![CDATA[//! Begin TMM
 	'TOPIC_PREFIX'	=> $tmm->load_topic_prefixes($topic_data['topic_id']),
-	'TMM_SELECT'	=> ($tmm->get_tmm_dropdown($topic_data['forum_id']) == '') ? '' : '<select name="tmm_dropdown"' . $type . '>' . $tmm->get_tmm_dropdown($topic_data['forum_id']) . '</select>',
+	'TMM_SELECT'	=> $tmm->get_tmm_dropdown($topic_data['forum_id']),
 	'S_TMM_ACTION' 	=> append_sid("{$phpbb_root_path}mcp.$phpEx", "f=$forum_id&amp;t=$topic_id&amp;start=$start&amp;multimod=1&amp;redirect=" . urlencode(str_replace('&amp;', '&', $viewtopic_url)), true, $user->session_id),
 	//! End TMM]]></action>
 		</edit>
@@ -336,6 +336,24 @@ $user->add_lang('mods/tmm');
 		<edit>	
 			<find><![CDATA[<h2><a href="{U_VIEW_TOPIC}">{TOPIC_TITLE}</a></h2>]]></find>
 			<action type="replace-with"><![CDATA[<h2>{TOPIC_PREFIX}<a href="{U_VIEW_TOPIC}">{TOPIC_TITLE}</a></h2>]]></action>
+		</edit>
+		<edit>	
+			<find><![CDATA[<!-- IF S_TOPIC_MOD -->
+	<form method="post" action="{S_MOD_ACTION}">
+	<fieldset class="quickmod">
+		<label for="quick-mod-select">{L_QUICK_MOD}:</label> {S_TOPIC_MOD} <input type="submit" value="{L_GO}" class="button2" />
+		{S_FORM_TOKEN}
+	</fieldset>
+	</form>
+<!-- ENDIF -->]]></find>
+			<action type="replace-with"><![CDATA[<!-- IF TMM_SELECT -->
+	<br clear="right" />
+	<form method="post" action="{S_TMM_ACTION}">
+    <fieldset class="quickmod">
+    	<label for="tmm-mod-select">{L_MULTI_MODS}:</label> {TMM_SELECT} <input type="submit" value="{L_GO}" class="button2" />
+    </fieldset>
+    </form>
+<!-- ENDIF -->]]></action>
 		</edit>
 	</open>
 	<php-installer>tmm_install.php</php-installer>

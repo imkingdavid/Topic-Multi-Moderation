@@ -591,11 +591,12 @@ class tmm
 	Parameters
 		$forum_id	- (optional) ID of the forum to look in; if 0, pull from all prefixes
 		$type		- (optional) either single or multiple; type of select box
+		$prefix_ids	- (optional) IDs to preselect
 	
 	Return
 		Returns nothing if no prefixes are available; else returns HTML code for select box
 	*/
-	function get_prefix_dropdown($forum_id = 0, $type = 'single', $prefix_ids)
+	function get_prefix_dropdown($forum_id = 0, $type = 'single', $prefix_ids = '')
 	{
 		global $user, $db, $phpbb_root_path, $phpEx;
 		// Check what group a user is in
@@ -700,7 +701,7 @@ class tmm
 			$tmm_options .= '<option value="' . $multi_mod . '">' . stripslashes($row['tmm_title']) . '</option>';
 		}
 		$type = ($type == 'multiple') ? 'multiple="multiple"'  : '';
-		return $tmm_options;
+		return (empty($tmm_options)) ? '' : '<select name="tmm_select"' . $type . '>' . $tmm_options . '</select>';
 	}
 	
 	/*
