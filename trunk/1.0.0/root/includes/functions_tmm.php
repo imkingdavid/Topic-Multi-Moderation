@@ -64,7 +64,7 @@ class tmm
 		//Check each mutli-mod action to see if it should be done.
 		if($row['tmm_autoreply_bool'] == 1)
 		{
-			$poster = ($row['tmm_autoreply_poster'] != 0) ? $row['tmm_auto_reply_poster'] : 0;
+			$poster = ($row['tmm_autoreply_poster'] != 0) ? $row['tmm_autoreply_poster'] : 0;
 			$auto_reply = $this->auto_reply($row['tmm_autoreply_text'], $topic_id, $forum_id, $poster, true, true);
 			if(!$auto_reply)
 			{
@@ -120,10 +120,6 @@ class tmm
 				include_once($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
 			}
 			$move = move_topics($topic_id, $row['tmm_move_dest_id'], $topicrow['forum_id'], true);
-			if(!$move)
-			{
-				$this->error[] = $user->lang['MOVE_ERROR'];
-			}
 		}
 		return (empty($this->error)) ? true : false;
 	}
@@ -219,7 +215,6 @@ class tmm
 			$username = $user->data['username'];
 		}
 		$autoreply_text = utf8_normalize_nfc($text);
-		$autoreply_text = decode_message($autoreply_text);
 		// variables to hold the parameters for submit_post
 		$poll = $uid = $bitfield = $options = ''; 
 		generate_text_for_storage($autoreply_text, $uid, $bitfield, $options, $bbcode, true, $smilies);		
@@ -723,10 +718,6 @@ class tmm
 		global $auth, $user, $db, $template, $config;
 		global $phpEx, $phpbb_root_path;
 		
-		if(!$auth->acl_get('m_'))
-		{
-			return false;
-		}
 		$tid = $topic_id;
 	
 		if ($to_forum_id)
@@ -786,7 +777,6 @@ class tmm
 				'poll_title'				=> (string) $topic_data['poll_title'],
 				'poll_start'				=> (int) $topic_data['poll_start'],
 				'poll_length'				=> (int) $topic_data['poll_length'],
-				'prefix_id'					=> (int) $topic_data['prefix_id'],
 			);
 	
 			$db->sql_query('INSERT INTO ' . TOPICS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
@@ -948,7 +938,6 @@ class tmm
 		set_config_count('num_topics', sizeof($new_topic_id_list), true);
 		set_config_count('num_posts', $total_posts, true);
 		return true;
-	
 	}
 	
 	/**
