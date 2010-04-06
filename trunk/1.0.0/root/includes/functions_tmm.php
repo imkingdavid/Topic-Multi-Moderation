@@ -107,10 +107,11 @@ class tmm
 		}
 		if($row['tmm_copy'] == 1)
 		{
-			$copy = $this->copy_topic($topic_id, $row['tmm_copy_dest_id'], $topicrow['forum_id']);
+			//$copy = $this->copy_topic($topic_id, $row['tmm_copy_dest_id'], $topicrow['forum_id']);
+			$copy = false;
 			if(!$copy)
 			{
-				$this->error[] = $user->lang['COPY_ERROR'];
+				$this->error[] = $row['tmm_copy_dest_id'] . '<br />' . $user->lang['COPY_ERROR'];
 			}
 		}
 		if($row['tmm_move'] == 1)

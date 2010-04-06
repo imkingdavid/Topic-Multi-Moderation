@@ -128,7 +128,8 @@ class mcp_tmm
 			//display mode
 			confirm_box(false, 'APPLY_TMM', $s_hidden_fields);
 		}
-
+		// Shouldn't get here...
+		redirect($phpbb_root_path . 'viewtopic.' . $phpEx, "f={$forum_id}&amp;t={$topic_id}");
 		// Define language vars
 		$this->page_title = 'MCP_TMM';
 	}

@@ -79,23 +79,25 @@ $options = array(
 * The version numbering must otherwise be compatible with the version_compare function - http://php.net/manual/en/function.version-compare.php
 */
 $versions = array(
-	/*'1.0.1' => array(
+	/* Feature for later planned: canned responses, can be used instead of multi-mod; can be used in multi-mod
+	'1.0.2' => array(
 		'table_add' => array(
 			array('phpbb_tmm_canned_responses', array(
 					'COLUMNS'	=> array(
 						'response_id'		=> array('UINT', NULL, 'auto_increment'),
 						'response_text'		=> array('VCHAR_UNI', ''), // Descriptive name for use in drop downs
-						'prefix_title'		=> array('VCHAR_UNI', ''), // The actual prefix text that is shown
-						'prefix_color_hex'	=> array('VCHAR_UNI', ''), // Hexadecimal code corresponding to the color
-						'prefix_forums'		=> array('VCHAR_UNI', ''), // Forums that the prefix can be used in
-						'prefix_users'		=> array('VCHAR_UNI', ''), // Users that can use this prefix (overrides group settings)
-						'prefix_groups'		=> array('VCHAR_UNI', ''), // Groups that can use this prefix
+						'response_title'	=> array('VCHAR_UNI', ''), // The actual prefix text that is shown
+						'response_forums'	=> array('VCHAR_UNI', ''), // Forums that the prefix can be used in
+						'response_users'	=> array('VCHAR_UNI', ''), // Users that can use this prefix (overrides group settings)
+						'response_groups'	=> array('VCHAR_UNI', ''), // Groups that can use this prefix
 					),
 					'PRIMARY_KEY'	=> 'prefix_id',
 				),
 			),
 		),
-		/*'module_add' => array(
+	),*/
+	'1.0.1' => array(
+		'module_add' => array(
 			array('acp', 'ACP_CAT_POSTING', 'ACP_TMM'),
 			array('acp', 'ACP_TMM', array(
 					'module_basename'		=> 'tmm',
@@ -103,9 +105,14 @@ $versions = array(
 				),
 			),
 			
-			array('mcp', 'MCP_TOPICS', 'MCP_TMM'),
-		),*/
-	//),
+			array('mcp', 'MCP_TMM'),
+			array('mcp', 'MCP_TMM', array(
+					'module_basename'		=> 'tmm',
+					'modes'					=> array('index'),
+				),
+			),
+		),
+	),
 	'1.0.0' => array(
 		'permission_add' => array(
 			array('a_tmm_auth', true),

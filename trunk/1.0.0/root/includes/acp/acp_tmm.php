@@ -180,7 +180,7 @@ class acp_tmm
 						'tmm_autoreply_text'	=> $data['autoresponse'],
 						'tmm_autoreply_bool'	=> $data['autoreply'],
 						'tmm_autoreply_poster'	=> $data['autoreply_poster'],
-					);					
+					);	
 					$type = ($action == 'add') ? 'new' : 'update';
 					$u_action = $this->u_action;
 					$tmm_id_post = request_var('tmm_id', 0);
