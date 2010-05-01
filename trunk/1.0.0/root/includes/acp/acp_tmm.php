@@ -7,7 +7,7 @@
 *-------------------------------------------------------------------
 *	Script info:
 * Version:		1.0.0 - "TMM"
-* Copyright:	(C) 2010 | David, House, Comkid
+* Copyright:	(C) 2010 | David
 * License:		http://opensource.org/licenses/gpl-2.0.php | GNU Public License v2
 * Package:		phpBB3
 *

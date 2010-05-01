@@ -7,7 +7,7 @@
 *-------------------------------------------------------------------
 *	Script info:
 * Version:		1.0.0 - "TMM"
-* Copyright:	(C) 2010 | David, House, Comkid
+* Copyright:	(C) 2010 | David
 * License:		http://opensource.org/licenses/gpl-2.0.php | GNU Public License v2
 * Package:		phpBB3
 *
@@ -22,7 +22,7 @@ if(!defined('IN_PHPBB'))
 
 //! MOD Version -- NOTE: Must be changed when a new version is released so that the version check works!
 define('TMM_VERSION', '1.0.0');
-define('TMM_VERSION_BIG', 'phpBB Topic Multi Moderation Version 1.0.0');
+define('TMM_VERSION_BIG', 'Topic Multi Moderation Version 1.0.0');
 
 //! DB Tables
 define('TMM_TABLE',						$table_prefix . 'tmm');

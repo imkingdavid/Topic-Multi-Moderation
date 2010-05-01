@@ -19,12 +19,6 @@
 			<homepage>http://www.phpbbdevelopers.net</homepage>
 			<email>imkingdavid@gmail.com</email>
 		</author>
-		<author>
-			<username>House</username>
-			<realname>Damian</realname>
-			<homepage>http://infinityhouse.org</homepage>
-			<email>damian.php@live.com</email>
-		</author>
 	</author-group>
 
 	<mod-version>1.0.0-RC1</mod-version>

@@ -7,7 +7,7 @@
 *-------------------------------------------------------------------
 *	Script info:
 * Version:		1.0.0 - "TMM"
-* Copyright:	(C) 2010 | David, House, Comkid
+* Copyright:	(C) 2010 | David
 * License:		http://opensource.org/licenses/gpl-2.0.php | GNU Public License v2
 * Package:		phpBB3
 *
@@ -961,8 +961,7 @@ class tmm
 	function load_tmm_install_info()
 	{
 		global $user;
-		$install_info = 'cGhwQkIgVG9waWMgTXVsdGkgTW9kZXJhdGlvbiAmY29weTsgMjAxMCA8YSBocmVmPSJodHRwOi8vcGhwYmJkZXZlbG9wZXJzLm5ldC8iIHN0eWxlPSJmb250LXdlaWdodDogYm9sZDsiPkRhdmlkPC9hPiAmIDxhIGhyZWY9Imh0dHA6Ly9pbmZpbml0eWhvdXNlLm9yZy8iIHN0eWxlPSJmb250LXdlaWdodDogYm9sZDsiPkhvdXNlPC9hPg==';
-		$install_info = base64_decode($install_info);
-		$user->lang['TRANSLATION_INFO'] = $user->lang['TRANSLATION_INFO'] . (($user->lang['TRANSLATION_INFO'] != '') ? '<br />' : '') . sprintf($install_info, TMM_VERSION_BIG, TMM_VERSION);
+		$install_info = 'Topic Multi Moderation v%s &copy; 2010 <a href="http://phpbbdevelopers.net/" style="font-weight: bold;">phpBB Developers</a>';
+		$user->lang['TRANSLATION_INFO'] = $user->lang['TRANSLATION_INFO'] . (($user->lang['TRANSLATION_INFO'] != '') ? '<br />' : '') . sprintf($install_info, TMM_VERSION);
 	}
 }
