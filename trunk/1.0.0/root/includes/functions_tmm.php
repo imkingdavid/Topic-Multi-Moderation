@@ -24,6 +24,13 @@ class tmm
 	var $error = array(); // will hold the error messages if any
 	var $actions = array(); // an array of all the actions performed.
 	
+	/* constructor */
+	function __construct()
+	{
+		global $phpbb_root_path, $phpEx, $table_prefix;
+		include_once($phpbb_root_path . 'includes/tmm_constants.' . $phpEx);
+	}
+	
 	/*
 	Applies the specified multi-mod to the specified topic
 	
@@ -60,7 +67,6 @@ class tmm
 		{
 			trigger_error("INVALID_TOPIC_ID");
 		}
-		
 		//Check each mutli-mod action to see if it should be done.
 		if($row['tmm_autoreply_bool'] == 1)
 		{
@@ -107,8 +113,7 @@ class tmm
 		}
 		if($row['tmm_copy'] == 1)
 		{
-			//$copy = $this->copy_topic($topic_id, $row['tmm_copy_dest_id'], $topicrow['forum_id']);
-			$copy = false;
+			$copy = $this->copy_topic($topic_id, $row['tmm_copy_dest_id'], $topicrow['forum_id']);
 			if(!$copy)
 			{
 				$this->error[] = $row['tmm_copy_dest_id'] . '<br />' . $user->lang['COPY_ERROR'];
@@ -302,7 +307,7 @@ class tmm
 	Return
 		Fully formatted prefixes; empty if none
 	*/
-	function load_topic_prefixes($topic_id, $return_type = 'string', $input = 'sql')
+	function load_topic_prefixes($topic_id, $return_type = 'string', $input = 'sql', $method = 'instances')
 	{
 		global $db;
 		
@@ -330,9 +335,10 @@ class tmm
 		}
 		else
 		{
-			$sql = 'SELECT prefix_instance_id
-				FROM ' . TMM_PREFIX_INSTANCES_TABLE . '
+			$sql = 'SELECT i.prefix_instance_id AS prefix_instance_id, p.prefix_id AS prefix_id
+				FROM ' . TMM_PREFIX_INSTANCES_TABLE . ' i, ' . TMM_PREFIXES_TABLE . ' p
 				WHERE topic_id = ' . $topic_id . '
+					AND i.prefix_id = p.prefix_id
 				ORDER BY applied_date DESC';
 			$result = $db->sql_query($sql);
 			while($row = $db->sql_fetchrow($result))
@@ -340,7 +346,7 @@ class tmm
 				// Append it with the next one.
 				if($return_type == 'array')
 				{
-					$prefix[] = $row['prefix_instance_id'];
+					$prefix[] = ($method == 'prefixes') ? $row['prefix_id'] : $row['prefix_instance_id'];
 				}
 				else
 				{
@@ -589,9 +595,9 @@ class tmm
 	Generates a single/multiple select box with all prefixes allowed for the current user/group in the current forum
 	
 	Parameters
-		$forum_id	- (optional) ID of the forum to look in; if 0, pull from all prefixes
-		$type		- (optional) either single or multiple; type of select box
-		$prefix_ids	- (optional) prefixes to be preselected
+		$forum_id		- (optional) ID of the forum to look in; if 0, pull from all prefixes
+		$type			- (optional) either single or multiple; type of select box
+		$prefix_ids		- (optional) prefixes to be preselected
 	Return
 		Returns nothing if no prefixes are available; else returns HTML code for select box
 	*/
@@ -638,10 +644,18 @@ class tmm
 			$result = $db->sql_query($sql);
 			$row = $db->sql_fetchrow($result);
 			$db->sql_freeresult($result);
-			$prefixes_options .= '<option value="' . $prefix . '">' . stripslashes($row['prefix_name']) . '</option>';
+			if(is_array($prefix_ids))
+			{
+				$disabled = (in_array($prefix, $prefix_ids)) ? 'disabled="disabled"' : '';
+			}
+			else
+			{
+				$disabled = ($prefix == $prefix_ids) ? 'selected="selected"' : '';
+			}
+			$prefixes_options .= '<option value="' . $prefix . '"' . $disabled . '>' . stripslashes($row['prefix_name']) . '</option>';
 		}
 		$type = ($type == 'multiple') ? 'multiple="multiple"'  : '';
-		return (empty($prefixes_options)) ? '' : '<select name="prefix_dropdown"' . $type . '>' . $prefixes_options . '</select>';
+		return (empty($prefixes_options)) ? '' : '<select name="prefix_dropdown"' . $type . '><option value="0" disabled="disabled" selected="selected">&nbsp;</option>' . $prefixes_options . '</select>';
 	}
 	
 	/*
