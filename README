@@ -6,7 +6,7 @@
 *-------------------------------------------------------------------
 *	Script info:
 * Version:		1.0.0 - "TMM"
-* Copyright:	(C) 2010 | David, House, Comkid
+* Copyright:	(C) 2010 | David
 * License:		http://opensource.org/licenses/gpl-2.0.php | GNU Public License v2
 * Package:		phpBB3
 *
@@ -25,3 +25,5 @@ Implemented moderation actions include:
 	replying to a topic
 	stickying a topic
 	adding a topic prefix (new feature not present in phpBB by default)
+    
+Topic prefixes may also be implemented separately from multi-mods.
