@@ -72,5 +72,6 @@ $lang = array_merge($lang, array(
 	'TMM_FAIL'					=> 'Some parts of the multi-mod could not be applied. They are listed below.',
 	
 	'FILE_BUG_REPORT'			=> 'Well, I\'m not sure how you are seeing this page, but please file a bug report, letting me know what you did to get here. Thanks!',
+
 	'MCP_TMM'					=> 'Topic Multi-Moderation',
 ));

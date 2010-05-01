@@ -79,8 +79,8 @@ $options = array(
 * The version numbering must otherwise be compatible with the version_compare function - http://php.net/manual/en/function.version-compare.php
 */
 $versions = array(
-	/* Feature for later planned: canned responses, can be used instead of multi-mod; can be used in multi-mod
-	'1.0.2' => array(
+	/* Feature for later planned: canned responses, can be used inside and out of multi-mod; extension of "Auto-Response feature".
+	'1.0.1' => array(
 		'table_add' => array(
 			array('phpbb_tmm_canned_responses', array(
 					'COLUMNS'	=> array(
@@ -96,7 +96,7 @@ $versions = array(
 			),
 		),
 	),*/
-	'1.0.1' => array(
+	'1.0.0' => array(
 		'module_add' => array(
 			array('acp', 'ACP_CAT_POSTING', 'ACP_TMM'),
 			array('acp', 'ACP_TMM', array(
@@ -105,15 +105,14 @@ $versions = array(
 				),
 			),
 			
-			array('mcp', 'MCP_TMM'),
+			array('mcp', '', 'MCP_TMM'),
 			array('mcp', 'MCP_TMM', array(
 					'module_basename'		=> 'tmm',
 					'modes'					=> array('index'),
 				),
 			),
 		),
-	),
-	'1.0.0' => array(
+
 		'permission_add' => array(
 			array('a_tmm_auth', true),
 			array('a_prefix_auth', true),
