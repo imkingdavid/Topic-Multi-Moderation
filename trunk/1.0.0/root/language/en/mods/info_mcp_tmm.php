@@ -3,7 +3,7 @@
 *
 *===================================================================
 *
-*  phpBB Topic Multi Moderation -- Language File
+*  phpBB Topic Multi Moderation -- TMM Admin Language File
 *-------------------------------------------------------------------
 *	Script info:
 * Version:		1.0.0 - "TMM"
@@ -38,13 +38,28 @@ if (empty($lang) || !is_array($lang))
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
 
 $lang = array_merge($lang, array(
-	'MULTI_MODS'				=> 'Multi-mods',
-	'PREFIX_SELECT'				=> 'Add a Prefix',
-	'PREFIX_SELECT_EXPLAIN'		=> 'Select a prefix from the list to add it to this topic.',
-	'APPLIED_PREFIXES'			=> 'Applied Prefixes',
-	'APPLIED_PREFIXES_EXPLAIN'	=> 'These prefixes are already applied to this topic.',
+	'MCP_TMM'		=> 'Topic Multi-Moderation',
+	'INVALID_MULTI_MOD'			=> 'No multi-mod specified.',
+	'INVALID_TOPIC_ID'			=> 'No topic specified.',
+	'APPLY_TMM'					=> 'Apply Multi-Mod',
+	'APPLY_TMM_CONFIRM'			=> 'The following actions will be performed:<br />%1$s',
+	'TMM_PREFIX_ID'				=> 'Prefixes applied: %1$s',
+	'TMM_LOCK'					=> 'Topic Locked',
+	'TMM_STICKY'				=> 'Topic Stickied',
+	'TMM_MOVE'					=> 'Topic Moved',
+	'TMM_COPY'					=> 'Topic Copied',
+	'TMM_AUTOREPLY_BOOL'		=> 'Reply posted to topic',
+	//Errors
+	'AUTOREPLY_ERROR'			=> 'Could not add reply',
+	'LOCK_ERROR'				=> 'Could not lock topic',
+	'STICK_ERROR'				=> 'Could not sticky topic',
+	'COPY_ERROR'				=> 'Could not copy topic',
+	'MOVE_ERROR'				=> 'Could not move topic',
+	'PREFIX_ERROR'				=> 'Could not apply prefix(es)',
 	
-	'ADD'						=> 'Add Prefix',
-	'CLEAR'						=> 'Remove All',
-	'REMOVE'					=> 'Remove Checked',
+	'TMM_PASS'					=> 'The multi-mod has been applied successfully',
+	'TMM_FAIL'					=> 'Some parts of the multi-mod could not be applied. They are listed below.',
+	
+	'FILE_BUG_REPORT'			=> 'Well, I\'m not sure how you are seeing this page, but please file a bug report, letting me know what you did to get here. Thanks!',
 ));
+?>

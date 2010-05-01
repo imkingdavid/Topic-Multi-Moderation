@@ -78,6 +78,7 @@ $options = array(
 * You must use correct version numbering.  Unless you know exactly what you can use, only use X.X.X (replacing X with an integer).
 * The version numbering must otherwise be compatible with the version_compare function - http://php.net/manual/en/function.version-compare.php
 */
+
 $versions = array(
 	/* Feature for later planned: canned responses, can be used inside and out of multi-mod; extension of "Auto-Response feature".
 	'1.0.1' => array(
