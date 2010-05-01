@@ -81,7 +81,7 @@ $options = array(
 
 $versions = array(
 	/* Feature for later planned: canned responses, can be used inside and out of multi-mod; extension of "Auto-Response feature".
-	'1.0.1' => array(
+	'0.3.0' => array(
 		'table_add' => array(
 			array('phpbb_tmm_canned_responses', array(
 					'COLUMNS'	=> array(
@@ -97,7 +97,7 @@ $versions = array(
 			),
 		),
 	),*/
-	'1.0.0' => array(
+	'0.2.0' => array(
 		'module_add' => array(
 			array('acp', 'ACP_CAT_POSTING', 'ACP_TMM'),
 			array('acp', 'ACP_TMM', array(

@@ -47,4 +47,8 @@ $lang = array_merge($lang, array(
 	'ADD'						=> 'Add Prefix',
 	'CLEAR'						=> 'Remove All',
 	'REMOVE'					=> 'Remove Checked',
+	
+	// Eventual search integration
+	'SEARCH_PREFIXES'			=> 'Search by prefix(es)',
+	'SEARCH_PREFIXES_EXPLAIN'	=> 'Show all topics with at least one of the selected prefixes',
 ));

@@ -9,8 +9,9 @@
 	
 	<description lang="en">This MOD adds a quick and easy way to perform multiple moderation tasks with one click. Configurable via the ACP.</description>
 
-	<author-notes lang="en">This MOD is currently in the BETA stage and should NOT be used in a live environment. You are, however, welcome to use it on a test board.
-	If you would like to make a donation for my work done on this MOD as well as other MODs, you may do so by going to the demo/test board (http://www.phpbbdevelopers.net/) and clicking the Donate button in the header. All donations are voluntary.</author-notes>
+	<author-notes lang="en">Version 0.2.0 is a complete rewrite of the MOD, and is not backwards compatible to my knowledge. You will need to COMPLETELY uninstall the old version, and install the new one fresh. That is a major reason for the following warning:
+	This MOD is currently in the BETA stage and should NOT be used in a live environment. You are, however, welcome to use it on a test board.
+	If you would like to make a donation for my work done on this MOD as well as other MODs, you may do so by going to the demo/test board (http://www.phpbbdevelopers.net/) and clicking the Donate button in the header. All donations are voluntary but appreciated.</author-notes>
 
 	<author-group>
 		<author>
@@ -21,7 +22,7 @@
 		</author>
 	</author-group>
 
-	<mod-version>1.0.0-RC1</mod-version>
+	<mod-version>0.2.0</mod-version>
 
 	<installation>
 		<level>intermediate</level>
@@ -30,13 +31,14 @@
 	</installation>
 	<history>
 		<entry>
-			<date>2010-03-15</date>
-			<rev-version>1.0.0-RC1</rev-version>
+			<date>2010-05-1</date>
+			<rev-version>0.2.0</rev-version>
 			<changelog lang="en">
 				<change>[Change] Complete code rewrite</change>
 				<change>[Feature] Tokens in prefix (i.e. {USERNAME} and {DATE})</change>
 				<change>[Feature] Add multiple prefixes to topic</change>
 				<change>[Feature] Added more flexibility for better control per prefix and multi-mod</change>
+				<change>[Note] Not backwards compatible.</change>
 			</changelog>
 		</entry>
 		<entry>
@@ -46,6 +48,7 @@
 				<change>[Fix] bug in ACP prefixes edit module</change>
 				<change>[Fix] color swatch in ACP prefixes module</change>
 				<change>[Fix] for bug caused by another MOD (topic_status cannot be NULL)</change>
+				<change>[Note] never released</change>
 			</changelog>
 		</entry>
 		<entry>
@@ -62,42 +65,42 @@
 			<date>2009-09-01</date>
 			<rev-version>0.1.2 BETA</rev-version>
 			<changelog lang="en">
-				<change>Changed permission settings (now there are separte admin permissions, as well as separate forum-specific permissions for multi-mods and prefixes).</change>
-				<change>Fixed various bugs in posting.php, posting_editor.html</change>
+				<change>[Change] Changed permission settings (now there are separte admin permissions, as well as separate forum-specific permissions for multi-mods and prefixes).</change>
+				<change>[Fix] Fixed various bugs in posting.php, posting_editor.html</change>
 			</changelog>
 		</entry>
 		<entry>
 			<date>2009-09-01</date>
 			<rev-version>0.1.1 BETA</rev-version>
 			<changelog lang="en">
-				<change>Fixed ANOTHER bug in prefix dropdown menu on posting</change>
-				<change>Fixed various template bugs</change>
-				<change>Fixed various viewforum, posting, and viewtopic bugs</change>
+				<change>[Fix] Fixed ANOTHER bug in prefix dropdown menu on posting</change>
+				<change>[Fix] Fixed various template bugs</change>
+				<change>[Fix] Fixed various viewforum, posting, and viewtopic bugs</change>
 			</changelog>
 		</entry>
 		<entry>
 			<date>2009-08-31</date>
 			<rev-version>0.1.0 BETA</rev-version>
 			<changelog lang="en">
-				<change>Fixed bug in prefix dropdown menu on posting</change>
-				<change>Added copy ability for multi-mods</change>
-				<change>Added UMIL automated install/uninstall/update file: tmm_install.php</change>
-				<change>Verified AutoMOD compatibility</change>
+				<change>[Fix] Fixed bug in prefix dropdown menu on posting</change>
+				<change>[Feature] Added copy ability for multi-mods</change>
+				<change>[Feature] Added UMIL automated install/uninstall/update file: tmm_install.php</change>
+				<change>[Feature] Verified AutoMOD compatibility</change>
 			</changelog>
 		</entry>
 		<entry>
 			<date>2009-08-25</date>
 			<rev-version>0.0.3 ALPHA</rev-version>
 			<changelog lang="en">
-				<change>Added support for separate prefix use on posting.php (new thread and edit first post screen)</change>
+				<change>[Change] Added support for separate prefix use on posting.php (new thread and edit first post screen)</change>
 			</changelog>
 		</entry>
 		<entry>
 			<date>2009-08-23</date>
 			<rev-version>0.0.2 ALPHA</rev-version>
 			<changelog lang="en">
-				<change>Made a few fixes to the install.xml file</change>
-				<change>Changed database tables (added default value)</change>
+				<change>[Fix] Made a few fixes to the install.xml file</change>
+				<change>[Change] Changed database tables (added default value)</change>
 			</changelog>
 		</entry>
 		<entry>
