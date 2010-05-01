@@ -122,6 +122,20 @@
 	<copy>
 		<file from="root/*.*" to="*.*" />
 	</copy>
+	<open src="mcp.php">
+		<edit>
+			<find><![CDATA[if (!$post_id)
+{
+	$module->set_display('main', 'post_details', false);
+	$module->set_display('warn', 'warn_post', false);
+}]]></find>
+			<action type="before-add"><![CDATA[$tmm_id = request_var('multimod', 0);
+if($tmm_id == 0)
+{
+	$module->set_display('tmm', 'index', false);
+}]]></action>
+		</edit>
+	</open>
 	<open src="posting.php">
 		<edit>
 			<find><![CDATA[$refresh	= (isset($_POST['add_file']) || isset($_POST['delete_file']) || isset($_POST['full_editor']) || isset($_POST['cancel_unglobalise']) || $save || $load) ? true : false;]]></find>
