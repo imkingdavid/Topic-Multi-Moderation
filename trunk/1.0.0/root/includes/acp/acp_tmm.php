@@ -148,8 +148,8 @@ class acp_tmm
 					$gid = implode(',', $group_id);
 					$pid = implode(',', $prefix_id);
 					$data = array(
-						'tmm_title'			=> stripslashes(utf8_normalize_nfc(request_var('title', ''))),
-						'desc'				=> stripslashes(utf8_normalize_nfc(request_var('desc', ''))),
+						'tmm_title'			=> utf8_normalize_nfc(request_var('title', '')),
+						'desc'				=> utf8_normalize_nfc(request_var('desc', '')),
 						'prefix_id'			=> $pid,
 						'forum_id'			=> $fid,
 						'group_id'			=> $gid,

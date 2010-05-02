@@ -16,6 +16,14 @@
 */
 
 /**
+* @ignore
+*/
+if (!defined('IN_PHPBB'))
+{
+	exit;
+}
+
+/**
 * @package module_install
 */
 class mcp_tmm_info

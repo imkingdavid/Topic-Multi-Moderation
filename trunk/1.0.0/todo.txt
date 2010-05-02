@@ -1,8 +1,4 @@
-Todo List:
-Finish up multi-mods
-
--Possibly rethink prefix implementation;
-
---don't allow the same prefix multiple times
-
----comkid suggested check box instead of dropdown
+To Do List for 0.3.0:
+-implement prefixes in search
+--allow searching with multiple prefixes
+---behavior in that case is to search for topics with any or both prefix, but not with only one or the other.

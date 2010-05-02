@@ -28,7 +28,16 @@ class tmm
 	function __construct()
 	{
 		global $phpbb_root_path, $phpEx, $table_prefix;
-		include_once($phpbb_root_path . 'includes/tmm_constants.' . $phpEx);
+		include($phpbb_root_path . 'includes/tmm_constants.' . $phpEx);
+		// Check what group a user is in
+		if ( !function_exists('group_memberships') )
+		{
+			include($phpbb_root_path . 'includes/functions_user.'.$phpEx);
+		}
+		if(!function_exists('move_topics'))
+		{
+			include($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
+		}
 	}
 	
 	/*
@@ -121,10 +130,6 @@ class tmm
 		}
 		if($row['tmm_move'] == 1)
 		{
-			if(!function_exists('move_topics'))
-			{
-				include_once($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
-			}
 			$move = move_topics($topic_id, $row['tmm_move_dest_id'], $topicrow['forum_id'], true);
 		}
 		return (empty($this->error)) ? true : false;
@@ -605,11 +610,6 @@ class tmm
 	function get_prefix_dropdown($forum_id = 0, $type = 'single', $prefix_ids = '', $excluded_ids = '')
 	{
 		global $user, $db, $phpbb_root_path, $phpEx;
-		// Check what group a user is in
-		if ( !function_exists('group_memberships') )
-		{
-			include_once($phpbb_root_path . 'includes/functions_user.'.$phpEx);
-		}
 		$groups = group_memberships(false,$user->data['user_id']);
 		
 		$prefixes = array();
@@ -659,7 +659,7 @@ class tmm
 				{
 					$disabled = ($prefix == $prefix_ids) ? 'selected="selected"' : '';
 				}
-				$prefixes_options .= '<option value="' . $prefix . '"' . $disabled . '>' . stripslashes($row['prefix_name']) . '</option>';
+				$prefixes_options .= '<option value="' . $prefix . '"' . $disabled . '>' . $row['prefix_name'] . '</option>';
 			}
 		}
 		$type = ($type == 'multiple') ? 'multiple="multiple"'  : '';
@@ -679,11 +679,6 @@ class tmm
 	function get_tmm_dropdown($forum_id = 0, $type = 'single')
 	{
 		global $user, $db, $phpbb_root_path, $phpEx;
-		// Check what group a user is in
-		if ( !function_exists('group_memberships') )
-		{
-			include_once($phpbb_root_path . 'includes/functions_user.'.$phpEx);
-		}
 		$groups = group_memberships(false,$user->data['user_id']);
 		
 		$multi_mods = array();
@@ -719,7 +714,7 @@ class tmm
 			$result = $db->sql_query($sql);
 			$row = $db->sql_fetchrow($result);
 			$db->sql_freeresult($result);
-			$tmm_options .= '<option value="' . $multi_mod . '">' . stripslashes($row['tmm_title']) . '</option>';
+			$tmm_options .= '<option value="' . $multi_mod . '">' . $row['tmm_title'] . '</option>';
 		}
 		$type = ($type == 'multiple') ? 'multiple="multiple"'  : '';
 		return (empty($tmm_options)) ? '' : '<select name="tmm_select"' . $type . '>' . $tmm_options . '</select>';
