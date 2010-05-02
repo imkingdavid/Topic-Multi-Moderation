@@ -161,7 +161,6 @@ $prefix_instance_id = request_var('prefix', array(0));
 $prefix_add = (isset($_POST['prefix_add'])) ? 1 : 0;
 $prefix_remove = (isset($_POST['prefix_remove'])) ? 1 : 0;
 $prefix_clear = (isset($_POST['prefix_clear'])) ? 1 : 0;
-$prefix_select = $tmm->get_prefix_dropdown($forum_id);
 //! End TMM]]></action>
 		</edit>
 		<edit>
@@ -176,10 +175,6 @@ if($mode == 'post')
 {
 	$prefix_cache = request_var('prefix_temp_cache', '');
 	
-	$template->assign_vars(array(
-		'PREFIX_SELECT'		=> $prefix_select,
-		'ON_NEW_POST'		=> true,
-	));	
 	if($prefix_add)
 	{
 		$prefix_cache .= $prefix_id . ',';
@@ -202,6 +197,8 @@ if($mode == 'post')
 	// Get list of applied prefixes
 	$prefix_cache_array = explode(',', $prefix_cache);
 	$prefixes = $tmm->load_topic_prefixes($topic_id, 'array', $prefix_cache_array);
+	$literal_prefixes = $tmm->load_topic_prefixes($topic_id, 'array', $prefix_cache_array, 'prefixes');
+	$prefix_select = $tmm->get_prefix_dropdown($forum_id, 'single', 0, $literal_prefixes);
 	$prefixed = '';
 	if(is_array($prefixes))
 	{
@@ -212,16 +209,14 @@ if($mode == 'post')
 	}
 	$prefixed = (empty($prefixed)) ? false : $prefixed;
 	$template->assign_vars(array(
+		'PREFIX_SELECT'		=> $prefix_select,
+		'ON_NEW_POST'		=> true,
 		'APPLIED_PREFIXES'	=> $prefixed,
 		'PREFIX_TEMP_CACHE'	=> $prefix_cache,
 	));
 }
 if($mode == 'edit' && ($post_data['topic_first_post_id'] == $post_id))
 {	
-	$template->assign_vars(array(
-		'PREFIX_SELECT'		=> $prefix_select,
-		'ON_EDIT_POST'		=> true,
-	));	
 	if($prefix_add)
 	{
 		$apply = $tmm->apply_prefix($prefix_id, $topic_id);
@@ -243,6 +238,8 @@ if($mode == 'edit' && ($post_data['topic_first_post_id'] == $post_id))
 	}
 	// Get list of applied prefixes
 	$prefixes = $tmm->load_topic_prefixes($topic_id, 'array');
+	$literal_prefixes = $tmm->load_topic_prefixes($topic_id, 'array', 'sql', 'prefixes');
+	$prefix_select = $tmm->get_prefix_dropdown($forum_id, 'single', 0, $literal_prefixes);
 	$prefixed = '';
 	if(!empty($prefixes))
 	{
@@ -252,8 +249,11 @@ if($mode == 'edit' && ($post_data['topic_first_post_id'] == $post_id))
 		}
 	}
 	$prefixed = (empty($prefixed)) ? false : $prefixed;
-	$template->assign_var('APPLIED_PREFIXES', $prefixed);
-	
+	$template->assign_vars(array(
+		'PREFIX_SELECT'		=> $prefix_select,
+		'ON_EDIT_POST'		=> true,
+		'APPLIED_PREFIXES'	=> $prefixed,
+	));	
 }
 $template->assign_var('TOPIC_PREFIX', $tmm->load_topic_prefixes($topic_id));
 //! End TMM]]></action>

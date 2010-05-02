@@ -350,7 +350,7 @@ class tmm
 				}
 				else
 				{
-					$prefix .= $this->parse_prefix_instance($row['prefix_instance_id']) . '&nbsp;';
+					$prefix .= ($method == 'prefixes') ? $this->parse_prefix($row['prefix_id']) : $this->parse_prefix_instance($row['prefix_instance_id']) . '&nbsp;';
 				}
 			}
 		}
@@ -598,10 +598,11 @@ class tmm
 		$forum_id		- (optional) ID of the forum to look in; if 0, pull from all prefixes
 		$type			- (optional) either single or multiple; type of select box
 		$prefix_ids		- (optional) prefixes to be preselected
+		$excluded_ids	- (optional) array of prefixes to not be displayed
 	Return
 		Returns nothing if no prefixes are available; else returns HTML code for select box
 	*/
-	function get_prefix_dropdown($forum_id = 0, $type = 'single', $prefix_ids = '')
+	function get_prefix_dropdown($forum_id = 0, $type = 'single', $prefix_ids = '', $excluded_ids = '')
 	{
 		global $user, $db, $phpbb_root_path, $phpEx;
 		// Check what group a user is in
@@ -636,23 +637,30 @@ class tmm
 		}
 		$prefixes = array_unique($prefixes);
 		$prefixes_options = '';
+		if(!is_array($excluded_ids))
+		{
+			$excluded_ids = explode(',', $excluded_ids);
+		}
 		foreach($prefixes AS $prefix)
 		{
-			$sql = 'SELECT prefix_name
-				FROM ' . TMM_PREFIXES_TABLE . '
-				WHERE prefix_id = ' . $prefix;
-			$result = $db->sql_query($sql);
-			$row = $db->sql_fetchrow($result);
-			$db->sql_freeresult($result);
-			if(is_array($prefix_ids))
+			if(!in_array($prefix, $excluded_ids))
 			{
-				$disabled = (in_array($prefix, $prefix_ids)) ? 'disabled="disabled"' : '';
+				$sql = 'SELECT prefix_name
+					FROM ' . TMM_PREFIXES_TABLE . '
+					WHERE prefix_id = ' . $prefix;
+				$result = $db->sql_query($sql);
+				$row = $db->sql_fetchrow($result);
+				$db->sql_freeresult($result);
+				if(is_array($prefix_ids))
+				{
+					$disabled = (in_array($prefix, $prefix_ids)) ? 'disabled="disabled"' : '';
+				}
+				else
+				{
+					$disabled = ($prefix == $prefix_ids) ? 'selected="selected"' : '';
+				}
+				$prefixes_options .= '<option value="' . $prefix . '"' . $disabled . '>' . stripslashes($row['prefix_name']) . '</option>';
 			}
-			else
-			{
-				$disabled = ($prefix == $prefix_ids) ? 'selected="selected"' : '';
-			}
-			$prefixes_options .= '<option value="' . $prefix . '"' . $disabled . '>' . stripslashes($row['prefix_name']) . '</option>';
 		}
 		$type = ($type == 'multiple') ? 'multiple="multiple"'  : '';
 		return (empty($prefixes_options)) ? '' : '<select name="prefix_dropdown"' . $type . '><option value="0" disabled="disabled" selected="selected">&nbsp;</option>' . $prefixes_options . '</select>';
@@ -961,7 +969,7 @@ class tmm
 	function load_tmm_install_info()
 	{
 		global $user;
-		$install_info = 'Topic Multi Moderation v%s &copy; 2010 <a href="http://phpbbdevelopers.net/" style="font-weight: bold;">phpBB Developers</a>';
-		$user->lang['TRANSLATION_INFO'] = $user->lang['TRANSLATION_INFO'] . (($user->lang['TRANSLATION_INFO'] != '') ? '<br />' : '') . sprintf($install_info, TMM_VERSION);
+		$install_info = '%s &copy; 2010 <a href="http://phpbbdevelopers.net/" style="font-weight: bold;">phpBB Developers</a>';
+		$user->lang['TRANSLATION_INFO'] = $user->lang['TRANSLATION_INFO'] . (($user->lang['TRANSLATION_INFO'] != '') ? '<br />' : '') . sprintf($install_info, TMM_VERSION_BIG);
 	}
 }
