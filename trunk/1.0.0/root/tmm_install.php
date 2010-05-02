@@ -6,7 +6,7 @@
 *  phpBB Topic Multi Moderation -- TMM Install File
 *-------------------------------------------------------------------
 *	Script info:
-* Version:		1.0.0 - "TMM"
+* Version:		1.0.0 - "Triton"
 * Copyright:	(C) 2010 | David
 * License:		http://opensource.org/licenses/gpl-2.0.php | GNU Public License v2
 * Package:		phpBB3
