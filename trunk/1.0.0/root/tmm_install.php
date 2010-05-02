@@ -6,7 +6,7 @@
 *  phpBB Topic Multi Moderation -- TMM Install File
 *-------------------------------------------------------------------
 *	Script info:
-* Version:		1.0.0 - "Triton"
+* Version:		0.2.1 - "Triton"
 * Copyright:	(C) 2010 | David
 * License:		http://opensource.org/licenses/gpl-2.0.php | GNU Public License v2
 * Package:		phpBB3
@@ -97,6 +97,9 @@ $versions = array(
 			),
 		),
 	),*/
+	'0.2.1' => array(
+	 /* No SQL changes */
+	),
 	'0.2.0' => array(
 		'module_add' => array(
 			array('acp', 'ACP_CAT_POSTING', 'ACP_TMM'),
