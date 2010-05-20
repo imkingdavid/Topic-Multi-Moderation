@@ -188,6 +188,9 @@ class acp_tmm
 			}
 			elseif($action == 'delete')
 			{
+				$delete = $tmm->delete_tmm($tmm_id);
+				$message = (($delete) ? $user->lang['PREFIX_DELETED'] : $user->lang['PREFIX_DELETE_ERROR']) . adm_back_link($this->u_action);
+				trigger_error($message);
 			}
 			else
 			{					
@@ -271,8 +274,8 @@ class acp_tmm
 					$row = $db->sql_fetchrow($result);
 					$db->sql_freeresult($result);
 					$template->assign_vars(array(
-						'PREFIX_NAME'	=> $row['prefix_name'],
-						'PREFIX_TITLE' 	=> $row['prefix_title'],
+						'PREFIX_NAME'	=> utf8_normalize_nfc($row['prefix_name']),
+						'PREFIX_TITLE' 	=> utf8_normalize_nfc($row['prefix_title']),
 						'PREFIX_COLOR'	=> $row['prefix_color_hex'],
 						'PREFIX_USERS'	=> $row['prefix_users'],
 					));
@@ -294,14 +297,22 @@ class acp_tmm
 					$this->page_title = 'ACP_TMM_ADD_EDIT';
 					$forum_id = request_var('forum_id', array('' => 0));
 					$group_id = request_var('group_id', array('' => 0));
-					$prefix_users = utf8_normalize_nfc(request_var('user_ids', ''));
+					$prefix_users = request_var('user_ids', '');
 					
 					$prefix_forums = implode(',', $forum_id);
 					$prefix_groups = implode(',', $group_id);
 					$prefix_title = utf8_normalize_nfc(request_var('prefix_title', ''));
 					$prefix_name = utf8_normalize_nfc(request_var('prefix_name', ''));
-					$prefix_color_hex = utf8_normalize_nfc(request_var('prefix_color_hex', ''));
-					$tmm->create_prefix($action, $prefix_name, $prefix_title, $prefix_color_hex, $prefix_forums, $prefix_groups, $prefix_users, $prefix_id, $this->u_action);
+					$prefix_color_hex = request_var('prefix_color_hex', '');
+					$data = array(
+						'prefix_title'		=> $prefix_title,
+						'prefix_name'		=> $prefix_name,
+						'prefix_color_hex'	=> $prefix_color_hex,
+						'prefix_forums'		=> $prefix_forums,
+						'prefix_groups'		=> $prefix_groups,
+						'prefix_users'		=> $prefix_users,
+					);
+					$tmm->submit_prefix($action, $data, $prefix_id, $this->u_action);
 				}
 				if($action == 'add')
 				{
@@ -322,10 +333,9 @@ class acp_tmm
 			}
 			elseif($action == 'delete')
 			{
-				$template->assign_vars(array(
-					'U_ACTION' 	=> $this->u_action,
-				));
-				$tmm->delete_prefix($prefix_id);
+				$delete = $tmm->delete_prefix($prefix_id);
+				$message = (($delete) ? $user->lang['PREFIX_DELETED'] : $user->lang['PREFIX_DELETE_ERROR']) . adm_back_link($this->u_action);
+				trigger_error($message);
 			}
 			else
 			{
@@ -336,8 +346,8 @@ class acp_tmm
 				while ($row = $db->sql_fetchrow($result))
 				{
 					$template->assign_block_vars('prefix_row', array(
-						'PREFIX_NAME'		=> $row['prefix_name'],
-						'PREFIX_TITLE'		=> $row['prefix_title'],
+						'PREFIX_NAME'		=> utf8_normalize_nfc($row['prefix_name']),
+						'PREFIX_TITLE'		=> utf8_normalize_nfc($row['prefix_title']),
 						'PREFIX_COLOR'		=> $row['prefix_color_hex'],
 						'U_EDIT'			=> $this->u_action . '&amp;action=edit&amp;id=' . $row['prefix_id'],
 						'U_DELETE'			=> $this->u_action . '&amp;action=delete&amp;id=' . $row['prefix_id'],

@@ -77,7 +77,8 @@ class tmm_admin extends tmm
 	}
 	
 	//$mode = 'add' || 'update'
-	function create_prefix($mode = 'add', $prefix_name, $prefix_title, $prefix_color_hex = '', $prefix_forums = '', $prefix_groups = '', $prefix_users = '', $prefix_id = 0, $u_action = '')
+//	function create_prefix($mode = 'add', $prefix_name, $prefix_title, $prefix_color_hex = '', $prefix_forums = '', $prefix_groups = '', $prefix_users = '', $prefix_id = 0, $u_action = '')
+	function submit_prefix($mode = 'add', $prefix_options = array(), $prefix_id = 0, $u_action = '')
 	{
 		global $db, $user, $tmm;
 		$error = '';
@@ -85,17 +86,10 @@ class tmm_admin extends tmm
 		{
 			return false;
 		}
-		$data = array(
-			'prefix_title'		=> $prefix_title,
-			'prefix_name'		=> $prefix_name,
-			'prefix_color_hex'	=> $prefix_color_hex,
-			'prefix_forums'		=> $prefix_forums,
-			'prefix_groups'		=> $prefix_groups,
-			'prefix_users'		=> $prefix_users,
-		);
-		foreach($data AS $key => $value)
+		$data = array();
+		foreach($prefix_options AS $key => $value)
 		{
-			$data[$key] = $db->sql_escape($value);
+			$data[$key] = $value;
 		}
 		
 		if($mode == 'add')
@@ -191,6 +185,13 @@ class tmm_admin extends tmm
 		$sql = 'DELETE
 			FROM ' . TMM_PREFIX_INSTANCES_TABLE . '
 			WHERE prefix_id = ' . $prefix_id;
+		$result = $db->sql_query($sql);
+		if(!$result)
+		{
+			return false;
+		}
+		$db->sql_freeresult($result);
+		return true;
 	}
 	
 	function delete_tmm($tmm_id)
@@ -214,10 +215,8 @@ class tmm_admin extends tmm
 		{
 			return false;
 		}
-		else
-		{
-			return true;
-		}
+		$db->sql_freeresult($result);
+		return true;
 	}
 	
 
