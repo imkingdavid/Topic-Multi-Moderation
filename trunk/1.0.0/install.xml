@@ -31,6 +31,14 @@
 	</installation>
 	<history>
 		<entry>
+			<date>2010-05-08</date>
+			<rev-version>0.2.2</rev-version>
+			<changelog lang="en">
+				<change>[new] Optional integration with NV Last Topic Titles MOD</change>
+				<change></change>
+			</changelog>
+		</entry>
+		<entry>
 			<date>2010-05-02</date>
 			<rev-version>0.2.1</rev-version>
 			<changelog lang="en">

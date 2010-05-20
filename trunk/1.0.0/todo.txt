@@ -2,3 +2,5 @@ To Do List for 0.3.0:
 -implement prefixes in search
 --allow searching with multiple prefixes
 ---behavior in that case is to search for topics with any or both prefix, but not with only one or the other.
+-integrate with NV Last Topic Titles
+-display prefixes in other locations (e.g. MCP)
