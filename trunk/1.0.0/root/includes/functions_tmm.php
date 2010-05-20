@@ -369,7 +369,7 @@ class tmm
 		$prefix_string = '';
 		foreach($prefix_array AS $prefix)
 		{
-			$prefix_string .= self::parse_prefix($prefix);
+			$prefix_string .= (!empty($prefix)) ? self::parse_prefix($prefix) : '';
 		}
 		return $prefix_string;
 	}
@@ -534,14 +534,10 @@ class tmm
 		$color = $row['prefix_color_hex'];
 		$color = ($color == '') ? '000000' : $color;
 		$prefix = '<span style="font-weight:bold;color:#' . $color . ';">' . $prefix . '</span>';
-
-		$username = $row['username'];
-		$date = $row['applied_date'];
-		$date = date('m/d/Y', $date);
-		
+	
 		// Find and replace all occurances of the tokens: {USERNAME} and {DATE}
-		$prefix = str_replace('{USERNAME}', $username, $prefix);
-		$prefix = str_replace('{DATE}', $date, $prefix);
+		$prefix = str_replace('{USERNAME}', $row['username'], $prefix);
+		$prefix = str_replace('{DATE}', date('m/d/Y', $row['applied_date']), $prefix);
 		// return the whole prefix string
 		return $prefix;
 	}
@@ -556,27 +552,15 @@ class tmm
 		{
 			return false;
 		}
-		$sql = 'SELECT *
-			FROM ' . TMM_PREFIXES_TABLE . '
-			WHERE prefix_id = ' . $prefix_id;
-		$result = $db->sql_query($sql);
-		$row = $db->sql_fetchrow($result);
-		$db->sql_freeresult($result);
-		if(!$row)
-		{
-			return false;
-		}
+		$row = self::load_prefix($prefix_id);
 		$prefix = utf8_normalize_nfc($row['prefix_title']);
 		$color = $row['prefix_color_hex'];
 		$color = ($color == '') ? '000000' : $color;
 		$prefix = '<span style="font-weight:bold;color:#' . $color . ';">' . $prefix . '</span>';
 
-		$username = $user->data['username'];
-		$date = date('m/d/Y');
-		
 		// Find and replace all occurances of the tokens: {USERNAME} and {DATE}
-		$prefix = str_replace('{USERNAME}', $username, $prefix);
-		$prefix = str_replace('{DATE}', $date, $prefix);
+		$prefix = str_replace('{USERNAME}', $user->data['username'], $prefix);
+		$prefix = str_replace('{DATE}', date('m/d/Y'), $prefix);
 		// return the whole prefix string
 		return $prefix;
 	}
