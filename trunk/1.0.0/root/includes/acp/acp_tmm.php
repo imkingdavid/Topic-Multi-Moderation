@@ -32,7 +32,6 @@ class acp_tmm
       global $db, $user, $auth, $template;
       global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
 	  global $table_prefix;
-	  include($phpbb_root_path . 'includes/tmm_constants.' . $phpEx);
 	  include($phpbb_root_path . 'includes/functions_tmm.' . $phpEx);
 	  include($phpbb_root_path . 'includes/functions_tmm_admin.' . $phpEx);
 	  $tmm = new tmm_admin; // Has methods from tmm and tmm_admin because tmm_admin extends tmm

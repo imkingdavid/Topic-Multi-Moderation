@@ -37,7 +37,6 @@ class mcp_tmm
 
 		$user->add_lang('mods/tmm');
 		include($phpbb_root_path . 'includes/functions_tmm.' . $phpEx);
-		include($phpbb_root_path . 'includes/tmm_constants.'. $phpEx);
 		$tmm = new tmm;
 
 		$this->tpl_name = 'mcp_tmm';
