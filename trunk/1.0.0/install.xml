@@ -22,7 +22,7 @@
 		</author>
 	</author-group>
 
-	<mod-version>0.2.1</mod-version>
+	<mod-version>1.0.0</mod-version>
 
 	<installation>
 		<level>intermediate</level>
@@ -31,11 +31,12 @@
 	</installation>
 	<history>
 		<entry>
-			<date>2010-05-19</date>
+			<date>2010-05-20</date>
 			<rev-version>1.0.0rc1</rev-version>
 			<changelog lang="en">
-				<change>[new] Optional integration with NV Advanced Last Topic Titles MOD by nickvergessen</change>
+				<change>[change] Uses hooks and static methods to reduce file edits</change>
 				<change>[add] Topic Prefixes show up in more locations, such as MCP and UCP</change>
+				<change>[new] Optional integration with NV Advanced Last Topic Titles MOD by nickvergessen</change>
 			</changelog>
 		</entry>
 		<entry>

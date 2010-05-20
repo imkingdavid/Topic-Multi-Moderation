@@ -1,3 +1,2 @@
 To Do List for 1.0.0rc1:
 -integrate with NV Last Topic Titles
--display prefixes in other locations (e.g. MCP)
