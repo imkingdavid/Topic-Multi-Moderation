@@ -32,16 +32,12 @@ class acp_tmm
       global $db, $user, $auth, $template;
       global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
 	  global $table_prefix;
-	  include($phpbb_root_path . 'includes/functions_tmm.' . $phpEx);
-	  include($phpbb_root_path . 'includes/functions_tmm_admin.' . $phpEx);
-	  $tmm = new tmm_admin; // Has methods from tmm and tmm_admin because tmm_admin extends tmm
-      //! Load our installation information...
-	  $tmm->load_tmm_install_info();
+	  tmm_admin::load_tmm_install_info();
 	
 	  switch($mode)
       {
 	      case 'index':
-			$tmm->check_version();
+			tmm_admin::check_version();
 			
             $this->page_title = 'ACP_TMM';
             $this->tpl_name = 'acp_tmm';
@@ -68,10 +64,10 @@ class acp_tmm
 						'tmm_title' => utf8_normalize_nfc(request_var('tmm_title', '', true)),
 					);
 					
-					$prefix_select = $tmm->get_prefix_select(0);
+					$prefix_select = tmm_admin::get_prefix_select(0);
 					$parents_list = make_forum_select(0, false, false, false, false);
 					$thisaction = ($action == 'add') ? $action : $action . '&amp;id=' . $tmm_id;
-					$group_options = $tmm->get_group_select(0);
+					$group_options = tmm_admin::get_group_select(0);
 					$template->assign_vars(array(
 						'S_EDIT'		=> true,
 						'TMM_TITLE'		=> request_var('title', '', true),
@@ -123,9 +119,9 @@ class acp_tmm
 					$forum_list = make_forum_select($forum_ids, false, false, false, false);
 					$group_ids = explode(",", $row['tmm_groups']);
 					//Make a list of the groups for the select box
-					$group_options = $tmm->get_group_select($group_ids);
+					$group_options = tmm_admin::get_group_select($group_ids);
 					$prefix_ids = explode(",", $row['tmm_prefix_id']);
-					$prefix_options = $tmm->get_prefix_select($prefix_ids);
+					$prefix_options = tmm_admin::get_prefix_select($prefix_ids);
 
 					$template->assign_vars(array(
 						'U_ACTION'	=> $this->u_action . '&amp;action=edit',
@@ -183,12 +179,12 @@ class acp_tmm
 					$type = ($action == 'add') ? 'new' : 'update';
 					$u_action = $this->u_action;
 					$tmm_id_post = request_var('tmm_id', 0);
-					$tmm->submit_tmm($type, $sql_ary, $tmm_id_post, $u_action);
+					tmm_admin::submit_tmm($type, $sql_ary, $tmm_id_post, $u_action);
 				}
 			}
 			elseif($action == 'delete')
 			{
-				$delete = $tmm->delete_tmm($tmm_id);
+				$delete = tmm_admin::delete_tmm($tmm_id);
 				$message = (($delete) ? $user->lang['PREFIX_DELETED'] : $user->lang['PREFIX_DELETE_ERROR']) . adm_back_link($this->u_action);
 				trigger_error($message);
 			}
@@ -233,7 +229,7 @@ class acp_tmm
         break;
 
 		case 'prefixes':
-			$tmm->check_version();
+			tmm_admin::check_version();
 		
 			$this->page_title = 'ACP_PREFIXES_MANAGE';
 			$this->tpl_name = 'acp_prefixes';
@@ -258,7 +254,7 @@ class acp_tmm
 					$data = array(
 						'prefix_name' => utf8_normalize_nfc(request_var('prefix_name', '', true)),
 					);
-					$group_options = $tmm->get_group_select(0);
+					$group_options = tmm_admin::get_group_select(0);
 					$template->assign_vars(array(
 						'PREFIX_NAME'	=> $data['prefix_name'],
 						'GROUP_SELECT'	=> $group_options,
@@ -283,7 +279,7 @@ class acp_tmm
 					$forum_list = make_forum_select($forum_ids, false, false, false, false);
 					$group_ids = explode(",", $row['prefix_groups']);
 					//Make a list of the groups for the select box
-					$group_options = $tmm->get_group_select($group_ids);
+					$group_options = tmm_admin::get_group_select($group_ids);
 
 					$template->assign_vars(array(
 						'U_ACTION'	=> $this->u_action . '&amp;action=edit',
@@ -312,7 +308,7 @@ class acp_tmm
 						'prefix_groups'		=> $prefix_groups,
 						'prefix_users'		=> $prefix_users,
 					);
-					$tmm->submit_prefix($action, $data, $prefix_id, $this->u_action);
+					tmm_admin::submit_prefix($action, $data, $prefix_id, $this->u_action);
 				}
 				if($action == 'add')
 				{
@@ -333,7 +329,7 @@ class acp_tmm
 			}
 			elseif($action == 'delete')
 			{
-				$delete = $tmm->delete_prefix($prefix_id);
+				$delete = tmm_admin::delete_prefix($prefix_id);
 				$message = (($delete) ? $user->lang['PREFIX_DELETED'] : $user->lang['PREFIX_DELETE_ERROR']) . adm_back_link($this->u_action);
 				trigger_error($message);
 			}

@@ -166,11 +166,7 @@ if($tmm_id == 0)
 		<edit>
 			<find><![CDATA[$error = $post_data = array();
 $current_time = time();]]></find>
-			<action type="after-add"><![CDATA[
-//! Begin TMM
-include($phpbb_root_path . 'includes/functions_tmm.' . $phpEx);
-$tmm = new tmm;
-$user->add_lang('mods/tmm');
+			<action type="after-add"><![CDATA[//! Begin TMM
 $prefix_id	= request_var('prefix_dropdown', 0);
 $prefix_instance_id = request_var('prefix', array(0));
 $prefix_add = (isset($_POST['prefix_add'])) ? 1 : 0;
@@ -184,8 +180,7 @@ if ($load && ($mode == 'reply' || $mode == 'quote' || $mode == 'post') && $post_
 {
 	load_drafts($topic_id, $forum_id);
 }]]></find>
-		<action type="after-add"><![CDATA[
-//! Begin TMM
+		<action type="after-add"><![CDATA[//! Begin TMM
 if($mode == 'post')
 {
 	$prefix_cache = request_var('prefix_temp_cache', '');
@@ -211,15 +206,15 @@ if($mode == 'post')
 	}
 	// Get list of applied prefixes
 	$prefix_cache_array = explode(',', $prefix_cache);
-	$prefixes = $tmm->load_topic_prefixes($topic_id, 'array', $prefix_cache_array);
-	$literal_prefixes = $tmm->load_topic_prefixes($topic_id, 'array', $prefix_cache_array, 'prefixes');
-	$prefix_select = $tmm->get_prefix_dropdown($forum_id, 'single', 0, $literal_prefixes);
+	$prefixes = tmm::load_topic_prefixes($topic_id, 'array', $prefix_cache_array);
+	$literal_prefixes = tmm::load_topic_prefixes($topic_id, 'array', $prefix_cache_array, 'prefixes');
+	$prefix_select = tmm::get_prefix_dropdown($forum_id, 'single', 0, $literal_prefixes);
 	$prefixed = '';
 	if(is_array($prefixes))
 	{
 		foreach($prefixes AS $prefix)
 		{
-			$prefixed .= (!empty($prefix)) ? $tmm->parse_prefix($prefix) . ' <input type="checkbox" name="prefix[]" value="' . $prefix . '" /><br />' : '';
+			$prefixed .= (!empty($prefix)) ? tmm::parse_prefix($prefix) . ' <input type="checkbox" name="prefix[]" value="' . $prefix . '" /><br />' : '';
 		}
 	}
 	$prefixed = (empty($prefixed)) ? false : $prefixed;
@@ -234,33 +229,33 @@ if($mode == 'edit' && ($post_data['topic_first_post_id'] == $post_id))
 {	
 	if($prefix_add)
 	{
-		$apply = $tmm->apply_prefix($prefix_id, $topic_id);
+		$apply = tmm::apply_prefix($prefix_id, $topic_id);
 	}
 	elseif($prefix_remove)
 	{
 		foreach($prefix_instance_id AS $instance)
 		{
-			$remove = $tmm->remove_topic_prefix($instance, $topic_id);
+			$remove = tmm::remove_topic_prefix($instance, $topic_id);
 		}
 	}
 	elseif($prefix_clear)
 	{
-		$remove_all = $tmm->remove_topic_prefixes($topic_id);
+		$remove_all = tmm::remove_topic_prefixes($topic_id);
 	}
 	else
 	{
 		//Nothing.
 	}
 	// Get list of applied prefixes
-	$prefixes = $tmm->load_topic_prefixes($topic_id, 'array');
-	$literal_prefixes = $tmm->load_topic_prefixes($topic_id, 'array', 'sql', 'prefixes');
-	$prefix_select = $tmm->get_prefix_dropdown($forum_id, 'single', 0, $literal_prefixes);
+	$prefixes = tmm::load_topic_prefixes($topic_id, 'array');
+	$literal_prefixes = tmm::load_topic_prefixes($topic_id, 'array', 'sql', 'prefixes');
+	$prefix_select = tmm::get_prefix_dropdown($forum_id, 'single', 0, $literal_prefixes);
 	$prefixed = '';
 	if(!empty($prefixes))
 	{
 		foreach($prefixes AS $prefix)
 		{
-			$prefixed .= $tmm->parse_prefix_instance($prefix) . ' <input type="checkbox" name="prefix[]" value="' . $prefix . '" /><br />';
+			$prefixed .= tmm::parse_prefix_instance($prefix) . ' <input type="checkbox" name="prefix[]" value="' . $prefix . '" /><br />';
 		}
 	}
 	$prefixed = (empty($prefixed)) ? false : $prefixed;
@@ -270,63 +265,37 @@ if($mode == 'edit' && ($post_data['topic_first_post_id'] == $post_id))
 		'APPLIED_PREFIXES'	=> $prefixed,
 	));	
 }
-$template->assign_var('TOPIC_PREFIX', $tmm->load_topic_prefixes($topic_id));
+$template->assign_var('TOPIC_PREFIX', tmm::load_topic_prefixes($topic_id));
 //! End TMM]]></action>
 		</edit>
 		<edit>
 			<find><![CDATA[$redirect_url = submit_post($mode, $post_data['post_subject'], $post_data['username'], $post_data['topic_type'], $poll, $data, $update_message, ($update_message || $update_subject) ? true : false);]]></find>
-			<action type="after-add"><![CDATA[//! Begin TMM
-			if($mode == 'post')
+			<action type="after-add"><![CDATA[			//! Begin TMM
+			if($mode == 'post' && !empty($prefixes) && is_array($prefixes))
 			{
-				if(is_array($prefixes))
+				foreach($prefixes AS $prefix)
 				{
-					foreach($prefixes AS $prefix)
-					{
-						$redir_url_split = explode('t=', $redirect_url);
-						$topic_id = $redir_url_split[1];
-						$tmm->apply_prefix($prefix, $topic_id);
-					}
+					$redir_url_split = explode('t=', $redirect_url);
+					tmm::apply_prefix($prefix, $redir_url_split[1]); //$redir_url_split[1] contains the topic ID
 				}
 			}
 			//! End TMM]]></action>
 		</edit>
 	</open>
 	<open src="viewforum.php">
-		<edit>
-			<find><![CDATA[// Start session
-$user->session_begin();
-$auth->acl($user->data);]]></find>
-			<action type="after-add"><![CDATA[
-//! Begin TMM
-include($phpbb_root_path . 'includes/functions_tmm.' . $phpEx);
-$tmm = new tmm;
-$user->add_lang('mods/tmm');
-//! End TMM]]></action>
-		</edit>
 		<edit>	
 			<find><![CDATA['TOPIC_TYPE'		=> $topic_type,]]></find>
 			<action type="after-add"><![CDATA[			//! Begin TMM
-			'TOPIC_PREFIX'		=> $tmm->load_topic_prefixes($row['topic_id']),
+			'TOPIC_PREFIX'		=> tmm::load_topic_prefixes($row['topic_id']),
 			//! End TMM]]></action>
 		</edit>
 	</open>
 	<open src="viewtopic.php">
 		<edit>
-			<find><![CDATA[// Start session management
-$user->session_begin();
-$auth->acl($user->data);]]></find>
-			<action type="after-add"><![CDATA[
-//! Begin TMM
-include($phpbb_root_path . 'includes/functions_tmm.' . $phpEx);
-$tmm = new tmm;
-$user->add_lang('mods/tmm');
-//! End TMM]]></action>
-		</edit>
-		<edit>
 			<find><![CDATA[	'TOPIC_POSTER'	=> $topic_data['topic_poster'],]]></find>
 			<action type="after-add"><![CDATA[//! Begin TMM
-	'TOPIC_PREFIX'	=> $tmm->load_topic_prefixes($topic_data['topic_id']),
-	'TMM_SELECT'	=> $tmm->get_tmm_dropdown($topic_data['forum_id']),
+	'TOPIC_PREFIX'	=> tmm::load_topic_prefixes($topic_data['topic_id']),
+	'TMM_SELECT'	=> tmm::get_tmm_dropdown($topic_data['forum_id']),
 	'S_TMM_ACTION' 	=> append_sid("{$phpbb_root_path}mcp.$phpEx", "i=tmm&amp;f=$forum_id&amp;t=$topic_id&amp;start=$start&amp;multimod=1&amp;redirect=" . urlencode(str_replace('&amp;', '&', $viewtopic_url)), true, $user->session_id),
 	//! End TMM]]></action>
 		</edit>
@@ -339,9 +308,7 @@ $user->add_lang('mods/tmm');
 		<!-- INCLUDE {CAPTCHA_TEMPLATE} -->
 	<!-- ENDIF -->
 	<!-- ENDIF -->]]></find>
-			<action type="after-add"><![CDATA[
-    
-    <!-- INCLUDE tmm_posting_body.html -->]]></action>
+			<action type="after-add"><![CDATA[<!-- INCLUDE tmm_posting_body.html -->]]></action>
 		</edit>
 	</open>
 	
@@ -383,13 +350,56 @@ $user->add_lang('mods/tmm');
 <!-- ENDIF -->]]></action>
 		</edit>
 	</open>
+	<open src="includes/mcp/mcp_topic.php">
+		<edit>
+			<find><![CDATA[$topic_id = request_var('t', 0);
+	$topic_info = get_topic_data(array($topic_id), false, true);]]>></find>
+			<action type="after-add"><![CDATA[	//! Begin TMM
+	$template->assign_var('TOPIC_PREFIX', tmm::load_topic_prefixes($topic_id));
+	//! End TMM]]></action>
+		</edit>
+	</open>
+	<open src="styles/prosilver/template/mcp_topic.html">
+		<edit>
+			<find><![CDATA[<h2><a href="{U_VIEW_TOPIC}">{L_TOPIC}: {TOPIC_TITLE}</a></h2>]]>></find>
+			<action type="replace-with"><![CDATA[<h2>{TOPIC_PREFIX}<a href="{U_VIEW_TOPIC}">{L_TOPIC}: {TOPIC_TITLE}</a></h2>]]></action>
+		</edit>
+	</open>
+	<open src="includes/mcp/mcp_forum.php">
+		<edit>
+			<find><![CDATA[$template->assign_block_vars('topicrow', $topic_row);]]>></find>
+			<action type="before-add"><![CDATA[//! Begin TMM
+			$topic_row = array_merge($topic_row, array(
+			'TOPIC_PREFIX'	=> tmm::load_topic_prefixes($topic_id),
+		));
+		//! End TMM]]></action>
+		</edit>
+	</open>
+	<open src="styles/prosilver/template/mcp_forum.html">
+		<edit>
+			<find><![CDATA[<a href="{topicrow.U_VIEW_TOPIC}" class="topictitle">{topicrow.TOPIC_TITLE}</a>]]>></find>
+			<action type="replace-with"><![CDATA[{topicrow.TOPIC_PREFIX}<a href="{topicrow.U_VIEW_TOPIC}" class="topictitle">{topicrow.TOPIC_TITLE}</a>]]></action>
+		</edit>
+	</open>
+	<open src="includes/mcp/mcp_queue.php">
+		<edit>
+			<find><![CDATA[$forum_list_approve = get_forum_list('m_approve', false, true);
+				$forum_list_read = array_flip(get_forum_list('f_read', true, true)); // Flipped so we can isset() the forum IDs]]>></find>
+			<action type="before-add"><![CDATA[//! Begin TMM
+				$template->assign_var('TOPIC_PREFIX', tmm::load_topic_prefixes($topic_id));
+				//! End TMM]]></action>
+		</edit>
+	</open>
+	<open src="styles/prosilver/template/mcp_queue.html">
+		<edit>
+			<find><![CDATA[<!-- IF S_TOPICS --><br /><!-- ELSE -->{L_TOPIC}: <a href="{postrow.U_TOPIC}">{postrow.TOPIC_TITLE}</a> <br /><!-- ENDIF -->]]>></find>
+			<action type="replace-with"><![CDATA[<!-- IF S_TOPICS --><br /><!-- ELSE -->{L_TOPIC}: {TOPIC_PREFIX} <a href="{postrow.U_TOPIC}">{postrow.TOPIC_TITLE}</a> <br /><!-- ENDIF -->]]></action>
+		</edit>
+	</open>
 	<php-installer>tmm_install.php</php-installer>
-	<diy-instructions lang="en"><![CDATA[
-	1) Make sure you have copied all files from root/*.* to the {phpBB root directory}/*.*, and that all file edits have been successfully performed. *If using AutoMOD, these should all be done instantly, but it's still always good to double check.!
-	2) Navigate your browser to {phpBB root directory}/tmm_install.php - Once that runs, you are done. You may now remove that file and go to ACP, Posting and see two new modules. Enjoy! *Note that this file can also be used to uninstall, should you run into trouble. Although realize that this does not undo file edits, so you will need to use AutoMOD for that. In later versions, you will also be able to update using this file (and use AutoMOD for file edit updates).
-	3)If you encounter any issues with the MOD, you are welcome to contact me at imkingdavid@gmail.com or go the the development topic at phpBB.com and let me know so that I can fix them!.
+	<diy-instructions lang="en"><![CDATA[Make sure all files have been uploaded to the proper locations. Run the SQL install file, tmm_install.php, in your web browser and delete the file upon script completion. Purge your forum cache.
 	
-	Development of MODs occurs during my free time. While I enjoy coding, I have little incentive to commit a lot of time to it. However, if I recieve donations I am more willing to do more work to compensate. If you feel willing to donate, please follow the instructions at the test board (http://www.phpbbdevelopers.net/). Thanks!]]>
+	If you appreciate my work and would like to donate to me in order to support the development of this and other MODs, please do so by visiting http://www.phpbbdevelopers.net/ and clicking Donate in the navigation menu. All amounts are appreciated, and no donation is required for use of this MOD.]]>
 	</diy-instructions>
 </action-group>
 </mod>

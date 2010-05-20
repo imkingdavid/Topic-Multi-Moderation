@@ -28,7 +28,7 @@ class tmm_admin extends tmm
      *
      * @return string | false Version info on success, false on failure.
 	 */
-	function obtain_latest_mod_version_info()
+	public static function obtain_latest_mod_version_info()
 	{
 		$errstr = '';
 		$errno = 0;
@@ -48,10 +48,10 @@ class tmm_admin extends tmm
 	*	Check the latest version against the current version
 	*
 	*/
-	function check_version()
+	public static function check_version()
 	{
 		global $user, $template;
-		$info = $this->obtain_latest_mod_version_info();
+		$info = self::obtain_latest_mod_version_info();
 		$info = explode("\n", $info);
 		$modversion = trim($info[0]);
 		if(!$modversion)
@@ -77,8 +77,7 @@ class tmm_admin extends tmm
 	}
 	
 	//$mode = 'add' || 'update'
-//	function create_prefix($mode = 'add', $prefix_name, $prefix_title, $prefix_color_hex = '', $prefix_forums = '', $prefix_groups = '', $prefix_users = '', $prefix_id = 0, $u_action = '')
-	function submit_prefix($mode = 'add', $prefix_options = array(), $prefix_id = 0, $u_action = '')
+	public static function submit_prefix($mode = 'add', $prefix_options = array(), $prefix_id = 0, $u_action = '')
 	{
 		global $db, $user, $tmm;
 		$error = '';
@@ -126,7 +125,7 @@ class tmm_admin extends tmm
 	}
 	
 	//$mode = ('new' || 'update')
-	function submit_tmm($mode = 'new', $tmm_options = array(), $tmm_id = 0, $u_action = '')
+	public static function submit_tmm($mode = 'new', $tmm_options = array(), $tmm_id = 0, $u_action = '')
 	{
 		global $db, $user;
 		foreach($tmm_options AS $option => $value)
@@ -158,7 +157,7 @@ class tmm_admin extends tmm
 		trigger_error($message);
 	}
 	
-	function delete_prefix($prefix_id)
+	public static function delete_prefix($prefix_id)
 	{
 		global $db;
 		$sql = 'SELECT *
@@ -194,7 +193,7 @@ class tmm_admin extends tmm
 		return true;
 	}
 	
-	function delete_tmm($tmm_id)
+	public static function delete_tmm($tmm_id)
 	{
 		global $db;
 		$sql = 'SELECT *
@@ -220,7 +219,7 @@ class tmm_admin extends tmm
 	}
 	
 
-	function get_group_select($group_id)
+	public static function get_group_select($group_id)
 	{
 		global $db, $config, $user;
 
@@ -255,7 +254,7 @@ class tmm_admin extends tmm
 		return $s_group_options;
 	}
 	
-	function get_prefix_select($prefix_id)
+	public static function get_prefix_select($prefix_id)
 	{
 		global $db, $config, $user;
 

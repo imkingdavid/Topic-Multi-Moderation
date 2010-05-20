@@ -1,0 +1,40 @@
+<?php
+/**
+*
+* @author David King (imkingdavid@gmail.com) http://www.phpbbdevelopers.net
+*
+* @package phpBB3
+* @copyright (c) 2010 David King
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+*
+*/
+
+/**
+* @ignore
+*/
+if (!defined('IN_PHPBB'))
+{
+	exit;
+}
+
+// Hooks allow you to include stuff without actually editing the main files as much
+function tmm_open()
+{
+	global $phpbb_root_path, $phpEx, $user, $table_prefix;
+
+	include($phpbb_root_path . 'includes/tmm_constants.' . $phpEx);
+	include($phpbb_root_path . 'includes/functions_tmm.' . $phpEx);
+	include($phpbb_root_path . 'includes/functions_tmm_admin.' . $phpEx);
+	// Check what group a user is in
+	if ( !function_exists('group_memberships') )
+	{
+		include($phpbb_root_path . 'includes/functions_user.'.$phpEx);
+	}
+	if(!function_exists('move_topics'))
+	{
+		include($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
+	}
+	$user->add_lang('mods/tmm');
+}
+
+$phpbb_hook->register('phpbb_user_session_handler', 'tmm_open');

@@ -21,24 +21,8 @@ if(!defined('IN_PHPBB'))
 
 class tmm
 {
-	var $error = array(); // will hold the error messages if any
-	var $actions = array(); // an array of all the actions performed.
-	
-	/* constructor */
-	function __construct()
-	{
-		global $phpbb_root_path, $phpEx, $table_prefix;
-		include($phpbb_root_path . 'includes/tmm_constants.' . $phpEx);
-		// Check what group a user is in
-		if ( !function_exists('group_memberships') )
-		{
-			include($phpbb_root_path . 'includes/functions_user.'.$phpEx);
-		}
-		if(!function_exists('move_topics'))
-		{
-			include($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
-		}
-	}
+	public static $error = array(); // will hold the error messages if any
+	public static $actions = array(); // an array of all the actions performed.
 	
 	/*
 	Applies the specified multi-mod to the specified topic
@@ -48,7 +32,7 @@ class tmm
 		int $topic_id	- ID of the topic
 		int $forum_id	- ID of the forum
 	*/
-	function apply_tmm($mod_id, $topic_id, $forum_id)
+	public static function apply_tmm($mod_id, $topic_id, $forum_id)
 	{
 		global $db, $template, $user, $phpbb_root_path, $phpEx;
 		
@@ -80,10 +64,10 @@ class tmm
 		if($row['tmm_autoreply_bool'] == 1)
 		{
 			$poster = ($row['tmm_autoreply_poster'] != 0) ? $row['tmm_autoreply_poster'] : 0;
-			$auto_reply = $this->auto_reply($row['tmm_autoreply_text'], $topic_id, $forum_id, $poster, true, true);
+			$auto_reply = self::auto_reply($row['tmm_autoreply_text'], $topic_id, $forum_id, $poster, true, true);
 			if(!$auto_reply)
 			{
-				$this->error[] = $user->lang['AUTOREPLY_ERROR'];
+				self::$error[] = $user->lang['AUTOREPLY_ERROR'];
 			}
 		}
 		if($row['tmm_prefix_id'] != '')
@@ -93,7 +77,7 @@ class tmm
 			$fails = 0;
 			foreach($prefixes AS $prefix)
 			{
-				$pre = $this->apply_prefix($prefix, $topic_id);
+				$pre = self::apply_prefix($prefix, $topic_id);
 				if(!$pre)
 				{
 					$fails++;
@@ -101,38 +85,38 @@ class tmm
 			}
 			if($fails != 0)
 			{
-				$this->error[] = sprintf($user->lang['PREFIX_ERROR'], $fails);
+				self::$error[] = sprintf($user->lang['PREFIX_ERROR'], $fails);
 			}
 		}
 		if($row['tmm_lock'] == 1)
 		{
-			$lock = $this->lock_topic($topic_id);
+			$lock = self::lock_topic($topic_id);
 			if(!$lock)
 			{
-				$this->error[] = $user->lang['LOCK_ERROR'];
+				self::$error[] = $user->lang['LOCK_ERROR'];
 			}
 		}
 		if($row['tmm_sticky'] == 1)
 		{
-			$stick = $this->stick_topic($topic_id);
+			$stick = self::stick_topic($topic_id);
 			if(!$stick)
 			{
-				$this->error[] = $user->lang['STICK_ERROR'];
+				self::$error[] = $user->lang['STICK_ERROR'];
 			}
 		}
 		if($row['tmm_copy'] == 1)
 		{
-			$copy = $this->copy_topic($topic_id, $row['tmm_copy_dest_id'], $topicrow['forum_id']);
+			$copy = self::copy_topic($topic_id, $row['tmm_copy_dest_id'], $topicrow['forum_id']);
 			if(!$copy)
 			{
-				$this->error[] = $row['tmm_copy_dest_id'] . '<br />' . $user->lang['COPY_ERROR'];
+				self::$error[] = $row['tmm_copy_dest_id'] . '<br />' . $user->lang['COPY_ERROR'];
 			}
 		}
 		if($row['tmm_move'] == 1)
 		{
 			$move = move_topics($topic_id, $row['tmm_move_dest_id'], $topicrow['forum_id'], true);
 		}
-		return (empty($this->error)) ? true : false;
+		return (empty(self::$error)) ? true : false;
 	}
 	
 	/*
@@ -141,7 +125,7 @@ class tmm
 	Parameters
 		int $topic_id	- (optional) ID of the topic
 	*/
-	public function lock_topic($topic_id)
+	public static function lock_topic($topic_id)
 	{
 		global $db;
 		$sql = 'UPDATE ' . TOPICS_TABLE . '
@@ -167,7 +151,7 @@ class tmm
 	Parameters
 		int $topic_id	- ID of the topic
 	*/
-	public function stick_topic($topic_id)
+	public static function stick_topic($topic_id)
 	{
 		global $db;
 		$sql = 'UPDATE ' . TOPICS_TABLE . '
@@ -198,7 +182,7 @@ class tmm
 		bool $bbcode	- (optional) If 1/true, parse bbcode; otherwise, do not parse bbcode
 		bool $smilies	- (optional) If 1/true, parse smilies; otherwise, do not parse smilies
 	*/	
-	public function auto_reply($text, $topic_id, $forum_id, $user_id = 0, $bbcode = true, $smilies = true)
+	public static function auto_reply($text, $topic_id, $forum_id, $user_id = 0, $bbcode = true, $smilies = true)
 	{
 		global $user, $db;
 		if(!function_exists('submit_post'))
@@ -274,7 +258,7 @@ class tmm
 	Return
 		$row - Holds prefix data from DB
 	*/
-	function load_prefix($prefix_id)
+	public static function load_prefix($prefix_id)
 	{
 		global $db, $template, $user, $phpbb_root_path;
 		$sql = 'SELECT *
@@ -312,7 +296,7 @@ class tmm
 	Return
 		Fully formatted prefixes; empty if none
 	*/
-	function load_topic_prefixes($topic_id, $return_type = 'string', $input = 'sql', $method = 'instances')
+	public static function load_topic_prefixes($topic_id, $return_type = 'string', $input = 'sql', $method = 'instances')
 	{
 		global $db;
 		
@@ -333,7 +317,7 @@ class tmm
 					}
 					else
 					{
-						$prefix .= $this->parse_prefix_instance($temp) . '&nbsp;';
+						$prefix .= self::parse_prefix_instance($temp) . '&nbsp;';
 					}
 				}
 			}
@@ -355,7 +339,7 @@ class tmm
 				}
 				else
 				{
-					$prefix .= ($method == 'prefixes') ? $this->parse_prefix($row['prefix_id']) : $this->parse_prefix_instance($row['prefix_instance_id']) . '&nbsp;';
+					$prefix .= ($method == 'prefixes') ? self::parse_prefix($row['prefix_id']) : self::parse_prefix_instance($row['prefix_instance_id']) . '&nbsp;';
 				}
 			}
 		}
@@ -372,7 +356,7 @@ class tmm
 	Return
 		$prefix_string	- String of parsed prefixes
 	*/
-	function parse_prefix_array($prefix_array)
+	public static function parse_prefix_array($prefix_array)
 	{
 		if(!is_array($prefix_array))
 		{
@@ -385,7 +369,7 @@ class tmm
 		$prefix_string = '';
 		foreach($prefix_array AS $prefix)
 		{
-			$prefix_string .= $this->parse_prefix($prefix);
+			$prefix_string .= self::parse_prefix($prefix);
 		}
 		return $prefix_string;
 	}
@@ -398,7 +382,7 @@ class tmm
 	Return
 		false if it doesn't work; true if it works
 	*/
-	function apply_prefix($prefix_id, $topic_id)
+	public static function apply_prefix($prefix_id, $topic_id)
 	{
 		global $db, $template, $user, $phpbb_root_path;
 		if(empty($prefix_id))
@@ -445,7 +429,7 @@ class tmm
 	Return
 		true on success; false on failure
 	*/
-	function remove_topic_prefix($prefix_instance_id, $topic_id = 0)
+	public static function remove_topic_prefix($prefix_instance_id, $topic_id = 0)
 	{
 		global $db;
 		// Make sure that the instance ID exists.
@@ -484,7 +468,7 @@ class tmm
 	Parameters
 		$topic_id = (required) ID of the topic
 	*/
-	function remove_topic_prefixes($topic_id)
+	public static function remove_topic_prefixes($topic_id)
 	{
 		global $db;
 		// Make sure there are prefixes for the topic so we aren't wasting our time.
@@ -525,7 +509,7 @@ class tmm
 	Return
 		Parsed prefix; return false if no prefix is found for that instance
 	*/
-	function parse_prefix_instance($prefix_instance_id)
+	public static function parse_prefix_instance($prefix_instance_id)
 	{
 		global $db;
 		if(empty($prefix_instance_id))
@@ -565,7 +549,7 @@ class tmm
 	/*
 	Parses a prefix for posting screen
 	*/
-	function parse_prefix($prefix_id)
+	public static function parse_prefix($prefix_id)
 	{
 		global $db, $user;
 		if(empty($prefix_id))
@@ -607,7 +591,7 @@ class tmm
 	Return
 		Returns nothing if no prefixes are available; else returns HTML code for select box
 	*/
-	function get_prefix_dropdown($forum_id = 0, $type = 'single', $prefix_ids = '', $excluded_ids = '')
+	public static function get_prefix_dropdown($forum_id = 0, $type = 'single', $prefix_ids = '', $excluded_ids = '')
 	{
 		global $user, $db, $phpbb_root_path, $phpEx;
 		$groups = group_memberships(false,$user->data['user_id']);
@@ -676,7 +660,7 @@ class tmm
 	Return
 		Returns nothing if no multi-mods are available; else returns HTML code for select box
 	*/
-	function get_tmm_dropdown($forum_id = 0, $type = 'single')
+	public static function get_tmm_dropdown($forum_id = 0, $type = 'single')
 	{
 		global $user, $db, $phpbb_root_path, $phpEx;
 		$groups = group_memberships(false,$user->data['user_id']);
@@ -731,7 +715,7 @@ class tmm
 	Return
 		true - when it works; false - when it doesn't work
 	*/
-	function copy_topic($topic_id, $to_forum_id, $old_forum_id)
+	public static function copy_topic($topic_id, $to_forum_id, $old_forum_id)
 	{
 		global $auth, $user, $db, $template, $config;
 		global $phpEx, $phpbb_root_path;
@@ -961,7 +945,7 @@ class tmm
 	/**
 	* Loads TMM installation information. @@ FUNCTION COPYRIGHT TO HOUSE @@
 	*/
-	function load_tmm_install_info()
+	public static function load_tmm_install_info()
 	{
 		global $user;
 		$install_info = '%s &copy; 2010 <a href="http://phpbbdevelopers.net/" style="font-weight: bold;">phpBB Developers</a>';
