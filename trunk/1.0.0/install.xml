@@ -376,7 +376,7 @@ $user->add_lang('mods/tmm');
 	</fieldset>
 	</form>
 <!-- ENDIF -->]]></find>
-			<action type="replace-with"><![CDATA[<!-- IF TMM_SELECT -->
+			<action type="after-add"><![CDATA[<!-- IF TMM_SELECT -->
 	<br clear="right" />
 	<form method="post" action="{S_TMM_ACTION}">
     <fieldset class="quickmod">
