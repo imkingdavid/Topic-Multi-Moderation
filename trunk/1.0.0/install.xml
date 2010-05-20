@@ -31,11 +31,11 @@
 	</installation>
 	<history>
 		<entry>
-			<date>2010-05-08</date>
-			<rev-version>0.2.2</rev-version>
+			<date>2010-05-19</date>
+			<rev-version>1.0.0rc1</rev-version>
 			<changelog lang="en">
-				<change>[new] Optional integration with NV Last Topic Titles MOD</change>
-				<change></change>
+				<change>[new] Optional integration with NV Advanced Last Topic Titles MOD by nickvergessen</change>
+				<change>[add] Topic Prefixes show up in more locations, such as MCP and UCP</change>
 			</changelog>
 		</entry>
 		<entry>
