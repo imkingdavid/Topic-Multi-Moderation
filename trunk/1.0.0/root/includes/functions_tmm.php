@@ -142,16 +142,9 @@ class tmm
 				WHERE topic_id = $topic_id
 					AND topic_moved_id = 0";
 		$result = $db->sql_query($sql);
-		if(!$result)
-		{
-			$db->sql_freeresult($result);
-			return false;
-		}
-		else
-		{
-			$db->sql_freeresult($result);
-			return true;
-		}
+		$return = ($result) ? true : false;
+		$db->sql_freeresult($result);
+		return $return;
 	}
 	
 	/*
@@ -168,16 +161,9 @@ class tmm
 						WHERE topic_id = $topic_id
 						AND topic_moved_id = 0";
 		$result = $db->sql_query($sql);
-		if(!$result)
-		{
-			$db->sql_freeresult($result);
-			return false;
-		}
-		else
-		{
-			$db->sql_freeresult($result);
-			return true;
-		}
+		$return = ($result) ? true : false;
+		$db->sql_freeresult($result);
+		return $return;
 	}
 	
 	/*
@@ -377,7 +363,7 @@ class tmm
 		return $prefix_string;
 	}
 	/*
-	Applies the specified prefix to the topic. Normally called within apply_multi_mod() method.
+	Applies the specified prefix to the topic.
 	
 	Parameters
 		$prefix_id		- (optional) ID of the prefix; if not given, look for one defined in init();
@@ -393,8 +379,9 @@ class tmm
 			return false;
 		}
 		// First we make sure the prefix exists. If not, it's pointless to run.
-		if(!in_array($prefix, self::$prefixes_cache))
+		if(!in_array($prefix_id, array_keys(self::$prefixes_cache)))
 		{
+			echo $prefix_id;
 			return false;
 		}
 		$sql_ary = array(
@@ -588,7 +575,7 @@ class tmm
 				{
 					if(in_array($group['group_id'], $temp_groups))
 					{
-						$prefixes[] = $prefix_id;
+						$prefixes[] = $prefix_id['id'];
 					}
 				}
 			}
@@ -596,7 +583,7 @@ class tmm
 			$prefix_users = explode(',', $prefix_users);
 			if(in_array($user->data['user_id'], $prefix_users))
 			{
-				$prefixes[] = $row['prefix_id'];
+				$prefixes[] = $prefix_id['id'];
 			}
 		}
 		$prefixes = array_unique($prefixes);
@@ -617,7 +604,7 @@ class tmm
 				{
 					$disabled = ($prefix == $prefix_ids) ? 'selected="selected"' : '';
 				}
-				$prefixes_options .= '<option value="' . $prefix . '"' . $disabled . '>' . $prefix_id['name'] . '</option>';
+				$prefixes_options .= '<option value="' . $prefix_id['id'] . '"' . $disabled . '>' . $prefix_id['name'] . '</option>';
 			}
 		}
 		$type = ($type == 'multiple') ? 'multiple="multiple"'  : '';
@@ -953,6 +940,7 @@ class tmm_cache extends acm
 			while ($row = $db->sql_fetchrow($result))
 			{
 				self::$multi_mods_cached[$row['tmm_id']] = array(
+					'id'				=> $row['tmm_id'],
 					'title'				=> $row['tmm_title'],
 					'description'		=> $row['tmm_desc'],
 					'lock'				=> $row['tmm_lock'],
@@ -994,6 +982,7 @@ class tmm_cache extends acm
 			while ($row = $db->sql_fetchrow($result))
 			{
 				self::$prefixes_cached[$row['prefix_id']] = array(
+					'id'		=> $row['prefix_id'],
 					'name'		=> $row['prefix_name'],
 					'title'		=> $row['prefix_title'],
 					'colour'	=> $row['prefix_color_hex'],
