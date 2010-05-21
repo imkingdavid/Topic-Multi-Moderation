@@ -35,6 +35,8 @@ function tmm_open()
 		include($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
 	}
 	$user->add_lang('mods/tmm');
+	
+	tmm::start();
 }
 
 $phpbb_hook->register('phpbb_user_session_handler', 'tmm_open');

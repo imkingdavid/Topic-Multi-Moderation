@@ -23,6 +23,33 @@ class tmm
 {
 	public static $error = array(); // will hold the error messages if any
 	public static $actions = array(); // an array of all the actions performed.
+	public static $tmm_cache = null;
+	public static $multi_mods_cache = '';
+	public static $prefixes_cache = '';
+	
+	/*
+	Initialize the MOD.
+	No paramters or return
+	*/
+	public static function start()
+	{
+		self::$tmm_cache = new tmm_cache();
+		self::$multi_mods_cache = self::$tmm_cache->get_multi_mods();
+		self::$prefixes_cache = self::$tmm_cache->get_prefixes();
+		//if a topic ID is given in the URL, load the topic's prefixes.
+		// This eliminates the need for edits in viewtopic and some other locations.
+		$topic_id = request_var('t', 0);
+		if($topic_id)
+		{
+			global $user, $template, $phpbb_root_path, $phpEx;
+			$viewtopic_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", "t=$topic_id");
+			$template->assign_vars(array(
+				'TOPIC_PREFIX'	=> self::load_topic_prefixes($topic_id),
+				'TMM_SELECT'	=> self::get_tmm_dropdown($topic_id),
+				'S_TMM_ACTION' 	=> append_sid("{$phpbb_root_path}mcp.$phpEx", "i=tmm&amp;t=$topic_id&amp;multimod=1&amp;redirect=" . urlencode(str_replace('&amp;', '&', $viewtopic_url)), true, $user->session_id),
+			));
+		}
+	}
 	
 	/*
 	Applies the specified multi-mod to the specified topic
@@ -36,44 +63,26 @@ class tmm
 	{
 		global $db, $template, $user, $phpbb_root_path, $phpEx;
 		
-		//Get the information about the multi-mod
-		$sql = 'SELECT *
-			FROM ' . TMM_TABLE . "
-			WHERE tmm_id = $mod_id";
-		$result = $db->sql_query($sql);
-		$row = $db->sql_fetchrow($result);
-		$db->sql_freeresult($result);
 		// make sure the multi-mod exists
-		if(!$row)
+		if(!in_array($mod_id, self::$multi_mods_cache))
 		{
 			trigger_error("INVALID_MULTI_MOD");
 		}
-		//Get information about the topic itself
-		$sql = 'SELECT *
-			FROM ' . TOPICS_TABLE . "
-			WHERE topic_id = $topic_id";
-		$result = $db->sql_query($sql);
-		$topicrow = $db->sql_fetchrow($result);
-		$db->sql_freeresult($result);
-		// make sure the topic exists
-		if(!$topicrow)
-		{
-			trigger_error("INVALID_TOPIC_ID");
-		}
+		
 		//Check each mutli-mod action to see if it should be done.
-		if($row['tmm_autoreply_bool'] == 1)
+		if(self::$mutli_mods_cache[$mod_id]['autoreply_bool'] == 1)
 		{
-			$poster = ($row['tmm_autoreply_poster'] != 0) ? $row['tmm_autoreply_poster'] : 0;
-			$auto_reply = self::auto_reply($row['tmm_autoreply_text'], $topic_id, $forum_id, $poster, true, true);
+			$poster = (self::$mutli_mods_cache[$mod_id]['autoreply_poster'] != 0) ? self::$mutli_mods_cache[$mod_id]['autoreply_poster'] : 0;
+			$auto_reply = self::auto_reply(self::$mutli_mods_cache[$mod_id]['autoreply_text'], $topic_id, $forum_id, $poster, true, true);
 			if(!$auto_reply)
 			{
 				self::$error[] = $user->lang['AUTOREPLY_ERROR'];
 			}
 		}
-		if($row['tmm_prefix_id'] != '')
+		if(self::$mutli_mods_cache[$mod_id]['prefix_id'] != '')
 		{
 			// Allow for multiple prefixes to be applied with one multi-mod ^_^
-			$prefixes = explode(',', $row['tmm_prefix_id']);
+			$prefixes = explode(',', self::$mutli_mods_cache[$mod_id]['prefix_id']);
 			$fails = 0;
 			foreach($prefixes AS $prefix)
 			{
@@ -88,7 +97,7 @@ class tmm
 				self::$error[] = sprintf($user->lang['PREFIX_ERROR'], $fails);
 			}
 		}
-		if($row['tmm_lock'] == 1)
+		if(self::$mutli_mods_cache[$mod_id]['lock'] == 1)
 		{
 			$lock = self::lock_topic($topic_id);
 			if(!$lock)
@@ -96,7 +105,7 @@ class tmm
 				self::$error[] = $user->lang['LOCK_ERROR'];
 			}
 		}
-		if($row['tmm_sticky'] == 1)
+		if(self::$mutli_mods_cache[$mod_id]['sticky'] == 1)
 		{
 			$stick = self::stick_topic($topic_id);
 			if(!$stick)
@@ -104,17 +113,17 @@ class tmm
 				self::$error[] = $user->lang['STICK_ERROR'];
 			}
 		}
-		if($row['tmm_copy'] == 1)
+		if(self::$mutli_mods_cache[$mod_id]['copy'] == 1)
 		{
-			$copy = self::copy_topic($topic_id, $row['tmm_copy_dest_id'], $topicrow['forum_id']);
+			$copy = self::copy_topic($topic_id, self::$mutli_mods_cache[$mod_id]['copy_dest_id'], $topicrow['forum_id']);
 			if(!$copy)
 			{
-				self::$error[] = $row['tmm_copy_dest_id'] . '<br />' . $user->lang['COPY_ERROR'];
+				self::$error[] = self::$mutli_mods_cache[$mod_id]['copy_dest_id'] . '<br />' . $user->lang['COPY_ERROR'];
 			}
 		}
-		if($row['tmm_move'] == 1)
+		if(self::$mutli_mods_cache[$mod_id]['move'] == 1)
 		{
-			$move = move_topics($topic_id, $row['tmm_move_dest_id'], $topicrow['forum_id'], true);
+			$move = move_topics($topic_id, self::$mutli_mods_cache[$mod_id]['move_dest_id'], $topicrow['forum_id'], true);
 		}
 		return (empty(self::$error)) ? true : false;
 	}
@@ -253,27 +262,21 @@ class tmm
 	Loads the prefix data for the selected prefix ID
 	
 	Parameters
-		int $prefix_id - (optional) ID of the prefix; if not given, look for one defined in init();
+		int $prefix_id - ID of the prefix
 		
 	Return
-		$row - Holds prefix data from DB
+		$row - Holds prefix data from cache
 	*/
 	public static function load_prefix($prefix_id)
 	{
 		global $db, $template, $user, $phpbb_root_path;
-		$sql = 'SELECT *
-			FROM ' . TMM_PREFIXES_TABLE . "
-			WHERE prefix_id = $prefix_id";
-		$result = $db->sql_query($sql);
-		$row = $db->sql_fetchrow($result);
-		$db->sql_freeresult($result);
-		if(!$row)
+		if(!in_array($prefix_id, self::$prefixes_cache))
 		{
 			return false;
 		}
 		else
 		{
-			return $row;
+			return self::$prefixes_cache[$prefix_id];
 		}
 	}
 	
@@ -390,13 +393,7 @@ class tmm
 			return false;
 		}
 		// First we make sure the prefix exists. If not, it's pointless to run.
-		$sql = 'SELECT *
-			FROM ' . TMM_PREFIXES_TABLE . '
-			WHERE prefix_id = ' . $db->sql_escape($prefix_id);
-		$result = $db->sql_query($sql);
-		$prefix = $db->sql_fetchrow($result);
-		$db->sql_freeresult($result);
-		if(!$prefix)
+		if(!in_array($prefix, self::$prefixes_cache))
 		{
 			return false;
 		}
@@ -581,22 +578,21 @@ class tmm
 		$groups = group_memberships(false,$user->data['user_id']);
 		
 		$prefixes = array();
-		$where = ($forum_id != 0) ? ' WHERE prefix_forums LIKE \'%' . $forum_id . '%\'' : '';
-		$sql = 'SELECT *
-			FROM ' . TMM_PREFIXES_TABLE . $where;
-		$result = $db->sql_query($sql);
-		while($row = $db->sql_fetchrow($result))
+		foreach(self::$prefixes_cache AS $prefix_id)
 		{
-			$prefix_groups = $row['prefix_groups'];
-			$prefix_groups = explode(',', $prefix_groups);
-			foreach($groups AS $group)
+			$temp_forums = explode(',', $prefix_id['forums']);
+			$temp_groups = explode(',', $prefix_id['groups']);
+			if(in_array($forum_id, $temp_forums))
 			{
-				if(in_array($group['group_id'], $prefix_groups))
+				foreach($groups AS $group)
 				{
-					$prefixes[] = $row['prefix_id'];
+					if(in_array($group['group_id'], $temp_groups))
+					{
+						$prefixes[] = $prefix_id;
+					}
 				}
 			}
-			$prefix_users = $row['prefix_users'];
+			$prefix_users = $prefix_id['users'];
 			$prefix_users = explode(',', $prefix_users);
 			if(in_array($user->data['user_id'], $prefix_users))
 			{
@@ -613,12 +609,6 @@ class tmm
 		{
 			if(!in_array($prefix, $excluded_ids))
 			{
-				$sql = 'SELECT prefix_name
-					FROM ' . TMM_PREFIXES_TABLE . '
-					WHERE prefix_id = ' . $prefix;
-				$result = $db->sql_query($sql);
-				$row = $db->sql_fetchrow($result);
-				$db->sql_freeresult($result);
 				if(is_array($prefix_ids))
 				{
 					$disabled = (in_array($prefix, $prefix_ids)) ? 'disabled="disabled"' : '';
@@ -627,7 +617,7 @@ class tmm
 				{
 					$disabled = ($prefix == $prefix_ids) ? 'selected="selected"' : '';
 				}
-				$prefixes_options .= '<option value="' . $prefix . '"' . $disabled . '>' . $row['prefix_name'] . '</option>';
+				$prefixes_options .= '<option value="' . $prefix . '"' . $disabled . '>' . $prefix_id['name'] . '</option>';
 			}
 		}
 		$type = ($type == 'multiple') ? 'multiple="multiple"'  : '';
@@ -648,7 +638,7 @@ class tmm
 	{
 		global $user, $db, $phpbb_root_path, $phpEx;
 		$groups = group_memberships(false,$user->data['user_id']);
-		
+
 		$multi_mods = array();
 		$where = ($forum_id != 0) ? ' WHERE tmm_forums LIKE \'%' . $forum_id . '%\'' : '';
 		$sql = 'SELECT *
@@ -934,5 +924,89 @@ class tmm
 		global $user;
 		$install_info = '%s &copy; 2010 <a href="http://phpbbdevelopers.net/" style="font-weight: bold;">phpBB Developers</a>';
 		$user->lang['TRANSLATION_INFO'] = $user->lang['TRANSLATION_INFO'] . (($user->lang['TRANSLATION_INFO'] != '') ? '<br />' : '') . sprintf($install_info, TMM_VERSION_BIG);
+	}
+}
+
+// Prefix caching -- Stolen/Adapted from Erik Frerejean's Subject Prefixes MOD
+if (!class_exists('acm'))
+{
+	require($phpbb_root_path . 'includes/acm/acm_' . $acm_type . '.' . $phpEx);
+}
+class tmm_cache extends acm
+{
+	private static $prefixes_cached = array(); // an array of all of the prefixes
+	private static $multi_mods_cached = array(); // an array of all of the multi-mods.
+	
+	public function get_multi_mods()
+	{
+		global $db;
+		if(!empty($prefixes_cached))
+		{
+			return self::$multi_mods_cached;
+		}
+		
+		if ((self::$multi_mods_cached = $this->get('_tmm')) === false)
+		{
+			$sql = 'SELECT *
+				FROM ' . TMM_TABLE;
+			$result	= $db->sql_query($sql);
+			while ($row = $db->sql_fetchrow($result))
+			{
+				self::$multi_mods_cached[$row['tmm_id']] = array(
+					'title'				=> $row['tmm_title'],
+					'description'		=> $row['tmm_desc'],
+					'lock'				=> $row['tmm_lock'],
+					'sticky'			=> $row['tmm_sticky'],
+					'move'				=> $row['tmm_move'],
+					'move_dest'			=> $row['tmm_move_dest_id'],
+					'copy'				=> $row['tmm_copy'],
+					'copy_dest'			=> $row['tmm_copy_dest_id'],
+					'users'				=> $row['tmm_users'],
+					'forums'			=> $row['tmm_forums'],
+					'groups'			=> $row['tmm_groups'],
+					'prefix'			=> $row['tmm_prefix_id'],
+					'autoreply_bool'	=> $row['tmm_autoreply_bool'],
+					'autoreply_text'	=> $row['tmm_autoreply_text'],
+					'autoreply_poster'	=> $row['tmm_autoreply_poster'],
+				);
+			}
+			$db->sql_freeresult($result);
+
+			$this->put('_tmm', self::$multi_mods_cached);
+		}
+		
+		return self::$multi_mods_cached;
+	}
+	
+	public function get_prefixes()
+	{
+		global $db;
+		if(!empty($prefixes_cached))
+		{
+			return self::$prefixes_cached;
+		}
+		
+		if ((self::$prefixes_cached = $this->get('_tmm_prefixes')) === false)
+		{
+			$sql = 'SELECT *
+				FROM ' . TMM_PREFIXES_TABLE;
+			$result	= $db->sql_query($sql);
+			while ($row = $db->sql_fetchrow($result))
+			{
+				self::$prefixes_cached[$row['prefix_id']] = array(
+					'name'		=> $row['prefix_name'],
+					'title'		=> $row['prefix_title'],
+					'colour'	=> $row['prefix_color_hex'],
+					'groups'	=> $row['prefix_groups'],
+					'users'		=> $row['prefix_users'],
+					'forums'	=> $row['prefix_forums'],
+				);
+			}
+			$db->sql_freeresult($result);
+
+			$this->put('_tmm_prefixes', self::$prefixes_cached);
+		}
+		
+		return self::$prefixes_cached;
 	}
 }

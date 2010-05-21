@@ -9,7 +9,9 @@
 	
 	<description lang="en">This MOD adds a quick and easy way to perform multiple moderation tasks with one click. Configurable via the ACP.</description>
 
-	<author-notes lang="en">If you would like to make a donation for my work done on this MOD as well as other MODs, you may do so by going to the demo/test board (http://www.phpbbdevelopers.net/) and clicking the Donate button in the header. All donations are voluntary but appreciated.</author-notes>
+	<author-notes lang="en">This file includes edits for integration with nickvergessen's NV Advanced Last Topic Titles 1.2.5. Integration with other versions of that MOD have not been tested and are not supported.
+	
+	If you would like to make a donation for my work done on this MOD as well as other MODs, you may do so by going to the demo/test board (http://www.phpbbdevelopers.net/) and clicking the Donate button in the header. All donations are voluntary but appreciated.</author-notes>
 
 	<author-group>
 		<author>
@@ -134,15 +136,9 @@
 			</changelog>
 		</entry>
 	</history>
-	<link-group>
-		<link type="contrib" href="contrib/nv_advanced_last_topic_titles_integration.xml" lang="en">Integration with NV Advanced Last Topic Titles 1.2.5</link>
-	</link-group>
 </header>
 
 <action-group>
-	<copy>
-		<file from="root/*.*" to="*.*" />
-	</copy>
 	<open src="mcp.php">
 		<edit>
 			<find><![CDATA[if (!$post_id)
@@ -355,7 +351,7 @@ $template->assign_var('TOPIC_PREFIX', tmm::load_topic_prefixes($topic_id));
 	<open src="includes/mcp/mcp_topic.php">
 		<edit>
 			<find><![CDATA[$topic_id = request_var('t', 0);
-	$topic_info = get_topic_data(array($topic_id), false, true);]]></find>
+	$topic_info = get_topic_data(array($topic_id), false, true);]]>></find>
 			<action type="after-add"><![CDATA[	//! Begin TMM
 	$template->assign_var('TOPIC_PREFIX', tmm::load_topic_prefixes($topic_id));
 	//! End TMM]]></action>
@@ -363,13 +359,13 @@ $template->assign_var('TOPIC_PREFIX', tmm::load_topic_prefixes($topic_id));
 	</open>
 	<open src="styles/prosilver/template/mcp_topic.html">
 		<edit>
-			<find><![CDATA[<h2><a href="{U_VIEW_TOPIC}">{L_TOPIC}: {TOPIC_TITLE}</a></h2>]]></find>
+			<find><![CDATA[<h2><a href="{U_VIEW_TOPIC}">{L_TOPIC}: {TOPIC_TITLE}</a></h2>]]>></find>
 			<action type="replace-with"><![CDATA[<h2>{TOPIC_PREFIX}<a href="{U_VIEW_TOPIC}">{L_TOPIC}: {TOPIC_TITLE}</a></h2>]]></action>
 		</edit>
 	</open>
 	<open src="includes/mcp/mcp_forum.php">
 		<edit>
-			<find><![CDATA[$template->assign_block_vars('topicrow', $topic_row);]]></find>
+			<find><![CDATA[$template->assign_block_vars('topicrow', $topic_row);]]>></find>
 			<action type="before-add"><![CDATA[//! Begin TMM
 			$topic_row = array_merge($topic_row, array(
 			'TOPIC_PREFIX'	=> tmm::load_topic_prefixes($topic_id),
@@ -379,14 +375,14 @@ $template->assign_var('TOPIC_PREFIX', tmm::load_topic_prefixes($topic_id));
 	</open>
 	<open src="styles/prosilver/template/mcp_forum.html">
 		<edit>
-			<find><![CDATA[<a href="{topicrow.U_VIEW_TOPIC}" class="topictitle">{topicrow.TOPIC_TITLE}</a>]]></find>
+			<find><![CDATA[<a href="{topicrow.U_VIEW_TOPIC}" class="topictitle">{topicrow.TOPIC_TITLE}</a>]]>></find>
 			<action type="replace-with"><![CDATA[{topicrow.TOPIC_PREFIX}<a href="{topicrow.U_VIEW_TOPIC}" class="topictitle">{topicrow.TOPIC_TITLE}</a>]]></action>
 		</edit>
 	</open>
 	<open src="includes/mcp/mcp_queue.php">
 		<edit>
 			<find><![CDATA[$forum_list_approve = get_forum_list('m_approve', false, true);
-				$forum_list_read = array_flip(get_forum_list('f_read', true, true)); // Flipped so we can isset() the forum IDs]]></find>
+				$forum_list_read = array_flip(get_forum_list('f_read', true, true)); // Flipped so we can isset() the forum IDs]]>></find>
 			<action type="before-add"><![CDATA[//! Begin TMM
 				$template->assign_var('TOPIC_PREFIX', tmm::load_topic_prefixes($topic_id));
 				//! End TMM]]></action>
@@ -394,7 +390,7 @@ $template->assign_var('TOPIC_PREFIX', tmm::load_topic_prefixes($topic_id));
 	</open>
 	<open src="styles/prosilver/template/mcp_queue.html">
 		<edit>
-			<find><![CDATA[<!-- IF S_TOPICS --><br /><!-- ELSE -->{L_TOPIC}: <a href="{postrow.U_TOPIC}">{postrow.TOPIC_TITLE}</a> <br /><!-- ENDIF -->]]></find>
+			<find><![CDATA[<!-- IF S_TOPICS --><br /><!-- ELSE -->{L_TOPIC}: <a href="{postrow.U_TOPIC}">{postrow.TOPIC_TITLE}</a> <br /><!-- ENDIF -->]]>></find>
 			<action type="replace-with"><![CDATA[<!-- IF S_TOPICS --><br /><!-- ELSE -->{L_TOPIC}: {TOPIC_PREFIX} <a href="{postrow.U_TOPIC}">{postrow.TOPIC_TITLE}</a> <br /><!-- ENDIF -->]]></action>
 		</edit>
 	</open>
