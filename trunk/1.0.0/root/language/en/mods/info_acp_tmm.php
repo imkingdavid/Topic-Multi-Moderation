@@ -3,7 +3,7 @@
 *
 *===================================================================
 *
-*  phpBB Topic Multi Moderation -- TMM Admin Language File
+*  phpBB Topic Multi Moderation and Prefixes -- TMM Admin Language File
 *-------------------------------------------------------------------
 *	Script info:
 * Version:		1.0.0 - "Triton"

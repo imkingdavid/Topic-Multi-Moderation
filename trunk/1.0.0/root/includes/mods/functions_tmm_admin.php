@@ -3,7 +3,7 @@
 *
 *===================================================================
 *
-*  phpBB Topic Multi Moderation -- Admin Functions File
+*  phpBB Topic Multi Moderation and Prefixes -- Admin Functions File
 *-------------------------------------------------------------------
 *	Script info:
 * Version:		1.0.0 - "Triton"

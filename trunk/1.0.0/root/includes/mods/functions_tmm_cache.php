@@ -3,7 +3,7 @@
 *
 *===================================================================
 *
-*  phpBB Topic Multi Moderation -- Cache Functions File
+*  phpBB Topic Multi Moderation and Prefixes -- Cache Functions File
 *-------------------------------------------------------------------
 *	Script info:
 * Version:		1.0.0 - "Triton"

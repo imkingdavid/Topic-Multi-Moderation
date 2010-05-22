@@ -3,7 +3,7 @@
 *
 *===================================================================
 *
-*  phpBB Topic Multi Moderation -- ACP Module File
+*  phpBB Topic Multi Moderation and Prefixes -- ACP Module File
 *-------------------------------------------------------------------
 *	Script info:
 * Version:		1.0.0 - "Triton"

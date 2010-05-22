@@ -3,7 +3,7 @@
 *
 *===================================================================
 *
-*  phpBB Topic Multi Moderation -- Install Language File
+*  phpBB Topic Multi Moderation and Prefixes -- Install Language File
 *-------------------------------------------------------------------
 *	Script info:
 * Version:		1.0.0 - "Triton"
@@ -37,6 +37,7 @@ if (empty($lang) || !is_array($lang))
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
 
 $lang = array_merge($lang, array(
+	'TMM_TITLE'						=> 'Topic Multi-Moderation and Prefixes',
 	//! Install
 	'INSTALL_TMM'					=> 'Install Topic Mutli-Moderation',
 	'INSTALL_TMM_CONFIRM'			=> 'Are you ready to install Topic Mutli-Moderation?',

@@ -3,7 +3,7 @@
 *
 *===================================================================
 *
-*  phpBB Topic Multi Moderation -- TMM MCP Info File
+*  phpBB Topic Multi Moderation and Prefixes -- TMM MCP Info File
 *-------------------------------------------------------------------
 *	Script info:
 * Version:		1.0.0 - "Triton"
