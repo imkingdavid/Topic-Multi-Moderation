@@ -9,9 +9,7 @@
 	
 	<description lang="en">This MOD adds a quick and easy way to perform multiple moderation tasks with one click. Configurable via the ACP.</description>
 
-	<author-notes lang="en">This file includes edits for integration with nickvergessen's NV Advanced Last Topic Titles 1.2.5. Integration with other versions of that MOD have not been tested and are not supported.
-	
-	If you would like to make a donation for my work done on this MOD as well as other MODs, you may do so by going to the demo/test board (http://www.phpbbdevelopers.net/) and clicking the Donate button in the header. All donations are voluntary but appreciated.</author-notes>
+	<author-notes lang="en">If you would like to make a donation for my work done on this MOD as well as other MODs, you may do so by going to the demo/test board (http://www.phpbbdevelopers.net/) and clicking the Donate button in the header. All donations are voluntary but appreciated.</author-notes>
 
 	<author-group>
 		<author>
@@ -32,11 +30,17 @@
 	<history>
 		<entry>
 			<date>2010-05-22</date>
+			<rev-version>1.0.0rc2</rev-version>
+			<changelog lang="en">
+				<change>[fix] apply prefix on new post</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2010-05-22</date>
 			<rev-version>1.0.0rc1</rev-version>
 			<changelog lang="en">
 				<change>[change] Uses hooks and static methods to reduce file edits, and cache to increase efficiency (thanks Erik Frerejean for the idea)</change>
-				<change>[add] Topic Prefixes show up in more locations, such as MCP and UCP</change>
-				<change>[new] Optional integration with NV Advanced Last Topic Titles MOD by nickvergessen</change>
+				<change>[add] Topic Prefixes show up in more locations, such as MCP and Search</change>
 			</changelog>
 		</entry>
 		<entry>
@@ -142,15 +146,22 @@
 </header>
 
 <action-group>
-	<open src="includes/functions_display.php">
+	<open src="posting.php">
 		<edit>
-			<find><![CDATA[$template->assign_block_vars('forumrow', array(]]></find>
+			<find><![CDATA[$redirect_url = submit_post($mode, $post_data['post_subject'], $post_data['username'], $post_data['topic_type'], $poll, $data, $update_message, ($update_message || $update_subject) ? true : false);]]></find>
 			<action type="after-add"><![CDATA[//! Begin TMM
-		'TOPIC_PREFIX'		=> $tmm->load_topic_prefixes($row['topic_id']),
-		//! End TMM]]></action>			
+			if($mode == 'post' && !empty($prefixes) && is_array($prefixes))
+			{
+				foreach($prefixes AS $prefix)
+				{
+					$redir_url_split = explode('t=', $redirect_url);
+					tmm::apply_prefix($prefix, $redir_url_split[1]); //$redir_url_split[1] contains the topic ID
+				}
+			}
+			//! End TMM]]></action>
 		</edit>
 	</open>
-	<diy-instructions lang="en"><![CDATA[You must do all Topic Mutli-Moderation and Topic Prefixes AND NV Advanced Last Topic Titles MOD installation instructions prior to those for this MOD. Please purge your cache/refresh templates once done.
+	<diy-instructions lang="en"><![CDATA[This should only be used to update from rc1 to rc2. The main installation MODx file should be used to install the MOD for the first time.
 	
 	If you appreciate my work and would like to donate to me in order to support the development of this and other MODs, please do so by visiting http://www.phpbbdevelopers.net/ and clicking Donate in the navigation menu. All amounts are appreciated, and no donation is required for use of this MOD.]]>
 	</diy-instructions>

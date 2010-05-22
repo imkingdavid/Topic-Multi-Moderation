@@ -30,6 +30,13 @@
 	<history>
 		<entry>
 			<date>2010-05-22</date>
+			<rev-version>1.0.0rc2</rev-version>
+			<changelog lang="en">
+				<change>[fix] apply prefix on new post</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2010-05-22</date>
 			<rev-version>1.0.0rc1</rev-version>
 			<changelog lang="en">
 				<change>[change] Uses hooks and static methods to reduce file edits, and cache to increase efficiency (thanks Erik Frerejean for the idea)</change>
@@ -134,7 +141,7 @@
 		</entry>
 	</history>
 	<link-group>
-		<link type="contrib" href="contrib/nv_advanced_last_topic_titles_integration.xml" lang="en">Integration with NV Advanced Last Topic Titles 1.2.5</link>
+		<link type="contrib" href="contrib/rc1_to_rc2.xml" lang="en">Update from RC-1 to RC-2</link>
 	</link-group>
 </header>
 
@@ -205,6 +212,19 @@ if($use_tmm)
 }
 $template->assign_var('TOPIC_PREFIX', tmm::load_topic_prefixes($topic_id));
 //! End TMM]]></action>
+		</edit>
+		<edit>
+			<find><![CDATA[$redirect_url = submit_post($mode, $post_data['post_subject'], $post_data['username'], $post_data['topic_type'], $poll, $data, $update_message, ($update_message || $update_subject) ? true : false);]]></find>
+			<action type="after-add"><![CDATA[//! Begin TMM
+			if($mode == 'post' && !empty($prefixes) && is_array($prefixes))
+			{
+				foreach($prefixes AS $prefix)
+				{
+					$redir_url_split = explode('t=', $redirect_url);
+					tmm::apply_prefix($prefix, $redir_url_split[1]); //$redir_url_split[1] contains the topic ID
+				}
+			}
+			//! End TMM]]></action>
 		</edit>
 	</open>
 	<open src="search.php">
