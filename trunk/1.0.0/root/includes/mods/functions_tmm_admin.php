@@ -120,6 +120,7 @@ class tmm_admin extends tmm
 		{
 			$message = $user->lang['NO_MODE'];
 		}
+		tmm::$tmm_cache->clear_tmm_cache();
 		$message .= adm_back_link($u_action);
 		trigger_error($message);
 	}
@@ -153,6 +154,7 @@ class tmm_admin extends tmm
 		{
 			$message = $user->lang['NO_MODE'];
 		}
+		tmm::$tmm_cache->clear_tmm_cache();
 		$message .= adm_back_link($u_action);
 		trigger_error($message);
 	}
@@ -190,6 +192,7 @@ class tmm_admin extends tmm
 			return false;
 		}
 		$db->sql_freeresult($result);
+		tmm::$tmm_cache->clear_tmm_cache();
 		return true;
 	}
 	
@@ -215,6 +218,7 @@ class tmm_admin extends tmm
 			return false;
 		}
 		$db->sql_freeresult($result);
+		tmm::$tmm_cache->clear_tmm_cache();
 		return true;
 	}
 	

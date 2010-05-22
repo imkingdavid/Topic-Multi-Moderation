@@ -47,7 +47,7 @@ class tmm
 			$template->assign_vars(array(
 				'TOPIC_PREFIX'	=> self::load_topic_prefixes($topic_id),
 				'TMM_SELECT'	=> self::get_tmm_dropdown($topic_id),
-				'S_TMM_ACTION' 	=> append_sid("{$phpbb_root_path}mcp.$phpEx", "i=tmm&amp;t=$topic_id&amp;multimod=1&amp;redirect=" . urlencode(str_replace('&amp;', '&', $viewtopic_url)), true, $user->session_id),
+				'S_TMM_ACTION' 	=> append_sid("{$phpbb_root_path}mcp.$phpEx", "i=tmm&amp;t=$topic_id&amp;redirect=" . urlencode(str_replace('&amp;', '&', $viewtopic_url)), true, $user->session_id),
 			));
 		}
 	}
@@ -65,25 +65,26 @@ class tmm
 		global $db, $template, $user, $phpbb_root_path, $phpEx;
 		
 		// make sure the multi-mod exists
-		if(!in_array($mod_id, self::$multi_mods_cache))
+		self::$multi_mods_cache = self::$tmm_cache->get_multi_mods();
+		if(!array_key_exists($mod_id, self::$multi_mods_cache))
 		{
 			trigger_error("INVALID_MULTI_MOD");
 		}
 		
 		//Check each mutli-mod action to see if it should be done.
-		if(self::$mutli_mods_cache[$mod_id]['autoreply_bool'] == 1)
+		if(self::$multi_mods_cache[$mod_id]['autoreply_bool'] == 1)
 		{
-			$poster = (self::$mutli_mods_cache[$mod_id]['autoreply_poster'] != 0) ? self::$mutli_mods_cache[$mod_id]['autoreply_poster'] : 0;
-			$auto_reply = self::auto_reply(self::$mutli_mods_cache[$mod_id]['autoreply_text'], $topic_id, $forum_id, $poster, true, true);
+			$poster = (self::$multi_mods_cache[$mod_id]['autoreply_poster'] != 0) ? self::$multi_mods_cache[$mod_id]['autoreply_poster'] : 0;
+			$auto_reply = self::auto_reply(self::$multi_mods_cache[$mod_id]['autoreply_text'], $topic_id, $forum_id, $poster, true, true);
 			if(!$auto_reply)
 			{
 				self::$error[] = $user->lang['AUTOREPLY_ERROR'];
 			}
 		}
-		if(self::$mutli_mods_cache[$mod_id]['prefix_id'] != '')
+		if(self::$multi_mods_cache[$mod_id]['prefix'] != '')
 		{
 			// Allow for multiple prefixes to be applied with one multi-mod ^_^
-			$prefixes = explode(',', self::$mutli_mods_cache[$mod_id]['prefix_id']);
+			$prefixes = explode(',', self::$multi_mods_cache[$mod_id]['prefix']);
 			$fails = 0;
 			foreach($prefixes AS $prefix)
 			{
@@ -98,7 +99,7 @@ class tmm
 				self::$error[] = sprintf($user->lang['PREFIX_ERROR'], $fails);
 			}
 		}
-		if(self::$mutli_mods_cache[$mod_id]['lock'] == 1)
+		if(self::$multi_mods_cache[$mod_id]['lock'] == 1)
 		{
 			$lock = self::lock_topic($topic_id);
 			if(!$lock)
@@ -106,7 +107,7 @@ class tmm
 				self::$error[] = $user->lang['LOCK_ERROR'];
 			}
 		}
-		if(self::$mutli_mods_cache[$mod_id]['sticky'] == 1)
+		if(self::$multi_mods_cache[$mod_id]['sticky'] == 1)
 		{
 			$stick = self::stick_topic($topic_id);
 			if(!$stick)
@@ -114,17 +115,17 @@ class tmm
 				self::$error[] = $user->lang['STICK_ERROR'];
 			}
 		}
-		if(self::$mutli_mods_cache[$mod_id]['copy'] == 1)
+		if(self::$multi_mods_cache[$mod_id]['copy'] == 1)
 		{
-			$copy = self::copy_topic($topic_id, self::$mutli_mods_cache[$mod_id]['copy_dest_id'], $topicrow['forum_id']);
+			$copy = self::copy_topic($topic_id, self::$multi_mods_cache[$mod_id]['copy_dest_id'], $topicrow['forum_id']);
 			if(!$copy)
 			{
-				self::$error[] = self::$mutli_mods_cache[$mod_id]['copy_dest_id'] . '<br />' . $user->lang['COPY_ERROR'];
+				self::$error[] = self::$multi_mods_cache[$mod_id]['copy_dest_id'] . '<br />' . $user->lang['COPY_ERROR'];
 			}
 		}
-		if(self::$mutli_mods_cache[$mod_id]['move'] == 1)
+		if(self::$multi_mods_cache[$mod_id]['move'] == 1)
 		{
-			$move = move_topics($topic_id, self::$mutli_mods_cache[$mod_id]['move_dest_id'], $topicrow['forum_id'], true);
+			$move = move_topics($topic_id, self::$multi_mods_cache[$mod_id]['move_dest_id'], $topicrow['forum_id'], true);
 		}
 		return (empty(self::$error)) ? true : false;
 	}

@@ -42,7 +42,7 @@ class mcp_tmm
 		
 		if(!$multimod || !is_numeric($multimod))
 		{
-			trigger_error('INVALID_MULTI_MOD');
+			trigger_error('You suck ' . $multimod);
 		}
 		//Make sure it exists
 		$sql = 'SELECT *
@@ -53,7 +53,7 @@ class mcp_tmm
 		$db->sql_freeresult($result);
 		if(!$row)
 		{
-			trigger_error('INVALID_MULTI_MOD');
+			trigger_error('I suck ' . $multimod);
 		}
 		$possible_actions = array('tmm_lock', 'tmm_sticky', 'tmm_copy', 'tmm_move', 'tmm_autoreply_bool', 'tmm_prefix_id');
 		$actions = array(); // will be populated in a minute

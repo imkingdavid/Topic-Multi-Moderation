@@ -103,4 +103,13 @@ class tmm_cache extends acm
 		
 		return self::$prefixes_cached;
 	}
+	
+	/**
+	* Quick way to clear the whole subject_prefix cache
+	*/
+	public function clear_tmm_cache()
+	{
+		$this->destroy('_tmm_prefixes');
+		$this->destroy('_tmm');
+	}
 }
