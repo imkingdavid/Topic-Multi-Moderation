@@ -16,12 +16,10 @@ if (!defined('IN_PHPBB'))
 {
 	exit;
 }
-
 // Hooks allow you to include stuff without actually editing the main files as much
 function tmm_open()
 {
 	global $phpbb_root_path, $phpEx, $user, $table_prefix;
-
 	include($phpbb_root_path . 'includes/mods/tmm_constants.' . $phpEx);
 	include($phpbb_root_path . 'includes/mods/functions_tmm_cache.' . $phpEx);
 	include($phpbb_root_path . 'includes/mods/functions_tmm.' . $phpEx);
@@ -39,5 +37,8 @@ function tmm_open()
 	
 	tmm::start();
 }
-
-$phpbb_hook->register('phpbb_user_session_handler', 'tmm_open');
+//don't break the UMIL install
+if(!defined('UMIL_AUTO'))
+{
+	$phpbb_hook->register('phpbb_user_session_handler', 'tmm_open');
+}

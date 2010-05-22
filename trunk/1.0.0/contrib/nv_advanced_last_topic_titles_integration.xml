@@ -31,10 +31,10 @@
 	</installation>
 	<history>
 		<entry>
-			<date>2010-05-20</date>
+			<date>2010-05-22</date>
 			<rev-version>1.0.0rc1</rev-version>
 			<changelog lang="en">
-				<change>[change] Uses hooks and static methods to reduce file edits</change>
+				<change>[change] Uses hooks and static methods to reduce file edits, and cache to increase efficiency (thanks Erik Frerejean for the idea)</change>
 				<change>[add] Topic Prefixes show up in more locations, such as MCP and UCP</change>
 				<change>[new] Optional integration with NV Advanced Last Topic Titles MOD by nickvergessen</change>
 			</changelog>
@@ -136,266 +136,21 @@
 			</changelog>
 		</entry>
 	</history>
+	<link-group>
+		<link type="parent" href="../install.xml" lang="en">Main Install Instructions</link>
+	</link-group>
 </header>
 
 <action-group>
-	<open src="mcp.php">
+	<open src="includes/functions_display.php">
 		<edit>
-			<find><![CDATA[if (!$post_id)
-{
-	$module->set_display('main', 'post_details', false);
-	$module->set_display('warn', 'warn_post', false);
-}]]></find>
-			<action type="before-add"><![CDATA[$tmm_id = request_var('multimod', 0);
-if($tmm_id == 0)
-{
-	$module->set_display('tmm', 'index', false);
-}]]></action>
-		</edit>
-	</open>
-	<open src="posting.php">
-		<edit>
-			<find><![CDATA[$refresh	= (isset($_POST['add_file']) || isset($_POST['delete_file']) || isset($_POST['full_editor']) || isset($_POST['cancel_unglobalise']) || $save || $load) ? true : false;]]></find>
-			<inline-edit>
-				<inline-find><![CDATA[isset($_POST['cancel_unglobalise'])]]></inline-find>
-				<inline-action type="after-add"><![CDATA[ || isset($_POST['prefix_add']) || isset($_POST['prefix_remove']) || isset($_POST['prefix_clear'])]]></inline-action>
-			</inline-edit>
-		</edit>
-		<edit>
-			<find><![CDATA[$error = $post_data = array();
-$current_time = time();]]></find>
+			<find><![CDATA[$template->assign_block_vars('forumrow', array(]]></find>
 			<action type="after-add"><![CDATA[//! Begin TMM
-$prefix_id	= request_var('prefix_dropdown', 0);
-$prefix_instance_id = request_var('prefix', array(0));
-$prefix_add = (isset($_POST['prefix_add'])) ? 1 : 0;
-$prefix_remove = (isset($_POST['prefix_remove'])) ? 1 : 0;
-$prefix_clear = (isset($_POST['prefix_clear'])) ? 1 : 0;
-//! End TMM]]></action>
-		</edit>
-		<edit>
-			<find><![CDATA[// Load draft overview
-if ($load && ($mode == 'reply' || $mode == 'quote' || $mode == 'post') && $post_data['drafts'])
-{
-	load_drafts($topic_id, $forum_id);
-}]]></find>
-		<action type="after-add"><![CDATA[//! Begin TMM
-if($mode == 'post')
-{
-	$prefix_cache = request_var('prefix_temp_cache', '');
-	
-	if($prefix_add)
-	{
-		$prefix_cache .= $prefix_id . ',';
-	}
-	elseif($prefix_remove)
-	{
-		foreach($prefix_instance_id AS $instance)
-		{
-			$prefix_cache = preg_replace('/' . $instance . '/', '', $prefix_cache, 1);
-		}
-	}
-	elseif($prefix_clear)
-	{
-		$prefix_cache = '';
-	}
-	else
-	{
-		//Nothing.
-	}
-	// Get list of applied prefixes
-	$prefix_cache_array = explode(',', $prefix_cache);
-	$prefixes = tmm::load_topic_prefixes($topic_id, 'array', $prefix_cache_array);
-	$literal_prefixes = tmm::load_topic_prefixes($topic_id, 'array', $prefix_cache_array, 'prefixes');
-	$prefix_select = tmm::get_prefix_dropdown($forum_id, 'single', 0, $literal_prefixes);
-	$prefixed = '';
-	if(is_array($prefixes))
-	{
-		foreach($prefixes AS $prefix)
-		{
-			$prefixed .= (!empty($prefix)) ? tmm::parse_prefix($prefix) . ' <input type="checkbox" name="prefix[]" value="' . $prefix . '" /><br />' : '';
-		}
-	}
-	$prefixed = (empty($prefixed)) ? false : $prefixed;
-	$template->assign_vars(array(
-		'PREFIX_SELECT'		=> $prefix_select,
-		'ON_NEW_POST'		=> true,
-		'APPLIED_PREFIXES'	=> $prefixed,
-		'PREFIX_TEMP_CACHE'	=> $prefix_cache,
-	));
-}
-if($mode == 'edit' && ($post_data['topic_first_post_id'] == $post_id))
-{	
-	if($prefix_add)
-	{
-		$apply = tmm::apply_prefix($prefix_id, $topic_id);
-	}
-	elseif($prefix_remove)
-	{
-		foreach($prefix_instance_id AS $instance)
-		{
-			$remove = tmm::remove_topic_prefix($instance, $topic_id);
-		}
-	}
-	elseif($prefix_clear)
-	{
-		$remove_all = tmm::remove_topic_prefixes($topic_id);
-	}
-	else
-	{
-		//Nothing.
-	}
-	// Get list of applied prefixes
-	$prefixes = tmm::load_topic_prefixes($topic_id, 'array');
-	$literal_prefixes = tmm::load_topic_prefixes($topic_id, 'array', 'sql', 'prefixes');
-	$prefix_select = tmm::get_prefix_dropdown($forum_id, 'single', 0, $literal_prefixes);
-	$prefixed = '';
-	if(!empty($prefixes))
-	{
-		foreach($prefixes AS $prefix)
-		{
-			$prefixed .= tmm::parse_prefix_instance($prefix) . ' <input type="checkbox" name="prefix[]" value="' . $prefix . '" /><br />';
-		}
-	}
-	$prefixed = (empty($prefixed)) ? false : $prefixed;
-	$template->assign_vars(array(
-		'PREFIX_SELECT'		=> $prefix_select,
-		'ON_EDIT_POST'		=> true,
-		'APPLIED_PREFIXES'	=> $prefixed,
-	));	
-}
-$template->assign_var('TOPIC_PREFIX', tmm::load_topic_prefixes($topic_id));
-//! End TMM]]></action>
-		</edit>
-		<edit>
-			<find><![CDATA[$redirect_url = submit_post($mode, $post_data['post_subject'], $post_data['username'], $post_data['topic_type'], $poll, $data, $update_message, ($update_message || $update_subject) ? true : false);]]></find>
-			<action type="after-add"><![CDATA[			//! Begin TMM
-			if($mode == 'post' && !empty($prefixes) && is_array($prefixes))
-			{
-				foreach($prefixes AS $prefix)
-				{
-					$redir_url_split = explode('t=', $redirect_url);
-					tmm::apply_prefix($prefix, $redir_url_split[1]); //$redir_url_split[1] contains the topic ID
-				}
-			}
-			//! End TMM]]></action>
+		'TOPIC_PREFIX'		=> $tmm->load_topic_prefixes($row['topic_id']),
+		//! End TMM]]></action>			
 		</edit>
 	</open>
-	<open src="viewforum.php">
-		<edit>	
-			<find><![CDATA['TOPIC_TYPE'		=> $topic_type,]]></find>
-			<action type="after-add"><![CDATA[			//! Begin TMM
-			'TOPIC_PREFIX'		=> tmm::load_topic_prefixes($row['topic_id']),
-			//! End TMM]]></action>
-		</edit>
-	</open>
-	<open src="viewtopic.php">
-		<edit>
-			<find><![CDATA[	'TOPIC_POSTER'	=> $topic_data['topic_poster'],]]></find>
-			<action type="after-add"><![CDATA[//! Begin TMM
-	'TOPIC_PREFIX'	=> tmm::load_topic_prefixes($topic_data['topic_id']),
-	'TMM_SELECT'	=> tmm::get_tmm_dropdown($topic_data['forum_id']),
-	'S_TMM_ACTION' 	=> append_sid("{$phpbb_root_path}mcp.$phpEx", "i=tmm&amp;f=$forum_id&amp;t=$topic_id&amp;start=$start&amp;multimod=1&amp;redirect=" . urlencode(str_replace('&amp;', '&', $viewtopic_url)), true, $user->session_id),
-	//! End TMM]]></action>
-		</edit>
-	</open>
-	
-	<open src="styles/prosilver/template/posting_editor.html">
-		<edit>
-			<find><![CDATA[<!-- IF CAPTCHA_TEMPLATE and S_CONFIRM_CODE -->
-		<!-- DEFINE $CAPTCHA_TAB_INDEX = 3 -->
-		<!-- INCLUDE {CAPTCHA_TEMPLATE} -->
-	<!-- ENDIF -->
-	<!-- ENDIF -->]]></find>
-			<action type="after-add"><![CDATA[<!-- INCLUDE tmm_posting_body.html -->]]></action>
-		</edit>
-	</open>
-	
-	<open src="styles/prosilver/template/posting_layout.html">
-		<edit>	
-			<find><![CDATA[<h2><a href="{U_VIEW_TOPIC}">{TOPIC_TITLE}</a></h2>]]></find>
-			<action type="replace-with"><![CDATA[<h2>{TOPIC_PREFIX}<a href="{U_VIEW_TOPIC}">{TOPIC_TITLE}</a></h2>]]></action>
-		</edit>
-	</open>
-		
-	<open src="styles/prosilver/template/viewforum_body.html">
-		<edit>	
-			<find><![CDATA[<dt<!-- IF topicrow.TOPIC_ICON_IMG and S_TOPIC_ICONS --> style="background-image: url({T_ICONS_PATH}{topicrow.TOPIC_ICON_IMG}); background-repeat: no-repeat;"<!-- ENDIF --> title="{topicrow.TOPIC_FOLDER_IMG_ALT}"><!-- IF topicrow.S_UNREAD_TOPIC --><a href="{topicrow.U_NEWEST_POST}">{NEWEST_POST_IMG}</a> <!-- ENDIF --><a href="{topicrow.U_VIEW_TOPIC}" class="topictitle">{topicrow.TOPIC_TITLE}</a>]]></find>
-			<action type="replace-with"><![CDATA[<dt<!-- IF topicrow.TOPIC_ICON_IMG and S_TOPIC_ICONS --> style="background-image: url({T_ICONS_PATH}{topicrow.TOPIC_ICON_IMG}); background-repeat: no-repeat;"<!-- ENDIF --> title="{topicrow.TOPIC_FOLDER_IMG_ALT}"><!-- IF topicrow.S_UNREAD_TOPIC --><a href="{topicrow.U_NEWEST_POST}">{NEWEST_POST_IMG}</a> <!-- ENDIF -->{topicrow.TOPIC_PREFIX}<a href="{topicrow.U_VIEW_TOPIC}" class="topictitle">{topicrow.TOPIC_TITLE}</a>]]></action>
-		</edit>
-	</open>
-	
-	<open src="styles/prosilver/template/viewtopic_body.html">
-		<edit>	
-			<find><![CDATA[<h2><a href="{U_VIEW_TOPIC}">{TOPIC_TITLE}</a></h2>]]></find>
-			<action type="replace-with"><![CDATA[<h2>{TOPIC_PREFIX}<a href="{U_VIEW_TOPIC}">{TOPIC_TITLE}</a></h2>]]></action>
-		</edit>
-		<edit>	
-			<find><![CDATA[<!-- IF S_TOPIC_MOD -->
-	<form method="post" action="{S_MOD_ACTION}">
-	<fieldset class="quickmod">
-		<label for="quick-mod-select">{L_QUICK_MOD}:</label> {S_TOPIC_MOD} <input type="submit" value="{L_GO}" class="button2" />
-		{S_FORM_TOKEN}
-	</fieldset>
-	</form>
-<!-- ENDIF -->]]></find>
-			<action type="after-add"><![CDATA[<!-- IF TMM_SELECT -->
-	<br clear="right" />
-	<form method="post" action="{S_TMM_ACTION}">
-    <fieldset class="quickmod">
-    	<label for="tmm-mod-select">{L_MULTI_MODS}:</label> {TMM_SELECT} <input type="submit" value="{L_GO}" class="button2" />
-    </fieldset>
-    </form>
-<!-- ENDIF -->]]></action>
-		</edit>
-	</open>
-	<open src="includes/mcp/mcp_topic.php">
-		<edit>
-			<find><![CDATA[$topic_id = request_var('t', 0);
-	$topic_info = get_topic_data(array($topic_id), false, true);]]>></find>
-			<action type="after-add"><![CDATA[	//! Begin TMM
-	$template->assign_var('TOPIC_PREFIX', tmm::load_topic_prefixes($topic_id));
-	//! End TMM]]></action>
-		</edit>
-	</open>
-	<open src="styles/prosilver/template/mcp_topic.html">
-		<edit>
-			<find><![CDATA[<h2><a href="{U_VIEW_TOPIC}">{L_TOPIC}: {TOPIC_TITLE}</a></h2>]]>></find>
-			<action type="replace-with"><![CDATA[<h2>{TOPIC_PREFIX}<a href="{U_VIEW_TOPIC}">{L_TOPIC}: {TOPIC_TITLE}</a></h2>]]></action>
-		</edit>
-	</open>
-	<open src="includes/mcp/mcp_forum.php">
-		<edit>
-			<find><![CDATA[$template->assign_block_vars('topicrow', $topic_row);]]>></find>
-			<action type="before-add"><![CDATA[//! Begin TMM
-			$topic_row = array_merge($topic_row, array(
-			'TOPIC_PREFIX'	=> tmm::load_topic_prefixes($topic_id),
-		));
-		//! End TMM]]></action>
-		</edit>
-	</open>
-	<open src="styles/prosilver/template/mcp_forum.html">
-		<edit>
-			<find><![CDATA[<a href="{topicrow.U_VIEW_TOPIC}" class="topictitle">{topicrow.TOPIC_TITLE}</a>]]>></find>
-			<action type="replace-with"><![CDATA[{topicrow.TOPIC_PREFIX}<a href="{topicrow.U_VIEW_TOPIC}" class="topictitle">{topicrow.TOPIC_TITLE}</a>]]></action>
-		</edit>
-	</open>
-	<open src="includes/mcp/mcp_queue.php">
-		<edit>
-			<find><![CDATA[$forum_list_approve = get_forum_list('m_approve', false, true);
-				$forum_list_read = array_flip(get_forum_list('f_read', true, true)); // Flipped so we can isset() the forum IDs]]>></find>
-			<action type="before-add"><![CDATA[//! Begin TMM
-				$template->assign_var('TOPIC_PREFIX', tmm::load_topic_prefixes($topic_id));
-				//! End TMM]]></action>
-		</edit>
-	</open>
-	<open src="styles/prosilver/template/mcp_queue.html">
-		<edit>
-			<find><![CDATA[<!-- IF S_TOPICS --><br /><!-- ELSE -->{L_TOPIC}: <a href="{postrow.U_TOPIC}">{postrow.TOPIC_TITLE}</a> <br /><!-- ENDIF -->]]>></find>
-			<action type="replace-with"><![CDATA[<!-- IF S_TOPICS --><br /><!-- ELSE -->{L_TOPIC}: {TOPIC_PREFIX} <a href="{postrow.U_TOPIC}">{postrow.TOPIC_TITLE}</a> <br /><!-- ENDIF -->]]></action>
-		</edit>
-	</open>
-	<php-installer>tmm_install.php</php-installer>
-	<diy-instructions lang="en"><![CDATA[Make sure all files have been uploaded to the proper locations. Run the SQL install file, tmm_install.php, in your web browser and delete the file upon script completion. Purge your forum cache.
+	<diy-instructions lang="en"><![CDATA[You must do all Topic Mutli-Moderation and Topic Prefixes AND NV Advanced Last Topic Titles MOD installation instructions prior to those for this MOD. Please purge your cache/refresh templates once done.
 	
 	If you appreciate my work and would like to donate to me in order to support the development of this and other MODs, please do so by visiting http://www.phpbbdevelopers.net/ and clicking Donate in the navigation menu. All amounts are appreciated, and no donation is required for use of this MOD.]]>
 	</diy-instructions>
