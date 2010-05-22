@@ -3,7 +3,7 @@
 *
 *===================================================================
 *
-*  phpBB Topic Multi Moderation and Prefixes -- TMM Constants file
+*  phpBB Topic Multi Moderation and Prefixes -- Constants file
 *-------------------------------------------------------------------
 *	Script info:
 * Version:		1.0.0 - "Triton"

@@ -3,7 +3,7 @@
 *
 *===================================================================
 *
-*  phpBB Topic Multi Moderation -- TMM Install File
+*  phpBB Topic Multi Moderation and Prefixes -- Install File
 *-------------------------------------------------------------------
 *	Script info:
 * Version:		1.0.0 - "Triton"

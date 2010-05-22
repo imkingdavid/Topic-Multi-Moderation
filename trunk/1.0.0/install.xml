@@ -29,10 +29,10 @@
 	</installation>
 	<history>
 		<entry>
-			<date>2010-05-20</date>
+			<date>2010-05-22</date>
 			<rev-version>1.0.0rc1</rev-version>
 			<changelog lang="en">
-				<change>[change] Uses hooks and static methods to reduce file edits</change>
+				<change>[change] Uses hooks and static methods to reduce file edits, and cache to increase efficiency (thanks Erik Frerejean for the idea)</change>
 				<change>[add] Topic Prefixes show up in more locations, such as MCP and UCP</change>
 				<change>[new] Optional integration with NV Advanced Last Topic Titles MOD by nickvergessen</change>
 			</changelog>
