@@ -22,9 +22,10 @@ function tmm_open()
 {
 	global $phpbb_root_path, $phpEx, $user, $table_prefix;
 
-	include($phpbb_root_path . 'includes/tmm_constants.' . $phpEx);
-	include($phpbb_root_path . 'includes/functions_tmm.' . $phpEx);
-	include($phpbb_root_path . 'includes/functions_tmm_admin.' . $phpEx);
+	include($phpbb_root_path . 'includes/mods/tmm_constants.' . $phpEx);
+	include($phpbb_root_path . 'includes/mods/functions_tmm_cache.' . $phpEx);
+	include($phpbb_root_path . 'includes/mods/functions_tmm.' . $phpEx);
+	include($phpbb_root_path . 'includes/mods/functions_tmm_admin.' . $phpEx);
 	// Check what group a user is in
 	if ( !function_exists('group_memberships') )
 	{
