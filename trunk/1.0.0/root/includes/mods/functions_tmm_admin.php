@@ -201,7 +201,7 @@ class tmm_admin extends tmm
 		global $db;
 		$sql = 'SELECT *
 			FROM ' . TMM_TABLE . '
-			WHERE prefix_id = ' . $tmm_id;
+			WHERE tmm_id = ' . $tmm_id;
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
@@ -211,7 +211,7 @@ class tmm_admin extends tmm
 		}
 		$sql = 'DELETE
 			FROM ' . TMM_TABLE . '
-			WHERE prefix_id = ' . $tmm_id;
+			WHERE tmm_id = ' . $tmm_id;
 		$result = $db->sql_query($sql);
 		if(!$result)
 		{

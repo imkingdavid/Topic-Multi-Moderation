@@ -20,12 +20,13 @@ if (!defined('IN_PHPBB'))
 function tmm_open()
 {
 	global $phpbb_root_path, $phpEx, $user, $table_prefix;
+	$user->add_lang('mods/tmm');
 	include($phpbb_root_path . 'includes/mods/tmm_constants.' . $phpEx);
 	include($phpbb_root_path . 'includes/mods/functions_tmm_cache.' . $phpEx);
 	include($phpbb_root_path . 'includes/mods/functions_tmm.' . $phpEx);
 	include($phpbb_root_path . 'includes/mods/functions_tmm_admin.' . $phpEx);
 	// Check what group a user is in
-	if ( !function_exists('group_memberships') )
+	if (($user->page['page_name'] == ('viewtopic.' . $phpEx || 'posting.' . $phpEx)) && !function_exists('group_memberships'))
 	{
 		include($phpbb_root_path . 'includes/functions_user.'.$phpEx);
 	}
@@ -33,8 +34,6 @@ function tmm_open()
 	{
 		include($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
 	}
-	$user->add_lang('mods/tmm');
-	
 	tmm::start();
 }
 //don't break the UMIL install
