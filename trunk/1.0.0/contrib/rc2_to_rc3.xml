@@ -151,6 +151,7 @@
 	</history>
 	<link-group>
 		<link type="parent" href="../install.xml" lang="en">Main Install Instructions</link>
+		<link type="contrib" href="rc1_to_rc2.xml" lang="en">Update from RC1 to RC2</link>
 	</link-group>
 </header>
 

@@ -565,6 +565,11 @@ class tmm
 	public static function get_prefix_dropdown($forum_id = 0, $type = 'single', $prefix_ids = '', $excluded_ids = '')
 	{
 		global $user, $db, $phpbb_root_path, $phpEx;
+		//Make sure the method is available
+		if(!function_exists('group_memberships'))
+		{
+			include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+		}
 		$groups = group_memberships(false,$user->data['user_id']);
 		
 		$prefixes = array();
@@ -627,6 +632,11 @@ class tmm
 	public static function get_tmm_dropdown($forum_id = 0, $type = 'single')
 	{
 		global $user, $db, $phpbb_root_path, $phpEx;
+		//Make sure the method is available
+		if(!function_exists('group_memberships'))
+		{
+			include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+		}
 		$groups = group_memberships(false,$user->data['user_id']);
 
 		$multi_mods = array();
@@ -1006,9 +1016,7 @@ class tmm
 			
 		}
 	}
-	/**
-	* Loads TMM installation information. @@ FUNCTION COPYRIGHT TO HOUSE @@
-	*/
+	
 	public static function load_tmm_install_info()
 	{
 		global $user;

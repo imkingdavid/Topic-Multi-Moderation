@@ -29,6 +29,15 @@
 	</installation>
 	<history>
 		<entry>
+			<date>2010-05-28</date>
+			<rev-version>1.0.0rc3</rev-version>
+			<changelog lang="en">
+				<change>[fix] language variable in PMs being overwritten</change>
+				<change>[fix] bug in ACP module when deleting multi-mods</change>
+				<change>[fix] method being declared twice</change>
+			</changelog>
+		</entry>
+		<entry>
 			<date>2010-05-22</date>
 			<rev-version>1.0.0rc2</rev-version>
 			<changelog lang="en">
@@ -141,7 +150,8 @@
 		</entry>
 	</history>
 	<link-group>
-		<link type="contrib" href="contrib/rc1_to_rc2.xml" lang="en">Update from RC-1 to RC-2</link>
+		<link type="contrib" href="contrib/rc1_to_rc2.xml" lang="en">Update from RC1 to RC2</link>
+		<link type="contrib" href="contrib/rc2_to_rc3.xml" lang="en">Update from RC2 to RC3</link>
 	</link-group>
 </header>
 
