@@ -156,22 +156,16 @@
 </header>
 
 <action-group>
-	<open src="posting.php">
-		<edit>
-			<find><![CDATA[$redirect_url = submit_post($mode, $post_data['post_subject'], $post_data['username'], $post_data['topic_type'], $poll, $data, $update_message, ($update_message || $update_subject) ? true : false);]]></find>
-			<action type="after-add"><![CDATA[//! Begin TMM
-			if($mode == 'post' && !empty($prefixes) && is_array($prefixes))
-			{
-				foreach($prefixes AS $prefix)
-				{
-					$redir_url_split = explode('t=', $redirect_url);
-					tmm::apply_prefix($prefix, $redir_url_split[1]); //$redir_url_split[1] contains the topic ID
-				}
-			}
-			//! End TMM]]></action>
-		</edit>
-	</open>
-	<diy-instructions lang="en"><![CDATA[This should only be used to update from rc1 to rc2. The main installation MODx file should be used to install the MOD for the first time.
+	<copy>
+		<file from="root/includes/mods/functions_tmm.php" to="includes/mods/functions_tmm.php" />
+		<file from="root/includes/hooks/hook_tmm.php" to="includes/hooks/hook_tmm.php" />
+		<file from="root/language/en/mods/tmm.php" to="language/en/mods/tmm.php" />
+		<file from="root/styles/prosilver/template/tmm_posting_body.html" to="styles/prosilver/template/tmm_posting_body.html" />
+	</copy>
+
+	<diy-instructions lang="en"><![CDATA[This should only be used to update from rc2 to rc3. The main installation MODx file should be used to install the MOD for the first time.
+	
+	Once done, purge the cache and refresh the templates.
 	
 	If you appreciate my work and would like to donate to me in order to support the development of this and other MODs, please do so by visiting http://www.phpbbdevelopers.net/ and clicking Donate in the navigation menu. All amounts are appreciated, and no donation is required for use of this MOD.]]>
 	</diy-instructions>
