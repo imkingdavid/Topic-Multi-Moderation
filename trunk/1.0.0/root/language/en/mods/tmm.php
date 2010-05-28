@@ -44,7 +44,7 @@ $lang = array_merge($lang, array(
 	'APPLIED_PREFIXES'			=> 'Applied Prefixes',
 	'APPLIED_PREFIXES_EXPLAIN'	=> 'These prefixes are already applied to this topic.',
 	
-	'ADD'						=> 'Add Prefix',
+	'ADD_PREFIX'				=> 'Add Prefix',
 	'CLEAR'						=> 'Remove All',
 	'REMOVE'					=> 'Remove Checked',
 	
