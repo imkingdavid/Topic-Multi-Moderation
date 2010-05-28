@@ -30,6 +30,13 @@
 	<history>
 		<entry>
 			<date>2010-05-28</date>
+			<rev-version>1.0.0rc4</rev-version>
+			<changelog lang="en">
+				<change>[fix] incompatibility with SEO friendly URL MOD when posting a new topic with prefixes</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2010-05-28</date>
 			<rev-version>1.0.0rc3</rev-version>
 			<changelog lang="en">
 				<change>[fix] language variable in PMs being overwritten</change>
@@ -152,6 +159,7 @@
 	<link-group>
 		<link type="parent" href="../install.xml" lang="en">Main Install Instructions</link>
 		<link type="contrib" href="rc2_to_rc3.xml" lang="en">Update from RC2 to RC3</link>
+		<link type="contrib" href="rc3_to_rc4.xml" lang="en">Update from RC3 to RC4</link>
 	</link-group>
 </header>
 

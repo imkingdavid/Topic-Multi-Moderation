@@ -30,6 +30,13 @@
 	<history>
 		<entry>
 			<date>2010-05-28</date>
+			<rev-version>1.0.0rc4</rev-version>
+			<changelog lang="en">
+				<change>[fix] incompatibility with SEO friendly URL MOD when posting a new topic with prefixes</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2010-05-28</date>
 			<rev-version>1.0.0rc3</rev-version>
 			<changelog lang="en">
 				<change>[fix] language variable in PMs being overwritten</change>
@@ -152,6 +159,7 @@
 	<link-group>
 		<link type="contrib" href="contrib/rc1_to_rc2.xml" lang="en">Update from RC1 to RC2</link>
 		<link type="contrib" href="contrib/rc2_to_rc3.xml" lang="en">Update from RC2 to RC3</link>
+		<link type="contrib" href="contrib/rc3_to_rc4.xml" lang="en">Update from RC3 to RC4</link>
 	</link-group>
 </header>
 
@@ -225,13 +233,18 @@ $template->assign_var('TOPIC_PREFIX', tmm::load_topic_prefixes($topic_id));
 		</edit>
 		<edit>
 			<find><![CDATA[$redirect_url = submit_post($mode, $post_data['post_subject'], $post_data['username'], $post_data['topic_type'], $poll, $data, $update_message, ($update_message || $update_subject) ? true : false);]]></find>
-			<action type="after-add"><![CDATA[//! Begin TMM
+			<action type="after-add"><![CDATA[			//! Begin TMM
 			if($mode == 'post' && !empty($prefixes) && is_array($prefixes))
 			{
+				$sql = 'SELECT topic_id
+					FROM ' . TOPICS_TABLE . '
+					WHERE topic_title = \'' . $post_data['post_subject'] . '\'
+					ORDER BY topic_id DESC';
+				$result = $db->sql_query($sql);
+				$new_topic_id = $db->sql_fetchfield('topic_id');
 				foreach($prefixes AS $prefix)
 				{
-					$redir_url_split = explode('t=', $redirect_url);
-					tmm::apply_prefix($prefix, $redir_url_split[1]); //$redir_url_split[1] contains the topic ID
+					tmm::apply_prefix($prefix, $new_topic_id);
 				}
 			}
 			//! End TMM]]></action>
@@ -371,7 +384,7 @@ $template->assign_var('TOPIC_PREFIX', tmm::load_topic_prefixes($topic_id));
 		</edit>
 	</open>
 	<php-installer>tmm_install.php</php-installer>
-	<diy-instructions lang="en"><![CDATA[Make sure all files have been uploaded to the proper locations. Run the SQL install file, tmm_install.php, in your web browser and delete the file upon script completion. Purge your forum cache.
+	<diy-instructions lang="en"><![CDATA[Make sure all files have been uploaded to the proper locations. Run the SQL install file, tmm_install.php, in your web browser and delete the file upon script completion. Purge your forum cache and refresh your changed templates.
 	
 	If you appreciate my work and would like to donate to me in order to support the development of this and other MODs, please do so by visiting http://www.phpbbdevelopers.net/ and clicking Donate in the navigation menu. All amounts are appreciated, and no donation is required for use of this MOD.]]>
 	</diy-instructions>

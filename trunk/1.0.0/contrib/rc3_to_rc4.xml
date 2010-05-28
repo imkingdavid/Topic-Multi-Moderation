@@ -159,19 +159,45 @@
 	<link-group>
 		<link type="parent" href="../install.xml" lang="en">Main Install Instructions</link>
 		<link type="contrib" href="rc1_to_rc2.xml" lang="en">Update from RC1 to RC2</link>
-		<link type="contrib" href="rc3_to_rc4.xml" lang="en">Update from RC3 to RC4</link>
+		<link type="contrib" href="rc2_to_rc3.xml" lang="en">Update from RC2 to RC3</link>
 	</link-group>
 </header>
 
 <action-group>
 	<copy>
-		<file from="root/includes/mods/functions_tmm.php" to="includes/mods/functions_tmm.php" />
-		<file from="root/includes/hooks/hook_tmm.php" to="includes/hooks/hook_tmm.php" />
-		<file from="root/language/en/mods/tmm.php" to="language/en/mods/tmm.php" />
-		<file from="root/styles/prosilver/template/tmm_posting_body.html" to="styles/prosilver/template/tmm_posting_body.html" />
+		<file from="root/includes/mods/tmm_constants.php" to="includes/mods/tmm_constants.php" />
 	</copy>
+	<open src="posting.php">
+		<edit>
+			<find><![CDATA[//! Begin TMM
+			if($mode == 'post' && !empty($prefixes) && is_array($prefixes))
+			{
+				foreach($prefixes AS $prefix)
+				{
+					$redir_url_split = explode('t=', $redirect_url);
+					tmm::apply_prefix($prefix, $redir_url_split[1]); //$redir_url_split[1] contains the topic ID
+				}
+			}
+			//! End TMM]]></find>
+			<action type="replace-with"><![CDATA[			//! Begin TMM
+			if($mode == 'post' && !empty($prefixes) && is_array($prefixes))
+			{
+				$sql = 'SELECT topic_id
+					FROM ' . TOPICS_TABLE . '
+					WHERE topic_title = \'' . $post_data['post_subject'] . '\'
+					ORDER BY topic_id DESC';
+				$result = $db->sql_query($sql);
+				$new_topic_id = $db->sql_fetchfield('topic_id');
+				foreach($prefixes AS $prefix)
+				{
+					tmm::apply_prefix($prefix, $new_topic_id);
+				}
+			}
+			//! End TMM]]></action>
+		</edit>
+	</open>
 
-	<diy-instructions lang="en"><![CDATA[This should only be used to update from rc2 to rc3. The main installation MODx file should be used to install the MOD for the first time.
+	<diy-instructions lang="en"><![CDATA[This should only be used to update from rc3 to rc4. The main installation MODx file should be used to install the MOD for the first time.
 	
 	Once done, purge the cache and refresh the templates.
 	
