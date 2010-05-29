@@ -29,7 +29,7 @@
 	</installation>
 	<history>
 		<entry>
-			<date>2010-05-28</date>
+			<date>2010-05-29</date>
 			<rev-version>1.0.0rc4</rev-version>
 			<changelog lang="en">
 				<change>[fix] incompatibility with SEO friendly URL MOD when posting a new topic with prefixes</change>
@@ -238,7 +238,6 @@ $template->assign_var('TOPIC_PREFIX', tmm::load_topic_prefixes($topic_id));
 			{
 				$sql = 'SELECT topic_id
 					FROM ' . TOPICS_TABLE . '
-					WHERE topic_title = \'' . $post_data['post_subject'] . '\'
 					ORDER BY topic_id DESC';
 				$result = $db->sql_query($sql);
 				$new_topic_id = $db->sql_fetchfield('topic_id');
