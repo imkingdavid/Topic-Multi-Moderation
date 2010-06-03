@@ -21,8 +21,8 @@ if(!defined('IN_PHPBB'))
 }
 
 //! MOD Version -- NOTE: Must be changed when a new version is released so that the version check works!
-define('TMM_VERSION', '1.0.0rc4');
-define('TMM_VERSION_BIG', 'Topic Multi Moderation v1.0.0rc4');
+define('TMM_VERSION', '1.0.0');
+define('TMM_VERSION_BIG', 'Topic Multi Moderation v1.0.0');
 
 //! DB Tables
 define('TMM_TABLE',						$table_prefix . 'tmm');

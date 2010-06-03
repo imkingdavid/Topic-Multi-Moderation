@@ -25,5 +25,11 @@ Implemented moderation actions include:
 	replying to a topic
 	stickying a topic
 	adding a topic prefix (new feature not present in phpBB by default)
+
+Planned actions include:
+	unlock
+    unstick
+    remove prefix
+    announce/unannounce (global or local)
     
 Topic prefixes may also be implemented separately from multi-mods.
