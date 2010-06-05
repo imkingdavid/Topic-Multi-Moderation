@@ -573,6 +573,7 @@ class tmm
 		$groups = group_memberships(false,$user->data['user_id']);
 		
 		$prefixes = array();
+		self::$prefixes_cache = (empty(self::$prefixes_cache)) ? array(0) : self::$prefixes_cache;
 		foreach(self::$prefixes_cache AS $prefix_id)
 		{
 			$temp_forums = explode(',', $prefix_id['forums']);
@@ -1006,14 +1007,6 @@ class tmm
 					$prefix_array[] = $prefix['id'];
 				}
 			}
-		}
-	}
-	public static function injectSQL_viewforum()
-	{
-		$prefix = request_var('prefix', 0);
-		if($prefix)
-		{
-			
 		}
 	}
 	

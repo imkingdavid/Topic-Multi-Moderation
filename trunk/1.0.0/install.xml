@@ -29,6 +29,13 @@
 	</installation>
 	<history>
 		<entry>
+			<date>2010-06-05</date>
+			<rev-version>1.0.0rc5</rev-version>
+			<changelog lang="en">
+				<change>[fix] error displayed on posting screen when no prefixes have been created (thanks Ratmaster)</change>
+			</changelog>
+		</entry>
+		<entry>
 			<date>2010-05-29</date>
 			<rev-version>1.0.0rc4</rev-version>
 			<changelog lang="en">
