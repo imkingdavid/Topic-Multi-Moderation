@@ -33,7 +33,7 @@ class acp_tmm
       global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
 	  global $table_prefix;
 	  tmm_admin::load_tmm_install_info();
-	
+	  $errors = array();
 	  switch($mode)
       {
 	      case 'index':

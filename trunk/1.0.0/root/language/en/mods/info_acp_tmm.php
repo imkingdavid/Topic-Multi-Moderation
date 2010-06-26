@@ -96,8 +96,7 @@ $lang = array_merge($lang, array(
 	'PREFIX_DELETED'			=> 'Your prefix has been deleted successfully.',
 	'PREFIX_DELETE_ERROR'		=> 'There was an error deleting your prefix. Please try again.',
 	'USERS_EXPLAIN'				=> 'These users may use this prefix regardless of group settings above. Enter each user ID followed by a comma. (e.g. 1,5,62)',
-	'TOKENS_EXPLAIN'			=> '<u>Tokens:</u><br />{USERNAME} becomes the username of the person who applied the prefix.<br />
-	{DATE} becomes the date on which the prefix was applied.',
+	'TOKENS_EXPLAIN'			=> '<span style="text-decoration:underline;">Tokens:</span><br />{USERNAME} becomes the username of the person who applied the prefix.<br />{DATE} becomes the date on which the prefix was applied.',
 	
 //! Version Check
 	'LATEST_VERSION'			=> 'Latest Version:',

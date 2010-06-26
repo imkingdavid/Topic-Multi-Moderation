@@ -141,9 +141,9 @@ class tmm
 	{
 		global $db;
 		$sql = 'UPDATE ' . TOPICS_TABLE . '
-				SET topic_status = ' . ITEM_LOCKED . "
-				WHERE topic_id = $topic_id
-					AND topic_moved_id = 0";
+				SET topic_status = ' . ITEM_LOCKED . '
+				WHERE topic_id = ' . (int) $topic_id . '
+					AND topic_moved_id = 0';
 		$result = $db->sql_query($sql);
 		$return = ($result) ? true : false;
 		$db->sql_freeresult($result);
@@ -160,9 +160,9 @@ class tmm
 	{
 		global $db;
 		$sql = 'UPDATE ' . TOPICS_TABLE . '
-						SET topic_type = ' . POST_STICKY . "
-						WHERE topic_id = $topic_id
-						AND topic_moved_id = 0";
+						SET topic_type = ' . POST_STICKY . '
+						WHERE topic_id = ' . (int) $topic_id . '
+						AND topic_moved_id = 0';
 		$result = $db->sql_query($sql);
 		$return = ($result) ? true : false;
 		$db->sql_freeresult($result);
@@ -616,7 +616,7 @@ class tmm
 				$prefixes_options .= '<option value="' . $prefix['id'] . '"' . $disabled . '>' . $prefix['name'] . '</option>';
 			}
 		}
-		$type = ($type == 'multiple') ? 'multiple="multiple"'  : '';
+		$type = ($type == 'multiple') ? 'multiple="multiple"' : '';
 		return (empty($prefixes_options)) ? '' : '<select name="prefix_dropdown"' . $type . '><option value="0" disabled="disabled" selected="selected">&nbsp;</option>' . $prefixes_options . '</select>';
 	}
 	
@@ -705,7 +705,7 @@ class tmm
 			$dosql = $db->sql_query($sql);
 			
 			$forum_data = $db->sql_fetchrow($dosql);
-	
+			$db->sql_freeresult($dosql);
 			if ($forum_data['forum_type'] != FORUM_POST)
 			{
 				return false;
@@ -780,6 +780,7 @@ class tmm
 	
 					$db->sql_query('INSERT INTO ' . POLL_OPTIONS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 				}
+				$db->sql_freeresult($result);
 			}
 	
 			$sql = 'SELECT *
@@ -920,7 +921,7 @@ class tmm
 	/**
 	* Loads prefix dropdown for posting screen.
 	*/
-	public static function getPrefixesForPosting($topic_id = 0, $forum_id = 0, $literal_prefixes = '')
+	public static function get_prefixes_for_posting($topic_id = 0, $forum_id = 0, $literal_prefixes = '')
 	{
 		$literal_prefixes = (!empty($literal_prefixes)) ? $literal_prefixes : self::load_topic_prefixes($topic_id, 'array', 'sql', 'prefixes');
 		$prefix_select = self::get_prefix_dropdown($forum_id, 'single', 0, $literal_prefixes);
@@ -935,7 +936,7 @@ class tmm
 	*	(int)	 $action	= 0 | 1 | 2 (add selected | remove selected | remove all)
 	*	(int)	 $ids		= ids of prefixes to do $action with; only array if $action = 1
 	*/
-	public static function doPostingAction($mode = 'post', $topic_id = 0, $action = 0, $ids = 0, $temp_cache = '')
+	public static function do_posting_action($mode = 'post', $topic_id = 0, $action = 0, $ids = 0, $temp_cache = '')
 	{
 		if($mode == 'edit')
 		{
@@ -983,8 +984,9 @@ class tmm
 	
 	/**
 	* Gets the prefixes that are used in the forum and lets the user pick to only view topics with the selected prefix
+	* NOTE: Does not work yet.
 	*/
-	public static function getForumPrefixes($forum_id, $method = 'array')
+	public static function get_forum_prefixes($forum_id, $method = 'array')
 	{
 		global $phpbb_root_path, $phpEx, $template;
 		$prefix_array = array();

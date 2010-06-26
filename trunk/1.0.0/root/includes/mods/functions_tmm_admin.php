@@ -97,7 +97,7 @@ class tmm_admin extends tmm
 				   ' . $db->sql_build_array('INSERT', $data);
 			$result = $db->sql_query($sql);
 		}
-		elseif($mode == 'edit')
+		else if($mode == 'edit')
 		{
 			$sql = 'UPDATE ' . TMM_PREFIXES_TABLE . '
 					SET ' . $db->sql_build_array('UPDATE', $data) . '
@@ -112,7 +112,7 @@ class tmm_admin extends tmm
 		{
 			$message = $user->lang[(($result) ? 'PREFIX_CREATED' : 'PREFIX_CREATE_ERROR')];
 		}
-		elseif($mode == 'edit')
+		else if($mode == 'edit')
 		{
 			$message = $user->lang[(($result) ? 'PREFIX_EDITED' : 'PREFIX_EDIT_ERROR')];
 		}
@@ -146,7 +146,7 @@ class tmm_admin extends tmm
 		{
 			$message = $user->lang[(($result) ? 'TMM_CREATED' : 'TMM_CREATE_ERROR')];
 		}
-		elseif($mode == 'update')
+		else if($mode == 'update')
 		{
 			$message = $user->lang[(($result) ? 'TMM_EDITED' : 'TMM_EDIT_ERROR')];
 		}
@@ -162,7 +162,7 @@ class tmm_admin extends tmm
 	public static function delete_prefix($prefix_id)
 	{
 		global $db;
-		$sql = 'SELECT *
+		$sql = 'SELECT prefix_id
 			FROM ' . TMM_PREFIXES_TABLE . '
 			WHERE prefix_id = ' . $prefix_id;
 		$result = $db->sql_query($sql);
@@ -199,7 +199,7 @@ class tmm_admin extends tmm
 	public static function delete_tmm($tmm_id)
 	{
 		global $db;
-		$sql = 'SELECT *
+		$sql = 'SELECT tmm_id
 			FROM ' . TMM_TABLE . '
 			WHERE tmm_id = ' . $tmm_id;
 		$result = $db->sql_query($sql);

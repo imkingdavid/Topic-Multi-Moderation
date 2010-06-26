@@ -33,7 +33,7 @@ if (!file_exists($phpbb_root_path . 'umil/umil_auto.' . $phpEx))
 }
 
 // The name of the mod to be displayed during installation.
-$mod_name = 'Topic Multi-Moderation and Prefixes';
+$mod_name = 'TMM_TITLE';
 
 /*
 * The name of the config variable which will hold the currently installed version

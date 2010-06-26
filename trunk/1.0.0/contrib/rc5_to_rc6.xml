@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml-stylesheet type="text/xsl" href="modx.prosilver.en.xsl"?>
+<!--For security purposes, please check: http://www.phpbb.com/mods/ for the latest version of this MOD. Although MODs are checked before being allowed in the MODs Database there is no guarantee that there are no security problems within the MOD. No support will be given for MODs not found within the MODs Database which can be found at http://www.phpbb.com/mods/-->
+<mod xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.phpbb.com/mods/xml/modx-1.2.5.xsd">
+<header>
+	<license>http://opensource.org/licenses/gpl-license.php GNU General Public License v2</license>
+
+	<title lang="en">Topic Multi-Moderation</title>
+	
+	<description lang="en">This MOD adds a quick and easy way to perform multiple moderation tasks with one click. Configurable via the ACP.</description>
+
+	<author-notes lang="en">If you would like to make a donation for my work done on this MOD as well as other MODs, you may do so by going to the demo/test board (http://www.phpbbdevelopers.net/) and clicking the Donate button in the header. All donations are voluntary but appreciated.</author-notes>
+
+	<author-group>
+		<author>
+			<username>imkingdavid</username>
+			<realname>David King</realname>
+			<homepage>http://www.phpbbdevelopers.net</homepage>
+			<email>imkingdavid@gmail.com</email>
+		</author>
+	</author-group>
+
+	<mod-version>1.0.0-PL1</mod-version>
+
+	<installation>
+		<level>intermediate</level>
+		<time>300</time>
+		<target-version>3.0.7-PL1</target-version>
+	</installation>
+	<history>
+		<entry>
+			<date>2010-06-26</date>
+			<rev-version>1.0.0rc6</rev-version>
+			<changelog lang="en">
+				<change>[fix] errors pointed out during MOD validation</change>
+				<change>[fix] non-moderators cannot apply multi-mods</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2010-06-06</date>
+			<rev-version>1.0.0rc5</rev-version>
+			<changelog lang="en">
+				<change>[fix] spelling issue in language variable in ACP multi-mods add/edit page title (thanks Callum95)</change>
+				<change>[fix] error displayed on posting screen when no prefixes have been created (thanks Ratmaster)</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2010-05-29</date>
+			<rev-version>1.0.0rc4</rev-version>
+			<changelog lang="en">
+				<change>[fix] incompatibility with SEO friendly URL MOD when posting a new topic with prefixes</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2010-05-28</date>
+			<rev-version>1.0.0rc3</rev-version>
+			<changelog lang="en">
+				<change>[fix] language variable in PMs being overwritten</change>
+				<change>[fix] bug in ACP module when deleting multi-mods</change>
+				<change>[fix] method being declared twice</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2010-05-22</date>
+			<rev-version>1.0.0rc2</rev-version>
+			<changelog lang="en">
+				<change>[fix] apply prefix on new post</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2010-05-22</date>
+			<rev-version>1.0.0rc1</rev-version>
+			<changelog lang="en">
+				<change>[change] Uses hooks and static methods to reduce file edits, and cache to increase efficiency (thanks Erik Frerejean for the idea)</change>
+				<change>[add] Topic Prefixes show up in more locations, such as MCP and Search</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2010-05-02</date>
+			<rev-version>0.2.1</rev-version>
+			<changelog lang="en">
+				<change>[Change] Removed extraneous "Recheck" link from version checker</change>
+				<change>[Fix] Unable to add same prefix multiple times (unless applied by multi-mod)</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2010-05-01</date>
+			<rev-version>0.2.0</rev-version>
+			<changelog lang="en">
+				<change>[Change] Complete code rewrite</change>
+				<change>[Feature] Tokens in prefix (i.e. {USERNAME} and {DATE})</change>
+				<change>[Feature] Add multiple prefixes to topic</change>
+				<change>[Feature] Added more flexibility for better control per prefix and multi-mod</change>
+				<change>[Note] Not backwards compatible.</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2009-12-16</date>
+			<rev-version>0.1.4 BETA</rev-version>
+			<changelog lang="en">
+				<change>[Fix] bug in ACP prefixes edit module</change>
+				<change>[Fix] color swatch in ACP prefixes module</change>
+				<change>[Fix] for bug caused by another MOD (topic_status cannot be NULL)</change>
+				<change>[Note] never released</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2009-09-13</date>
+			<rev-version>0.1.3 BETA</rev-version>
+			<changelog lang="en">
+				<change>[Change]Changed the version numbering from 1.0.0 BETA # to 0.1.# BETA.</change>
+				<change>[Fix] errors generated in posting.php</change>
+				<change>[Fix] errors generated in viewtopic.php (thanks tbxn)</change>
+				<change>[Fix] made module() function in info/acp_tmm.php a public function (thanks tbxn)</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2009-09-01</date>
+			<rev-version>0.1.2 BETA</rev-version>
+			<changelog lang="en">
+				<change>[Change] Changed permission settings (now there are separte admin permissions, as well as separate forum-specific permissions for multi-mods and prefixes).</change>
+				<change>[Fix] Fixed various bugs in posting.php, posting_editor.html</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2009-09-01</date>
+			<rev-version>0.1.1 BETA</rev-version>
+			<changelog lang="en">
+				<change>[Fix] Fixed ANOTHER bug in prefix dropdown menu on posting</change>
+				<change>[Fix] Fixed various template bugs</change>
+				<change>[Fix] Fixed various viewforum, posting, and viewtopic bugs</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2009-08-31</date>
+			<rev-version>0.1.0 BETA</rev-version>
+			<changelog lang="en">
+				<change>[Fix] Fixed bug in prefix dropdown menu on posting</change>
+				<change>[Feature] Added copy ability for multi-mods</change>
+				<change>[Feature] Added UMIL automated install/uninstall/update file: tmm_install.php</change>
+				<change>[Feature] Verified AutoMOD compatibility</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2009-08-25</date>
+			<rev-version>0.0.3 ALPHA</rev-version>
+			<changelog lang="en">
+				<change>[Change] Added support for separate prefix use on posting.php (new thread and edit first post screen)</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2009-08-23</date>
+			<rev-version>0.0.2 ALPHA</rev-version>
+			<changelog lang="en">
+				<change>[Fix] Made a few fixes to the install.xml file</change>
+				<change>[Change] Changed database tables (added default value)</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2009-08-23</date>
+			<rev-version>0.0.1 ALPHA</rev-version>
+			<changelog lang="en">
+				<change>Completed bulk of the coding</change>
+				<change>Released first alpha version</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2009-08-15</date>
+			<rev-version>0.0.0 DEV</rev-version>
+			<changelog lang="en">
+				<change>Begun development</change>
+			</changelog>
+		</entry>
+	</history>
+	<link-group>
+		<link type="parent" href="../install.xml" lang="en">Main Install Instructions</link>
+		<link type="contrib" href="rc1_to_rc2.xml" lang="en">Update from RC1 to RC2</link>
+		<link type="contrib" href="rc2_to_rc3.xml" lang="en">Update from RC2 to RC3</link>
+		<link type="contrib" href="rc3_to_rc4.xml" lang="en">Update from RC3 to RC4</link>
+		<link type="contrib" href="rc4_to_rc5.xml" lang="en">Update from RC4 to RC5</link>
+	</link-group>
+</header>
+
+<action-group>
+	<copy>
+		<file from="root/*.*" to="*.*" />
+	</copy>
+	
+	<open src="posting.php">
+		<edit>
+			<find><![CDATA[$temp_cache = tmm::doPostingAction($mode, $topic_id, $action, $ids, $prefix_cache);]]></find>
+			<action type="replace-with"><![CDATA[$temp_cache = tmm::do_posting_action($mode, $topic_id, $action, $ids, $prefix_cache);]]></action>
+		</edit>
+		<edit>
+			<find><![CDATA[$prefix_select = tmm::getPrefixesForPosting($topic_id, $forum_id, $temp_cache);]]></find>
+			<ation type="replace-with"><![CDATA[$prefix_select = tmm::get_prefixes_for_posting($topic_id, $forum_id, $temp_cache);]]></action>
+		</edit>
+		<edit>
+			<find><![CDATA[$use_tmm = (($mode == 'edit' && ($post_data['topic_first_post_id'] == $post_id) || $mode == 'post')) ? true : false;]]></find>
+			<action type="replace-with"><![CDATA[$use_tmm = (($mode == 'edit' && $post_data['topic_first_post_id'] == $post_id) || $mode == 'post') ? true : false;]]></action>
+		</edit>
+		<edit>
+			<find><![CDATA[$new_topic_id = $db->sql_fetchfield('topic_id');]]></find>
+			<action type="after-add"><![CDATA[$db->sql_freeresult($result);]]></action>
+		</edit>
+	</open>
+	
+	<open src="language/en/mods/info_acp_tmm.php">
+		<edit>
+			<find><![CDATA['TOKENS_EXPLAIN'			=> '<u>Tokens:</u><br />{USERNAME} becomes the username of the person who applied the prefix.<br />
+	{DATE} becomes the date on which the prefix was applied.',]]></find>
+			<action type="replace-with"><![CDATA['TOKENS_EXPLAIN'			=> '<span style="text-decoration:underline;">Tokens:</span><br />{USERNAME} becomes the username of the person who applied the prefix.<br />{DATE} becomes the date on which the prefix was applied.',]]]></action>
+		</edit>
+	</open>
+	
+	<open src="includes/acp/acp_tmm.php">
+		<edit>
+			<find><![CDATA[tmm_admin::load_tmm_install_info();]]></find>
+			<action type="after-add"><![CDATA[$errors = array();]]></action>
+		<edit>
+			<find><![CDATA[$prefix_id = request_var('id', (int) 0);]]></find>
+			<action type="replace-with"><![CDATA[$prefix_id = request_var('id', 0);]]></action>
+		</edit>
+	</open>
+	
+	<open src="includes/mods/functions_tmm_admin.php">
+		<edit>
+			<find><![CDATA[ $sql = 'SELECT *
+FROM ' . TMM_PREFIXES_TABLE . '
+WHERE prefix_id = ' . $prefix_id;]]></find>
+			<action type="replace-with"><![CDATA[ $sql = 'SELECT prefix_id
+FROM ' . TMM_PREFIXES_TABLE . '
+WHERE prefix_id = ' . $prefix_id;]]></action>
+			<find><![CDATA[ $sql = 'SELECT *
+FROM ' . TMM_TABLE . '
+WHERE tmm_id = ' . $tmm_id;]]></find>
+			<action type="replace-with"><![CDATA[ $sql = 'SELECT tmm_id
+FROM ' . TMM_TABLE . '
+WHERE tmm_id = ' . $tmm_id;]]></action>
+	</open>
+	
+	<open src="includes/mods/functions_tmm.php">
+		<edit>
+			<find><![CDATA[$sql = 'UPDATE ' . TOPICS_TABLE . '
+						SET topic_type = ' . POST_STICKY . "
+						WHERE topic_id = $topic_id
+						AND topic_moved_id = 0";]]></find>
+			<action type="replace-with"><![CDATA[$sql = 'UPDATE ' . TOPICS_TABLE . '
+				SET topic_status = ' . ITEM_LOCKED . '
+				WHERE topic_id = ' . (int) $topic_id . '
+					AND topic_moved_id = 0';]]></action>
+		</edit>
+		<edit>
+			<find><![CDATA[$sql = 'UPDATE ' . TOPICS_TABLE . '
+						SET topic_type = ' . POST_STICKY . "
+						WHERE topic_id = $topic_id
+						AND topic_moved_id = 0";]]></find>
+			<action type="replace-with"><![CDATA[$sql = 'UPDATE ' . TOPICS_TABLE . '
+						SET topic_type = ' . POST_STICKY . '
+						WHERE topic_id = ' . (int) $topic_id . '
+						AND topic_moved_id = 0';]]></action>
+		</edit>
+		<edit>
+			<find><![CDATA[$type = ($type == 'multiple') ? 'multiple="multiple"' : '';]]></find>
+			<action type="replace-with"><![CDATA[$type = ($type == 'multiple') ? ' multiple="multiple"' : '';]]></action>
+		</edit>
+		<edit>
+			<find><![CDATA[$forum_data = $db->sql_fetchrow($dosql);]]></find>
+			<action type="after-add"><![CDATA[			$db->sql_freeresult($dosql);]]></action>
+		</edit>
+		<edit>
+			<find><![CDATA[$topic_data = $db->sql_fetchrowset($dosql);]]></find>
+			<action type="after-add"><![CDATA[			$db->sql_freeresult($dosql);]]></action>
+		</edit>
+		<edit>
+			<find><![CDATA[while ($row = $db->sql_fetchrow($result))
+				{
+					$sql_ary = array(
+						'poll_option_id'	=> (int) $row['poll_option_id'],
+						'topic_id'			=> (int) $new_topic_id,
+						'poll_option_text'	=> (string) $row['poll_option_text'],
+						'poll_option_total'	=> 0
+					);
+	
+					$db->sql_query('INSERT INTO ' . POLL_OPTIONS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
+				}]]></find>
+			<action type="after-add"><![CDATA[				$db->sql_freeresult($result);]]></action>
+		</edit>
+		<edit>
+			<find><![CDATA[public static function getPrefixesForPosting($topic_id = 0, $forum_id = 0, $literal_prefixes = '')]]></find>
+			<action type="replace-with"><![CDATA[public static function get_prefixes_for_posting($topic_id = 0, $forum_id = 0, $literal_prefixes = '')]]></action>
+		</edit>
+		<edit>
+			<find><![CDATA[public static function doPostingAction($mode = 'post', $topic_id = 0, $action = 0, $ids = 0, $temp_cache = '')]]></find>
+			<action type="replace-with"><![CDATA[public static function do_posting_action($mode = 'post', $topic_id = 0, $action = 0, $ids = 0, $temp_cache = '')]]></action>
+		</edit>
+		<edit>
+			<find><![CDATA[public static function getForumPrefixes($forum_id, $method = 'array')]]></find>
+			<action type="replace-with"><![CDATA[public static function get_forum_prefixes($forum_id, $method = 'array')]]></action>
+		</edit>
+	</open>
+
+	<diy-instructions lang="en"><![CDATA[This should only be used to update from rc5 to rc6. The main installation MODx file should be used to install the MOD for the first time.
+	
+	If you appreciate my work and would like to donate to me in order to support the development of this and other MODs, please do so by visiting http://www.phpbbdevelopers.net/ and clicking Donate in the navigation menu. All amounts are appreciated, and no donation is required for use of this MOD.]]>
+	</diy-instructions>
+</action-group>
+</mod>
