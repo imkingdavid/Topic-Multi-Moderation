@@ -215,6 +215,8 @@ if($tmm_id == 0)
 
 	<diy-instructions lang="en"><![CDATA[This should only be used to update from rc5 to rc6. The main installation MODx file should be used to install the MOD for the first time.
 	
+	Due to some difficulty in deleting the MCP module automatically, it will have to be done manually. To do so, go to ACP -> System Tab -> Module Management -> Moderator Control Panel. Now navigate to the MCP_TMM category and delete the module, and then the category itself.
+	
 	Be sure to purge the cache and refresh the templates once you've finished the update.
 	
 	If you appreciate my work and would like to donate to me in order to support the development of this and other MODs, please do so by visiting http://www.phpbbdevelopers.net/ and clicking Donate in the navigation menu. All amounts are appreciated, and no donation is required for use of this MOD.]]>

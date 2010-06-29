@@ -97,14 +97,12 @@ $versions = array(
 			),
 		),
 	),*/
+	// Had to do .01 or it wouldn't let me do an update. Next time I'll need to take RC's into account.
 	'1.0.01' => array(
 		// We don't need these permissions anymore; they were for the older version and got scrapped.
 		'permission_remove' => array(
 			array('f_tmm_use', false),
 			array('f_prefix_use', false),
-		),
-		'module_remove' => array(
-			array('mcp', 'MCP_TMM', 'MCP_TMM'),
 		),
 	),
 	'1.0.0' => array(
@@ -119,13 +117,6 @@ $versions = array(
 			array('acp', 'ACP_TMM', array(
 					'module_basename'		=> 'tmm',
 					'modes'					=> array('index', 'prefixes'),
-				),
-			),
-			
-			array('mcp', '', 'MCP_TMM'),
-			array('mcp', 'MCP_TMM', array(
-					'module_basename'		=> 'tmm',
-					'modes'					=> array('index'),
 				),
 			),
 		),
