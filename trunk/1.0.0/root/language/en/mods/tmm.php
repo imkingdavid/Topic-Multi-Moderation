@@ -48,6 +48,27 @@ $lang = array_merge($lang, array(
 	'CLEAR'						=> 'Remove All',
 	'REMOVE'					=> 'Remove Checked',
 	
+	'INVALID_MULTI_MOD'			=> 'No multi-mod specified.',
+	'INVALID_TOPIC_ID'			=> 'No topic specified.',
+	'APPLY_TMM'					=> 'Apply Multi-Mod',
+	'APPLY_TMM_CONFIRM'			=> 'The following actions will be performed:<br />%1$s',
+	'TMM_PREFIX_ID'				=> 'Prefixes applied: %1$s',
+	'TMM_LOCK'					=> 'Topic Locked',
+	'TMM_STICKY'				=> 'Topic Stickied',
+	'TMM_MOVE'					=> 'Topic Moved',
+	'TMM_COPY'					=> 'Topic Copied',
+	'TMM_AUTOREPLY_BOOL'		=> 'Reply posted to topic',
+	//Errors
+	'AUTOREPLY_ERROR'			=> 'Could not add reply',
+	'LOCK_ERROR'				=> 'Could not lock topic',
+	'STICK_ERROR'				=> 'Could not sticky topic',
+	'COPY_ERROR'				=> 'Could not copy topic',
+	'MOVE_ERROR'				=> 'Could not move topic',
+	'PREFIX_ERROR'				=> 'Could not apply prefix(es)',
+	
+	'TMM_PASS'					=> 'The multi-mod has been applied successfully',
+	'TMM_FAIL'					=> 'Some parts of the multi-mod could not be applied. They are listed below.',
+	
 	// Eventual search integration
 	'SEARCH_PREFIXES'			=> 'Search by prefix(es)',
 	'SEARCH_PREFIXES_EXPLAIN'	=> 'Show all topics with at least one of the selected prefixes',

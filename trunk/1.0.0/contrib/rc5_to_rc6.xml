@@ -29,7 +29,7 @@
 	</installation>
 	<history>
 		<entry>
-			<date>2010-06-26</date>
+			<date>2010-06-28</date>
 			<rev-version>1.0.0rc6</rev-version>
 			<changelog lang="en">
 				<change>[fix] errors pointed out during MOD validation</change>
@@ -186,121 +186,36 @@
 		<file from="root/*.*" to="*.*" />
 	</copy>
 	
-	<open src="posting.php">
+	<delete>
+		<file name="includes/mcp/mcp_tmm.php" />
+		<file name="includes/mcp/info/mcp_tmm.php" />
+		<file name="language/en/mods/info_mcp_tmm.php" />
+		<file name="styles/prosilver/template/mcp_tmm.html" />
+	</delete>
+	
+	<open src="mcp.php">
 		<edit>
-			<find><![CDATA[$temp_cache = tmm::doPostingAction($mode, $topic_id, $action, $ids, $prefix_cache);]]></find>
-			<action type="replace-with"><![CDATA[$temp_cache = tmm::do_posting_action($mode, $topic_id, $action, $ids, $prefix_cache);]]></action>
-		</edit>
-		<edit>
-			<find><![CDATA[$prefix_select = tmm::getPrefixesForPosting($topic_id, $forum_id, $temp_cache);]]></find>
-			<ation type="replace-with"><![CDATA[$prefix_select = tmm::get_prefixes_for_posting($topic_id, $forum_id, $temp_cache);]]></action>
-		</edit>
-		<edit>
-			<find><![CDATA[$use_tmm = (($mode == 'edit' && ($post_data['topic_first_post_id'] == $post_id) || $mode == 'post')) ? true : false;]]></find>
-			<action type="replace-with"><![CDATA[$use_tmm = (($mode == 'edit' && $post_data['topic_first_post_id'] == $post_id) || $mode == 'post') ? true : false;]]></action>
-		</edit>
-		<edit>
-			<find><![CDATA[$new_topic_id = $db->sql_fetchfield('topic_id');]]></find>
-			<action type="after-add"><![CDATA[$db->sql_freeresult($result);]]></action>
+			<remove><![CDATA[//! Begin TMM
+$tmm_id = request_var('multimod', 0);
+if($tmm_id == 0)
+{
+	$module->set_display('tmm', 'index', false);
+}
+//! End TMM]]></action>
 		</edit>
 	</open>
 	
-	<open src="language/en/mods/info_acp_tmm.php">
+	<open src="viewtopic.php">
 		<edit>
-			<find><![CDATA['TOKENS_EXPLAIN'			=> '<u>Tokens:</u><br />{USERNAME} becomes the username of the person who applied the prefix.<br />
-	{DATE} becomes the date on which the prefix was applied.',]]></find>
-			<action type="replace-with"><![CDATA['TOKENS_EXPLAIN'			=> '<span style="text-decoration:underline;">Tokens:</span><br />{USERNAME} becomes the username of the person who applied the prefix.<br />{DATE} becomes the date on which the prefix was applied.',]]]></action>
+			<remove><![CDATA[	'S_TMM_ACTION' 	=> append_sid("{$phpbb_root_path}mcp.$phpEx", "i=tmm&amp;f=$forum_id&amp;t=$topic_id&amp;start=$start&amp;multimod=1&amp;redirect=" . urlencode(str_replace('&amp;', '&', $viewtopic_url)), true, $user->session_id),]]></remove>
 		</edit>
 	</open>
 	
-	<open src="includes/acp/acp_tmm.php">
-		<edit>
-			<find><![CDATA[tmm_admin::load_tmm_install_info();]]></find>
-			<action type="after-add"><![CDATA[$errors = array();]]></action>
-		<edit>
-			<find><![CDATA[$prefix_id = request_var('id', (int) 0);]]></find>
-			<action type="replace-with"><![CDATA[$prefix_id = request_var('id', 0);]]></action>
-		</edit>
-	</open>
-	
-	<open src="includes/mods/functions_tmm_admin.php">
-		<edit>
-			<find><![CDATA[ $sql = 'SELECT *
-FROM ' . TMM_PREFIXES_TABLE . '
-WHERE prefix_id = ' . $prefix_id;]]></find>
-			<action type="replace-with"><![CDATA[ $sql = 'SELECT prefix_id
-FROM ' . TMM_PREFIXES_TABLE . '
-WHERE prefix_id = ' . $prefix_id;]]></action>
-			<find><![CDATA[ $sql = 'SELECT *
-FROM ' . TMM_TABLE . '
-WHERE tmm_id = ' . $tmm_id;]]></find>
-			<action type="replace-with"><![CDATA[ $sql = 'SELECT tmm_id
-FROM ' . TMM_TABLE . '
-WHERE tmm_id = ' . $tmm_id;]]></action>
-	</open>
-	
-	<open src="includes/mods/functions_tmm.php">
-		<edit>
-			<find><![CDATA[$sql = 'UPDATE ' . TOPICS_TABLE . '
-						SET topic_type = ' . POST_STICKY . "
-						WHERE topic_id = $topic_id
-						AND topic_moved_id = 0";]]></find>
-			<action type="replace-with"><![CDATA[$sql = 'UPDATE ' . TOPICS_TABLE . '
-				SET topic_status = ' . ITEM_LOCKED . '
-				WHERE topic_id = ' . (int) $topic_id . '
-					AND topic_moved_id = 0';]]></action>
-		</edit>
-		<edit>
-			<find><![CDATA[$sql = 'UPDATE ' . TOPICS_TABLE . '
-						SET topic_type = ' . POST_STICKY . "
-						WHERE topic_id = $topic_id
-						AND topic_moved_id = 0";]]></find>
-			<action type="replace-with"><![CDATA[$sql = 'UPDATE ' . TOPICS_TABLE . '
-						SET topic_type = ' . POST_STICKY . '
-						WHERE topic_id = ' . (int) $topic_id . '
-						AND topic_moved_id = 0';]]></action>
-		</edit>
-		<edit>
-			<find><![CDATA[$type = ($type == 'multiple') ? 'multiple="multiple"' : '';]]></find>
-			<action type="replace-with"><![CDATA[$type = ($type == 'multiple') ? ' multiple="multiple"' : '';]]></action>
-		</edit>
-		<edit>
-			<find><![CDATA[$forum_data = $db->sql_fetchrow($dosql);]]></find>
-			<action type="after-add"><![CDATA[			$db->sql_freeresult($dosql);]]></action>
-		</edit>
-		<edit>
-			<find><![CDATA[$topic_data = $db->sql_fetchrowset($dosql);]]></find>
-			<action type="after-add"><![CDATA[			$db->sql_freeresult($dosql);]]></action>
-		</edit>
-		<edit>
-			<find><![CDATA[while ($row = $db->sql_fetchrow($result))
-				{
-					$sql_ary = array(
-						'poll_option_id'	=> (int) $row['poll_option_id'],
-						'topic_id'			=> (int) $new_topic_id,
-						'poll_option_text'	=> (string) $row['poll_option_text'],
-						'poll_option_total'	=> 0
-					);
-	
-					$db->sql_query('INSERT INTO ' . POLL_OPTIONS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
-				}]]></find>
-			<action type="after-add"><![CDATA[				$db->sql_freeresult($result);]]></action>
-		</edit>
-		<edit>
-			<find><![CDATA[public static function getPrefixesForPosting($topic_id = 0, $forum_id = 0, $literal_prefixes = '')]]></find>
-			<action type="replace-with"><![CDATA[public static function get_prefixes_for_posting($topic_id = 0, $forum_id = 0, $literal_prefixes = '')]]></action>
-		</edit>
-		<edit>
-			<find><![CDATA[public static function doPostingAction($mode = 'post', $topic_id = 0, $action = 0, $ids = 0, $temp_cache = '')]]></find>
-			<action type="replace-with"><![CDATA[public static function do_posting_action($mode = 'post', $topic_id = 0, $action = 0, $ids = 0, $temp_cache = '')]]></action>
-		</edit>
-		<edit>
-			<find><![CDATA[public static function getForumPrefixes($forum_id, $method = 'array')]]></find>
-			<action type="replace-with"><![CDATA[public static function get_forum_prefixes($forum_id, $method = 'array')]]></action>
-		</edit>
-	</open>
+	<php-installer>tmm_install.php</php-installer>
 
 	<diy-instructions lang="en"><![CDATA[This should only be used to update from rc5 to rc6. The main installation MODx file should be used to install the MOD for the first time.
+	
+	Be sure to purge the cache and refresh the templates once you've finished the update.
 	
 	If you appreciate my work and would like to donate to me in order to support the development of this and other MODs, please do so by visiting http://www.phpbbdevelopers.net/ and clicking Donate in the navigation menu. All amounts are appreciated, and no donation is required for use of this MOD.]]>
 	</diy-instructions>

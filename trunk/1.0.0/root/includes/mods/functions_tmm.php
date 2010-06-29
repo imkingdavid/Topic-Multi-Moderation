@@ -41,6 +41,7 @@ class tmm
 		//if a topic ID is given in the URL, load the topic's prefixes.
 		// This eliminates the need for edits in viewtopic and some other locations.
 		$topic_id = request_var('t', 0);
+		$forum_id = request_var('f', 0);
 		if($topic_id)
 		{
 			global $user, $template, $phpbb_root_path, $phpEx;
@@ -48,7 +49,7 @@ class tmm
 			$template->assign_vars(array(
 				'TOPIC_PREFIX'	=> self::load_topic_prefixes($topic_id),
 				'TMM_SELECT'	=> self::get_tmm_dropdown($topic_id),
-				'S_TMM_ACTION' 	=> append_sid("{$phpbb_root_path}mcp.$phpEx", "i=tmm&amp;t=$topic_id&amp;redirect=" . urlencode(str_replace('&amp;', '&', $viewtopic_url)), true, $user->session_id),
+				'S_TMM_ACTION' 	=> append_sid("{$phpbb_root_path}tmm.$phpEx", array('t' => $topic_id, 'f' => $forum_id)),
 			));
 		}
 	}
@@ -667,13 +668,9 @@ class tmm
 		$tmm_options = '';
 		foreach($multi_mods AS $multi_mod)
 		{
-			$sql = 'SELECT tmm_title
-				FROM ' . TMM_TABLE . '
-				WHERE tmm_id = ' . $multi_mod;
-			$result = $db->sql_query($sql);
-			$row = $db->sql_fetchrow($result);
-			$db->sql_freeresult($result);
-			$tmm_options .= '<option value="' . $multi_mod . '">' . $row['tmm_title'] . '</option>';
+			$tmm_title = self::$tmm_cache[$multi_mod]['title'];
+			
+			$tmm_options .= '<option value="' . $multi_mod . '">' . $tmm_title . '</option>';
 		}
 		$type = ($type == 'multiple') ? 'multiple="multiple"'  : '';
 		return (empty($tmm_options)) ? '' : '<select name="tmm_select"' . $type . '>' . $tmm_options . '</select>';

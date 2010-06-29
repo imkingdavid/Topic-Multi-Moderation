@@ -97,6 +97,16 @@ $versions = array(
 			),
 		),
 	),*/
+	'1.0.01' => array(
+		// We don't need these permissions anymore; they were for the older version and got scrapped.
+		'permission_remove' => array(
+			array('f_tmm_use', false),
+			array('f_prefix_use', false),
+		),
+		'module_remove' => array(
+			array('mcp', 'MCP_TMM', 'MCP_TMM'),
+		),
+	),
 	'1.0.0' => array(
 	 /* No SQL changes */
 	),

@@ -177,6 +177,7 @@
 		<link type="contrib" href="contrib/rc2_to_rc3.xml" lang="en">Update from RC2 to RC3</link>
 		<link type="contrib" href="contrib/rc3_to_rc4.xml" lang="en">Update from RC3 to RC4</link>
 		<link type="contrib" href="contrib/rc4_to_rc5.xml" lang="en">Update from RC4 to RC5</link>
+		<link type="contrib" href="contrib/rc5_to_rc6.xml" lang="en">Update from RC5 to RC6</link>
 	</link-group>
 </header>
 
@@ -184,22 +185,7 @@
 	<copy>
 		<file from="root/*.*" to="*.*" />
 	</copy>
-	<open src="mcp.php">
-		<edit>
-			<find><![CDATA[if (!$post_id)
-{
-	$module->set_display('main', 'post_details', false);
-	$module->set_display('warn', 'warn_post', false);
-}]]></find>
-			<action type="before-add"><![CDATA[//! Begin TMM
-$tmm_id = request_var('multimod', 0);
-if($tmm_id == 0)
-{
-	$module->set_display('tmm', 'index', false);
-}
-//! End TMM]]></action>
-		</edit>
-	</open>
+	
 	<open src="posting.php">
 		<edit>
 			<find><![CDATA[$refresh	= (isset($_POST['add_file']) || isset($_POST['delete_file']) || isset($_POST['full_editor']) || isset($_POST['cancel_unglobalise']) || $save || $load) ? true : false;]]></find>
@@ -289,7 +275,6 @@ $template->assign_var('TOPIC_PREFIX', tmm::load_topic_prefixes($topic_id));
 			<action type="after-add"><![CDATA[//! Begin TMM
 	'TOPIC_PREFIX'	=> tmm::load_topic_prefixes($topic_data['topic_id']),
 	'TMM_SELECT'	=> tmm::get_tmm_dropdown($topic_data['forum_id']),
-	'S_TMM_ACTION' 	=> append_sid("{$phpbb_root_path}mcp.$phpEx", "i=tmm&amp;f=$forum_id&amp;t=$topic_id&amp;start=$start&amp;multimod=1&amp;redirect=" . urlencode(str_replace('&amp;', '&', $viewtopic_url)), true, $user->session_id),
 	//! End TMM]]></action>
 		</edit>
 	</open>
