@@ -201,7 +201,7 @@ if($tmm_id == 0)
 {
 	$module->set_display('tmm', 'index', false);
 }
-//! End TMM]]></action>
+//! End TMM]]></remove>
 		</edit>
 	</open>
 	

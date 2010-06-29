@@ -143,21 +143,21 @@ class acp_tmm
 					$gid = implode(',', $group_id);
 					$pid = implode(',', $prefix_id);
 					$data = array(
-						'tmm_title'			=> utf8_normalize_nfc(request_var('title', '')),
-						'desc'				=> utf8_normalize_nfc(request_var('desc', '')),
+						'tmm_title'			=> utf8_normalize_nfc(request_var('title', '', true)),
+						'desc'				=> utf8_normalize_nfc(request_var('desc', '', true)),
 						'prefix_id'			=> $pid,
 						'forum_id'			=> $fid,
 						'group_id'			=> $gid,
 						'user_ids'			=> request_var('user_ids', ''),
-						'lock_option'		=> (int) request_var('lock_option', 0),
-						'sticky_option'		=> (int) request_var('sticky_option', 0),
-						'copy_option'		=> (int) request_var('copy_option', 0),
-						'copywhere'			=> (int) request_var('copywhere', 0),
-						'move_option'		=> (int) request_var('move_option', 0),
-						'movewhere'			=> (int) request_var('movewhere', 0),
-						'autoresponse'		=> request_var('autoresponse', ''),
-						'autoreply'			=> (int) request_var('autoreply', 0),
-						'autoreply_poster'	=> (int) request_var('autoreply_poster', 0),
+						'lock_option'		=> request_var('lock_option', 0),
+						'sticky_option'		=> request_var('sticky_option', 0),
+						'copy_option'		=> request_var('copy_option', 0),
+						'copywhere'			=> request_var('copywhere', 0),
+						'move_option'		=> request_var('move_option', 0),
+						'movewhere'			=> request_var('movewhere', 0),
+                        'autoresponse'      => utf8_normalize_nfc(request_var('autoresponse', '', true)),    
+						'autoreply'			=> request_var('autoreply', 0),
+						'autoreply_poster'	=> request_var('autoreply_poster', 0),
 					);
 					$sql_ary = array(
 						'tmm_title'				=> $data['tmm_title'],
@@ -297,8 +297,8 @@ class acp_tmm
 					
 					$prefix_forums = implode(',', $forum_id);
 					$prefix_groups = implode(',', $group_id);
-					$prefix_title = utf8_normalize_nfc(request_var('prefix_title', ''));
-					$prefix_name = utf8_normalize_nfc(request_var('prefix_name', ''));
+					$prefix_title = utf8_normalize_nfc(request_var('prefix_title', '', true));
+					$prefix_name = utf8_normalize_nfc(request_var('prefix_name', '', true));
 					$prefix_color_hex = request_var('prefix_color_hex', '');
 					$data = array(
 						'prefix_title'		=> $prefix_title,
