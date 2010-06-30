@@ -66,6 +66,8 @@ class acp_tmm
 					
 					$prefix_select = tmm_admin::get_prefix_select(0);
 					$parents_list = make_forum_select(0, false, false, false, false);
+					$move_where_forum_list = make_forum_select(false, false, false, true, true);
+					$copy_where_forum_list = make_forum_select(false, false, false, true, true);
 					$thisaction = ($action == 'add') ? $action : $action . '&amp;id=' . $tmm_id;
 					$group_options = tmm_admin::get_group_select(0);
 					$template->assign_vars(array(
@@ -75,6 +77,9 @@ class acp_tmm
 						'PREFIX_SELECT'	=> $prefix_select,
 						'GROUP_SELECT'	=> $group_options,
 						'U_ACTION'		=> $this->u_action . '&amp;action=' . $thisaction,
+						'MOVEWHERE'			=> $move_where_forum_list,
+						'COPYWHERE'			=> $copy_where_forum_list,
+						
 					));
 					$actions = array('LOCK', 'STICKY', 'MOVE', 'COPY', 'AUTOREPLY_BOOL');
 					foreach($actions AS $action)
@@ -106,10 +111,7 @@ class acp_tmm
 					$template->assign_vars(array(
 						'TMM_TITLE'			=> $row['tmm_title'],
 						'TMM_DESC'	 		=> $row['tmm_desc'],
-						
-						'MOVEWHERE'			=> $row['tmm_move_dest_id'],
-						'COPYWHERE'			=> $row['tmm_copy_dest_id'],
-						
+												
 						'AUTORESPONSE'		=> $row['tmm_autoreply_text'],
 						'AUTOREPLY_POSTER'	=> $row['tmm_autoreply_poster'],
 						
@@ -117,6 +119,8 @@ class acp_tmm
 					));
 					$forum_ids = explode(",", $row['tmm_forums']);
 					$forum_list = make_forum_select($forum_ids, false, false, false, false);
+					$move_where_forum_list = make_forum_select($row['tmm_move_dest_id'], false, false, true, true);
+					$copy_where_forum_list = make_forum_select($row['tmm_copy_dest_id'], false, false, true, true);
 					$group_ids = explode(",", $row['tmm_groups']);
 					//Make a list of the groups for the select box
 					$group_options = tmm_admin::get_group_select($group_ids);
@@ -125,6 +129,8 @@ class acp_tmm
 
 					$template->assign_vars(array(
 						'U_ACTION'	=> $this->u_action . '&amp;action=edit',
+						'MOVEWHERE'			=> $move_where_forum_list,
+						'COPYWHERE'			=> $copy_where_forum_list,
 						'GROUP_SELECT'	=> $group_options,
 						'PREFIX_SELECT'	=> $prefix_options,
 						'USER_ID'	=> $row['tmm_users'],

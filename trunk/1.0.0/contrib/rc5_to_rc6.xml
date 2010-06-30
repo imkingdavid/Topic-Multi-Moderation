@@ -211,6 +211,17 @@ if($tmm_id == 0)
 		</edit>
 	</open>
 	
+	<open src="posting.php">
+		<edit>
+			<find><![CDATA[$temp_cache = tmm::doPostingAction($mode, $topic_id, $action, $ids, $prefix_cache);]]></find>
+			<action type="replace-with"><![CDATA[$temp_cache = tmm::do_posting_action($mode, $topic_id, $action, $ids, $prefix_cache);]]></action>
+		</edit>
+		<edit>
+			<find><![CDATA[$prefix_select = tmm::getPrefixesForPosting($topic_id, $forum_id, $temp_cache);]]></find>
+			<action type="replace-with"><![CDATA[$prefix_select = tmm::get_prefixes_for_posting($topic_id, $forum_id, $temp_cache);]]></action>
+		</edit>
+	</open>
+	
 	<php-installer>tmm_install.php</php-installer>
 
 	<diy-instructions lang="en"><![CDATA[This should only be used to update from rc5 to rc6. The main installation MODx file should be used to install the MOD for the first time.

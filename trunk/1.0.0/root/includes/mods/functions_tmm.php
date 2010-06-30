@@ -585,7 +585,10 @@ class tmm
 				{
 					if(in_array($group['group_id'], $temp_groups))
 					{
-						$prefixes[] = $prefix_id;
+						if(!in_array($prefix_id, $prefixes))
+						{
+							$prefixes[] = $prefix_id;
+						}
 					}
 				}
 			}
@@ -613,7 +616,6 @@ class tmm
 				{
 					$disabled = ($prefix == $prefix_ids) ? 'selected="selected"' : '';
 				}
-				
 				$prefixes_options .= '<option value="' . $prefix['id'] . '"' . $disabled . '>' . $prefix['name'] . '</option>';
 			}
 		}
@@ -668,7 +670,7 @@ class tmm
 		$tmm_options = '';
 		foreach($multi_mods AS $multi_mod)
 		{
-			$tmm_title = self::$tmm_cache[$multi_mod]['title'];
+			$tmm_title = self::$multi_mods_cache[$multi_mod]['title'];
 			
 			$tmm_options .= '<option value="' . $multi_mod . '">' . $tmm_title . '</option>';
 		}

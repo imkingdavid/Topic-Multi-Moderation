@@ -34,7 +34,7 @@
         </dl>
         <dl>
             <dt><label for="movewhere">{L_WHERE}:</label><br /></dt>
-            <dd><input type="text" name="movewhere" value="{MOVEWHERE}" /></dd>
+            <dd><select name="movewhere">{MOVEWHERE}</select></dd>
         </dl>
         <dl>
             <dt><label for="copy_option">{L_COPY}:</label><br />{L_COPY_EXPLAIN}</dt>
@@ -42,7 +42,7 @@
         </dl>
         <dl>
             <dt><label for="copywhere">{L_WHERE}:</label><br /></dt>
-            <dd><input type="text" name="copywhere" value="{COPYWHERE}" /></dd>
+            <dd><select name="copywhere">{COPYWHERE}</select></dd>
         </dl>
         <dl>
             <dt><label for="autoreply">{L_AUTOREPLY}</label><br />{L_AUTOREPLY_EXPLAIN}</dt>
@@ -58,12 +58,13 @@
         </dl>
         <dl>
             <dt><label for="forums">{L_FORUMS}:</label><br />{L_TMM_FORUMS_EXPLAIN}</dt>
-            <dd><select size="5" name="forum_id[]" multiple="multiple">{FORUM_LIST}</select>
+            <dd><select size="5" name="forum_id[]" multiple="multiple">{FORUM_LIST}</select></dd>
         </dl>
         <dl>
         	<dt><label for="groups">{L_GROUPS}:</label><br />{L_TMM_GROUPS_EXPLAIN}</dt>
-            <dd><select size="5" name="group_id[]" multiple="multiple">{GROUP_SELECT}</select>
+            <dd><select size="5" name="group_id[]" multiple="multiple">{GROUP_SELECT}</select></dd>
         </dl>
+
         <dl>
         	<dt><label for="users">{L_USERS}:</label><br />{L_TMM_USERS_EXPLAIN}</dt>
             <dd><input type="text" name="user_ids" value="{USER_ID}" /></dd>
