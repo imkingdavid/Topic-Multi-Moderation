@@ -9,7 +9,7 @@
 <!-- IF S_EDIT -->                                
         <legend>{L_ACP_PREFIX_ADD_EDIT}</legend>
         <dl>
-            <dt><label for="prefix_name">{L_ACP_PREFIX_NAME}:</label></dt>
+            <dt><label for="prefix_name">{L_ACP_PREFIX_NAME}:</label><br />{L_ACP_PREFIX_NAME_EXPLAIN}</dt>
             <dd><input name="prefix_name" type="text" id="name" value="{PREFIX_NAME}" maxlength="255" /></dd>
         </dl>
         
@@ -24,17 +24,17 @@
         </dl>
     
         <dl>
-            <dt><label for="forum_id">{L_FORUMS}:</label><br /><span> </span></dt>
+            <dt><label for="forum_id">{L_FORUMS}:</label><br /><br />{L_PREFIX_FORUMS_EXPLAIN}</dt>
             <dd><select size="5" name="forum_id[]" multiple="multiple">{FORUM_LIST}</select></dd>
         </dl>
         
         <dl>
-            <dt><label for="group_id">{L_GROUPS}:</label></dt>
+            <dt><label for="group_id">{L_GROUPS}:</label><br />{L_PREFIX_GROUPS_EXPLAIN}</dt>
             <dd><select size="5" name="group_id[]" multiple="multiple">{GROUP_SELECT}</select></dd>
         </dl>
         
         <dl>
-            <dt><label for="user_ids">{L_USERS}:</label><br />{L_USERS_EXPLAIN}</dt>
+            <dt><label for="user_ids">{L_USERS}:</label><br />{L_PREFIX_USERS_EXPLAIN}</dt>
             <dd><input type="text" name="user_ids" value="{PREFIX_USERS}" /></dd>
         </dl>
     

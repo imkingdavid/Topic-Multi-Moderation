@@ -9,27 +9,27 @@
 <!-- IF S_EDIT -->                                
         <legend>{L_ACP_TMM_ADD_EDIT}</legend>
         <dl>
-            <dt><label for="title">{L_ACP_TMM_TITLE}:</label></dt>
+            <dt><label for="title">{L_ACP_TMM_TITLE}:</label><br />{L_ACP_TMM_TITLE_EXPLAIN}</dt>
             <dd><input name="title" type="text" id="title" value="{TMM_TITLE}" maxlength="255" /></dd>
         </dl>
         <dl>
-            <dt><label for="desc">{L_ACP_TMM_DESC}:</label></dt>
+            <dt><label for="desc">{L_ACP_TMM_DESC}:</label><br />{L_ACP_TMM_DESC_EXPLAIN}</dt>
             <dd><input name="desc" type="text" id="title" value="{TMM_DESC}" maxlength="255" /></dd>
         </dl>
         <dl>
-            <dt><label for="prefix_id">{L_ACP_PREFIX_TITLE}:</label><br /></dt>
+            <dt><label for="prefix_id">{L_ACP_PREFIX_TITLE}:</label><br />{L_ACP_PREFIX_TITLE_EXPLAIN}</dt>
             <dd><select name="prefix_id[]" size="5" multiple="multiple">{PREFIX_SELECT}</select></dd>
         </dl>
         <dl>
-            <dt><label for="lock_option">{L_LOCK}:</label><br /></dt>
+            <dt><label for="lock_option">{L_LOCK}:</label><br />{L_LOCK_EXPLAIN}</dt>
             <dd><label><input name="lock_option" type="radio" class="radio" value="1" {LOCK_YES} />&nbsp;{L_YES}</label><label>&nbsp;<input name="lock_option" type="radio" class="radio" value="0" {LOCK_NO} />&nbsp;{L_NO}</label></dd>
         </dl>
         <dl>
-            <dt><label for="sticky_option">{L_STICKY}:</label><br /></dt>
+            <dt><label for="sticky_option">{L_STICKY}:</label><br />{L_STICKY_EXPLAIN}</dt>
             <dd><label><input name="sticky_option" type="radio" class="radio" value="1" {STICKY_YES} />&nbsp;{L_YES}</label><label>&nbsp;<input name="sticky_option" type="radio" class="radio" value="0" {STICKY_NO} />&nbsp;{L_NO}</label></dd>
         </dl>
         <dl>
-            <dt><label for="move_option">{L_MOVE}:</label><br /></dt>
+            <dt><label for="move_option">{L_MOVE}:</label><br />{L_MOVE_EXPLAIN}</dt>
             <dd><label><input name="move_option" type="radio" class="radio" value="1" {MOVE_YES} />&nbsp;{L_YES}</label><label>&nbsp;<input name="move_option" type="radio" class="radio" value="0" {MOVE_NO} />&nbsp;{L_NO}</label></dd>
         </dl>
         <dl>
@@ -37,7 +37,7 @@
             <dd><input type="text" name="movewhere" value="{MOVEWHERE}" /></dd>
         </dl>
         <dl>
-            <dt><label for="copy_option">{L_COPY}:</label><br /></dt>
+            <dt><label for="copy_option">{L_COPY}:</label><br />{L_COPY_EXPLAIN}</dt>
             <dd><label><input name="copy_option" type="radio" class="radio" value="1" {COPY_YES} />&nbsp;{L_YES}</label><label>&nbsp;<input name="copy_option" type="radio" class="radio" value="0" {COPY_NO} />&nbsp;{L_NO}</label></dd>
         </dl>
         <dl>
@@ -45,11 +45,11 @@
             <dd><input type="text" name="copywhere" value="{COPYWHERE}" /></dd>
         </dl>
         <dl>
-            <dt><label for="autoreply">{L_AUTOREPLY}</label><br /></dt>
+            <dt><label for="autoreply">{L_AUTOREPLY}</label><br />{L_AUTOREPLY_EXPLAIN}</dt>
             <dd><label><input name="autoreply" type="radio" class="radio" value="1" {AUTOREPLY_BOOL_YES} />&nbsp;{L_YES}</label><label>&nbsp;<input name="autoreply" type="radio" class="radio" value="0" {AUTOREPLY_BOOL_NO} />&nbsp;{L_NO}</label></dd>
         </dl>
         <dl>
-            <dt><label for="autoresponse">{L_AUTORESPONSE}:</label></dt>
+            <dt><label for="autoresponse">{L_AUTORESPONSE}:</label><br />{L_AUTORESPONSE_EXPLAIN}</dt>
             <dd><textarea name="autoresponse" cols="10" rows="10">{AUTORESPONSE}</textarea></dd>
         </dl>
         <dl>
@@ -57,15 +57,15 @@
             <dd><input type="text" name="autoreply_poster" value="{AUTOREPLY_POSTER}" /></dd>
         </dl>
         <dl>
-            <dt><label for="forums">{L_FORUMS}:</label></dt>
+            <dt><label for="forums">{L_FORUMS}:</label><br />{L_TMM_FORUMS_EXPLAIN}</dt>
             <dd><select size="5" name="forum_id[]" multiple="multiple">{FORUM_LIST}</select>
         </dl>
         <dl>
-        	<dt><label for="groups">{L_GROUPS}:</label></dt>
+        	<dt><label for="groups">{L_GROUPS}:</label><br />{L_TMM_GROUPS_EXPLAIN}</dt>
             <dd><select size="5" name="group_id[]" multiple="multiple">{GROUP_SELECT}</select>
         </dl>
         <dl>
-        	<dt><label for="users">{L_USERS}:</label></dt>
+        	<dt><label for="users">{L_USERS}:</label><br />{L_TMM_USERS_EXPLAIN}</dt>
             <dd><input type="text" name="user_ids" value="{USER_ID}" /></dd>
         </dl>
         <p class="submit-buttons">
