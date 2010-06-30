@@ -20,7 +20,7 @@
 		</author>
 	</author-group>
 
-	<mod-version>1.0.0-PL1</mod-version>
+	<mod-version>1.0.0rc6</mod-version>
 
 	<installation>
 		<level>intermediate</level>
@@ -28,6 +28,14 @@
 		<target-version>3.0.7-PL1</target-version>
 	</installation>
 	<history>
+		<entry>
+			<date>2010-06-28</date>
+			<rev-version>1.0.0rc6</rev-version>
+			<changelog lang="en">
+				<change>[fix] errors pointed out during MOD validation</change>
+				<change>[fix] non-moderators cannot apply multi-mods</change>
+			</changelog>
+		</entry>
 		<entry>
 			<date>2010-06-06</date>
 			<rev-version>1.0.0rc5</rev-version>
