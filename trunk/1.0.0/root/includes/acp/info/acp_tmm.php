@@ -27,7 +27,7 @@ class acp_tmm_info
     {
         return array(
             'filename'    => 'acp_tmm',
-            'title'        => 'Topic Multi-Moderation',
+            'title'        => 'ACP_TMM',
             'version'    => '1.0.0',
             'modes'        => array(
                 'index'        => array('title' => 'ACP_TMM_MANAGE', 'auth' => 'acl_a_tmm_auth', 'cat' => array('')),

@@ -301,32 +301,47 @@ $template->assign_var('TOPIC_PREFIX', tmm::load_topic_prefixes($topic_id));
 	<open src="styles/prosilver/template/posting_layout.html">
 		<edit>	
 			<find><![CDATA[<h2><a href="{U_VIEW_TOPIC}">{TOPIC_TITLE}</a></h2>]]></find>
-			<action type="replace-with"><![CDATA[<h2>{TOPIC_PREFIX}<a href="{U_VIEW_TOPIC}">{TOPIC_TITLE}</a></h2>]]></action>
+			<inline-edit>
+				<inline-find><![CDATA[<h2>]]></inline-find>
+				<inline-action type="after-add">{TOPIC_PREFIX}</inline-action>
+			</inline-edit>
 		</edit>
 	</open>
 	
 	<open src="styles/prosilver/template/search_results.html">
 		<edit>	
 			<find><![CDATA[<a href="{searchresults.U_VIEW_TOPIC}" class="topictitle">{searchresults.TOPIC_TITLE}</a> {searchresults.ATTACH_ICON_IMG}]]></find>
-			<action type="replace-with"><![CDATA[{searchresults.TOPIC_PREFIX}<a href="{searchresults.U_VIEW_TOPIC}" class="topictitle">{searchresults.TOPIC_TITLE}</a> {searchresults.ATTACH_ICON_IMG}]]></action>
+			<inline-edit>
+				<inline-find><![CDATA[<a href=]]></inline-find>
+				<inline-action type="before-add"><![CDATA[{searchresults.TOPIC_PREFIX}]]></inline-action>
+			</inline-edit>
 		</edit>
 		<edit>	
 			<find><![CDATA[<dd>{L_TOPIC}: <a href="{searchresults.U_VIEW_TOPIC}">{searchresults.TOPIC_TITLE}</a></dd>]]></find>
-			<action type="replace-with"><![CDATA[<dd>{L_TOPIC}: {searchresults.TOPIC_PREFIX}<a href="{searchresults.U_VIEW_TOPIC}">{searchresults.TOPIC_TITLE}</a></dd>]]></action>
+			<inline-edit>
+				<inline-find><![CDATA[{L_TOPIC}: ]]></inline-find>
+				<inline-action type="after-add"><![CDATA[{searchresults.TOPIC_PREFIX}]]></inline-action>
+			</inline-edit>
 		</edit>
 	</open>
 		
 	<open src="styles/prosilver/template/viewforum_body.html">
 		<edit>	
 			<find><![CDATA[<dt<!-- IF topicrow.TOPIC_ICON_IMG and S_TOPIC_ICONS --> style="background-image: url({T_ICONS_PATH}{topicrow.TOPIC_ICON_IMG}); background-repeat: no-repeat;"<!-- ENDIF --> title="{topicrow.TOPIC_FOLDER_IMG_ALT}"><!-- IF topicrow.S_UNREAD_TOPIC --><a href="{topicrow.U_NEWEST_POST}">{NEWEST_POST_IMG}</a> <!-- ENDIF --><a href="{topicrow.U_VIEW_TOPIC}" class="topictitle">{topicrow.TOPIC_TITLE}</a>]]></find>
-			<action type="replace-with"><![CDATA[<dt<!-- IF topicrow.TOPIC_ICON_IMG and S_TOPIC_ICONS --> style="background-image: url({T_ICONS_PATH}{topicrow.TOPIC_ICON_IMG}); background-repeat: no-repeat;"<!-- ENDIF --> title="{topicrow.TOPIC_FOLDER_IMG_ALT}"><!-- IF topicrow.S_UNREAD_TOPIC --><a href="{topicrow.U_NEWEST_POST}">{NEWEST_POST_IMG}</a> <!-- ENDIF -->{topicrow.TOPIC_PREFIX}<a href="{topicrow.U_VIEW_TOPIC}" class="topictitle">{topicrow.TOPIC_TITLE}</a>]]></action>
+			<inline-edit>
+				<inline-find><![CDATA[<a href="{topicrow.U_VIEW_TOPIC}" class="topictitle">{topicrow.TOPIC_TITLE}</a>]]></inline-find>
+				<inline-action type="before-add"><![CDATA[{topicrow.TOPIC_PREFIX}]]></inline-action>
+			</inline-edit>
 		</edit>
 	</open>
 	
 	<open src="styles/prosilver/template/viewtopic_body.html">
 		<edit>	
 			<find><![CDATA[<h2><a href="{U_VIEW_TOPIC}">{TOPIC_TITLE}</a></h2>]]></find>
-			<action type="replace-with"><![CDATA[<h2>{TOPIC_PREFIX}<a href="{U_VIEW_TOPIC}">{TOPIC_TITLE}</a></h2>]]></action>
+			<inline-edit>
+				<inline-find><![CDATA[<h2>]]></inline-find>
+				<inline-action type="after-add"><![CDATA[{TOPIC_PREFIX}]]></inline-action>
+			</inline-edit>
 		</edit>
 		<edit>	
 			<find><![CDATA[<!-- IF S_TOPIC_MOD -->
@@ -359,7 +374,10 @@ $template->assign_var('TOPIC_PREFIX', tmm::load_topic_prefixes($topic_id));
 	<open src="styles/prosilver/template/mcp_topic.html">
 		<edit>
 			<find><![CDATA[<h2><a href="{U_VIEW_TOPIC}">{L_TOPIC}: {TOPIC_TITLE}</a></h2>]]></find>
-			<action type="replace-with"><![CDATA[<h2>{TOPIC_PREFIX}<a href="{U_VIEW_TOPIC}">{L_TOPIC}: {TOPIC_TITLE}</a></h2>]]></action>
+			<inline-edit>
+				<inline-find><![CDATA[{L_TOPIC}: ]]></inline-find>
+				<inline-action type="after-add"><![CDATA[{TOPIC_PREFIX} ]]></inline-action>
+			</inline-edit>
 		</edit>
 	</open>
 	<open src="includes/mcp/mcp_forum.php">
@@ -375,7 +393,10 @@ $template->assign_var('TOPIC_PREFIX', tmm::load_topic_prefixes($topic_id));
 	<open src="styles/prosilver/template/mcp_forum.html">
 		<edit>
 			<find><![CDATA[<a href="{topicrow.U_VIEW_TOPIC}" class="topictitle">{topicrow.TOPIC_TITLE}</a>]]></find>
-			<action type="replace-with"><![CDATA[{topicrow.TOPIC_PREFIX}<a href="{topicrow.U_VIEW_TOPIC}" class="topictitle">{topicrow.TOPIC_TITLE}</a>]]></action>
+			<inline-edit>
+				<inline-find><![CDATA[<a href="{topicrow.U_VIEW_TOPIC}" class="topictitle">{topicrow.TOPIC_TITLE}</a>]]></inline-find>
+				<inline-action type="before-add"><![CDATA[{topicrow.TOPIC_PREFIX}]]></inline-action>
+			</inline-edit>
 		</edit>
 	</open>
 	<open src="includes/mcp/mcp_queue.php">
@@ -390,7 +411,10 @@ $template->assign_var('TOPIC_PREFIX', tmm::load_topic_prefixes($topic_id));
 	<open src="styles/prosilver/template/mcp_queue.html">
 		<edit>
 			<find><![CDATA[<!-- IF S_TOPICS --><br /><!-- ELSE -->{L_TOPIC}: <a href="{postrow.U_TOPIC}">{postrow.TOPIC_TITLE}</a> <br /><!-- ENDIF -->]]></find>
-			<action type="replace-with"><![CDATA[<!-- IF S_TOPICS --><br /><!-- ELSE -->{L_TOPIC}: {TOPIC_PREFIX} <a href="{postrow.U_TOPIC}">{postrow.TOPIC_TITLE}</a> <br /><!-- ENDIF -->]]></action>
+			<inline-edit>
+				<inline-find><![CDATA[<a href="{postrow.U_TOPIC}">]]></inline-find>
+				<inline-action type="before-add"><![CDATA[{TOPIC_PREFIX} ]]></inline-action>
+			</inline-edit>
 		</edit>
 	</open>
 	<php-installer>tmm_install.php</php-installer>
