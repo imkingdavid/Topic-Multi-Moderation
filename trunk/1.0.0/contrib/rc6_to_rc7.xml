@@ -192,6 +192,7 @@
 	<copy>
 		<file from="root/includes/mods/functions_tmm.php" to="includes/mods/functions_tmm.php" />
 		<file from="root/includes/mods/functions_tmm_admin.php" to="includes/mods/functions_tmm_admin.php" />
+		<file from="root/tmm.php" to="tmm.php" />
 	</copy>
 	
 	<diy-instructions lang="en"><![CDATA[Yep, that's right, no file edits. All of the changes were in included files that need to be overwritten, or else in install.xml, which don't apply to you since you're updating. Cheers!
