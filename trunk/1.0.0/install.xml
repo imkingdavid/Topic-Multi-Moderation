@@ -29,6 +29,13 @@
 	</installation>
 	<history>
 		<entry>
+			<date>2010-07-04</date>
+			<rev-version>1.0.0rc6</rev-version>
+			<changelog lang="en">
+				<change>[fix] some nitpicky validation stuff</change>
+			</changelog>
+		</entry>
+		<entry>
 			<date>2010-06-28</date>
 			<rev-version>1.0.0rc6</rev-version>
 			<changelog lang="en">
@@ -186,6 +193,7 @@
 		<link type="contrib" href="contrib/rc3_to_rc4.xml" lang="en">Update from RC3 to RC4</link>
 		<link type="contrib" href="contrib/rc4_to_rc5.xml" lang="en">Update from RC4 to RC5</link>
 		<link type="contrib" href="contrib/rc5_to_rc6.xml" lang="en">Update from RC5 to RC6</link>
+		<link type="contrib" href="contrib/rc6_to_rc7.xml" lang="en">Update from RC6 to RC7</link>
 	</link-group>
 </header>
 

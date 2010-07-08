@@ -101,7 +101,7 @@ class tmm_admin extends tmm
 		{
 			$sql = 'UPDATE ' . TMM_PREFIXES_TABLE . '
 					SET ' . $db->sql_build_array('UPDATE', $data) . '
-					WHERE prefix_id = ' . $prefix_id;
+					WHERE prefix_id = ' . (int) $prefix_id;
 			$result = $db->sql_query($sql);
 		}
 		else
@@ -139,7 +139,7 @@ class tmm_admin extends tmm
 		}
 		else
 		{
-			$sql = 'UPDATE ' . TMM_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $data) . ' WHERE tmm_id = ' . $tmm_id;
+			$sql = 'UPDATE ' . TMM_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $data) . ' WHERE tmm_id = ' . (int) $tmm_id;
 		}
 		$result = $db->sql_query($sql);
 		if($mode == 'new')
@@ -164,7 +164,7 @@ class tmm_admin extends tmm
 		global $db;
 		$sql = 'SELECT prefix_id
 			FROM ' . TMM_PREFIXES_TABLE . '
-			WHERE prefix_id = ' . $prefix_id;
+			WHERE prefix_id = ' . (int) $prefix_id;
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
@@ -175,7 +175,7 @@ class tmm_admin extends tmm
 		
 		$sql = 'DELETE
 			FROM ' . TMM_PREFIXES_TABLE . '
-			WHERE prefix_id = ' . $prefix_id;
+			WHERE prefix_id = ' . (int) $prefix_id;
 		$result = $db->sql_query($sql);
 		if(!$result)
 		{
@@ -185,7 +185,7 @@ class tmm_admin extends tmm
 
 		$sql = 'DELETE
 			FROM ' . TMM_PREFIX_INSTANCES_TABLE . '
-			WHERE prefix_id = ' . $prefix_id;
+			WHERE prefix_id = ' . (int) $prefix_id;
 		$result = $db->sql_query($sql);
 		if(!$result)
 		{
@@ -201,7 +201,7 @@ class tmm_admin extends tmm
 		global $db;
 		$sql = 'SELECT tmm_id
 			FROM ' . TMM_TABLE . '
-			WHERE tmm_id = ' . $tmm_id;
+			WHERE tmm_id = ' . (int) $tmm_id;
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
@@ -211,7 +211,7 @@ class tmm_admin extends tmm
 		}
 		$sql = 'DELETE
 			FROM ' . TMM_TABLE . '
-			WHERE tmm_id = ' . $tmm_id;
+			WHERE tmm_id = ' . (int) $tmm_id;
 		$result = $db->sql_query($sql);
 		if(!$result)
 		{
@@ -263,6 +263,8 @@ class tmm_admin extends tmm
 		global $db, $config, $user;
 
 		//Stolen from functions_admin.php
+			//--To Do--
+			// Use cache instead of grabbing from database
 		$sql = 'SELECT *
 			FROM ' . TMM_PREFIXES_TABLE;
 		$result = $db->sql_query($sql);

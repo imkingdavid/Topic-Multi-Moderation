@@ -190,15 +190,15 @@ class tmm
 			include($phpbb_root_path . 'includes/functions_posting.' . $phpEx);
 		}
 		$sql = 'SELECT *
-			FROM ' . TOPICS_TABLE . "
-			WHERE topic_id = $topic_id";
+			FROM ' . TOPICS_TABLE . '
+			WHERE topic_id = ' . (int) $topic_id;
 		$result = $db->sql_query($sql);
 		$topicrow = $db->sql_fetchrow($result);
 		if($user_id == 0)
 		{
 			$sql = 'SELECT username
-				FROM ' . USERS_TABLE . "
-				WHERE user_id = $user_id";
+				FROM ' . USERS_TABLE . '
+				WHERE user_id = ' . (int) $user_id;
 			$result = $db->sql_query($sql);
 			$username = $db->sql_fetchrow($result);
 			$db->sql_freeresult($result);
@@ -319,7 +319,7 @@ class tmm
 		{
 			$sql = 'SELECT i.prefix_instance_id AS prefix_instance_id, p.prefix_id AS prefix_id
 				FROM ' . TMM_PREFIX_INSTANCES_TABLE . ' i, ' . TMM_PREFIXES_TABLE . ' p
-				WHERE topic_id = ' . $topic_id . '
+				WHERE topic_id = ' . (int) $topic_id . '
 					AND i.prefix_id = p.prefix_id
 				ORDER BY applied_date DESC';
 			$result = $db->sql_query($sql);
@@ -389,9 +389,9 @@ class tmm
 			return false;
 		}
 		$sql_ary = array(
-			'topic_id'	=> $topic_id,
-			'user_id'	=> $user->data['user_id'],
-			'prefix_id'	=> $prefix_id,
+			'topic_id'	=> (int) $topic_id,
+			'user_id'	=> (int) $user->data['user_id'],
+			'prefix_id'	=> (int) $prefix_id,
 			'applied_date' => time(),
 		);
 		// Now let's add the prefix to the topic.
@@ -423,10 +423,10 @@ class tmm
 		// Make sure that the instance ID exists.
 		//	Topic ID is just there for added precaution to make sure you're actually deleting the right one,
 		//		but isn't required.
-		$and = ($topic_id != 0) ? ' AND topic_id = ' . $topic_id : '';
+		$and = ($topic_id != 0) ? ' AND topic_id = ' . (int) $topic_id : '';
 		$sql = 'SELECT prefix_id
 			FROM ' . TMM_PREFIX_INSTANCES_TABLE . '
-			WHERE prefix_instance_id = ' . $prefix_instance_id . $and;
+			WHERE prefix_instance_id = ' . (int) $prefix_instance_id . $and;
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
@@ -437,7 +437,7 @@ class tmm
 		
 		$sql = 'DELETE
 			FROM ' . TMM_PREFIX_INSTANCES_TABLE . '
-			WHERE prefix_instance_id = ' . $prefix_instance_id . $and;
+			WHERE prefix_instance_id = ' . (int) $prefix_instance_id . $and;
 		$result = $db->sql_query($sql);
 		if(!$result)
 		{
@@ -464,7 +464,7 @@ class tmm
 		//	This is useful for removing orphaned prefix instances
 		$sql = 'SELECT *
 			FROM ' . TMM_PREFIX_INSTANCES_TABLE . '
-			WHERE topic_id = ' . $topic_id;
+			WHERE topic_id = ' . (int) $topic_id;
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
@@ -475,7 +475,7 @@ class tmm
 		
 		$sql = 'DELETE
 			FROM ' . TMM_PREFIX_INSTANCES_TABLE . '
-			WHERE topic_id = ' . $topic_id;
+			WHERE topic_id = ' . (int) $topic_id;
 		$result = $db->sql_query($sql);
 		if(!$result)
 		{
@@ -508,7 +508,7 @@ class tmm
 			FROM ' . TMM_PREFIX_INSTANCES_TABLE . ' i,
 				' . TMM_PREFIXES_TABLE . ' p,
 				' . USERS_TABLE . ' u
-			WHERE i.prefix_instance_id = ' . $prefix_instance_id . '
+			WHERE i.prefix_instance_id = ' . (int) $prefix_instance_id . '
 				AND i.user_id = u.user_id
 				AND i.prefix_id = p.prefix_id';
 		$result = $db->sql_query($sql);
@@ -525,6 +525,8 @@ class tmm
 	
 		// Find and replace all occurances of the tokens: {USERNAME} and {DATE}
 		$prefix = str_replace('{USERNAME}', $row['username'], $prefix);
+			//--To Do--
+			// Allow admin to specify date format instead of hardcoding
 		$prefix = str_replace('{DATE}', date('m/d/Y', $row['applied_date']), $prefix);
 		// return the whole prefix string
 		return $prefix;
@@ -644,7 +646,7 @@ class tmm
 		$groups = group_memberships(false,$user->data['user_id']);
 
 		$multi_mods = array();
-		$where = ($forum_id != 0) ? ' WHERE tmm_forums LIKE \'%' . $forum_id . '%\'' : '';
+		$where = ($forum_id != 0) ? ' WHERE tmm_forums LIKE \'%' . (int) $forum_id . '%\'' : '';
 		$sql = 'SELECT *
 			FROM ' . TMM_TABLE . $where;
 		$result = $db->sql_query($sql);
@@ -698,9 +700,9 @@ class tmm
 	
 		if ($to_forum_id)
 		{
-			$sql = 'SELECT * FROM ' . FORUMS_TABLE . "
-				WHERE forum_id = $old_forum_id
-				LIMIT 1";
+			$sql = 'SELECT * FROM ' . FORUMS_TABLE . '
+				WHERE forum_id = ' . (int) $old_forum_id . '
+				LIMIT 1';
 			$dosql = $db->sql_query($sql);
 			
 			$forum_data = $db->sql_fetchrow($dosql);
@@ -715,8 +717,8 @@ class tmm
 			}
 		}
 		$sql = 'SELECT *
-			FROM ' . TOPICS_TABLE . "
-			WHERE topic_id = $tid";
+			FROM ' . TOPICS_TABLE . '
+			WHERE topic_id = ' . (int) $tid;
 		$dosql = $db->sql_query($sql);
 	
 		$topic_data = $db->sql_fetchrowset($dosql);
@@ -764,8 +766,8 @@ class tmm
 				$poll_rows = array();
 	
 				$sql = 'SELECT *
-					FROM ' . POLL_OPTIONS_TABLE . "
-					WHERE topic_id = $tid";
+					FROM ' . POLL_OPTIONS_TABLE . '
+					WHERE topic_id = ' . (int) $tid;
 				$result = $db->sql_query($sql);
 	
 				while ($row = $db->sql_fetchrow($result))
@@ -783,9 +785,9 @@ class tmm
 			}
 	
 			$sql = 'SELECT *
-				FROM ' . POSTS_TABLE . "
-				WHERE topic_id = $tid
-				ORDER BY post_time ASC";
+				FROM ' . POSTS_TABLE . '
+				WHERE topic_id = ' . (int) $tid . '
+				ORDER BY post_time ASC';
 			$result = $db->sql_query($sql);
 	
 			$post_rows = array();
@@ -837,10 +839,10 @@ class tmm
 				// Copy Attachments
 				if ($row['post_attachment'])
 				{
-					$sql = 'SELECT * FROM ' . ATTACHMENTS_TABLE . "
-						WHERE post_msg_id = {$row['post_id']}
-							AND topic_id = $tid
-							AND in_message = 0";
+					$sql = 'SELECT * FROM ' . ATTACHMENTS_TABLE . '
+						WHERE post_msg_id = ' . (int) $row['post_id'] . '
+							AND topic_id = . ' . (int) $tid . '
+							AND in_message = 0';
 					$result = $db->sql_query($sql);
 	
 					$sql_ary = array();
@@ -874,7 +876,7 @@ class tmm
 	
 			$sql = 'SELECT user_id, notify_status
 				FROM ' . TOPICS_WATCH_TABLE . '
-				WHERE topic_id = ' . $tid;
+				WHERE topic_id = ' . (int) $tid;
 			$result = $db->sql_query($sql);
 	
 			$sql_ary = array();
@@ -907,7 +909,7 @@ class tmm
 		{
 			$sql = 'UPDATE ' . FORUMS_TABLE . '
 				SET ' . implode(', ', $array) . '
-				WHERE forum_id = ' . $forum_id_key;
+				WHERE forum_id = ' . (int) $forum_id_key;
 			$db->sql_query($sql);
 		}
 	

@@ -82,7 +82,7 @@ $tmm_options = '';
 foreach($multi_mods AS $multi_mod)
 {
 	$tmm_id = tmm::$multi_mods_cache[$multi_mod]['id'];
-	$tmm_options['id'] = $tmm_id;
+	$tmm_options[] = $tmm_id;
 }
 if(!in_array($multimod, $tmm_options))
 {
@@ -155,6 +155,7 @@ else
 	$user->lang['APPLY_TMM_CONFIRM'] = sprintf($user->lang['APPLY_TMM_CONFIRM'], $message);
 	//display mode
 	confirm_box(false, 'APPLY_TMM', $s_hidden_fields);
+	// Shouldn't get here...
+	$redirect = append_sid($phpbb_root_path . 'viewtopic.' . $phpEx, array('f' => $forum_id, 't' => $topic_id));
+	redirect($redirect);
 }
-// Shouldn't get here...
-redirect($phpbb_root_path . 'viewtopic.' . $phpEx, "f={$forum_id}&amp;t={$topic_id}");
