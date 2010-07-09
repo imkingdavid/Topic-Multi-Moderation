@@ -404,6 +404,8 @@ class tmm
 		// Now let's add the prefix to the topic.
 		$sql = 'INSERT INTO ' . TMM_PREFIX_INSTANCES_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 		$result = $db->sql_query($sql);
+		//New in RC7 -- Utilize the Moderator logs
+		add_log('mod', 0, $topic_id, 'LOG_PREFIX_APPLIED', self::parse_prefix_instance($db->sql_nextid()));
 		if(!$result)
 		{
 			return false;
@@ -435,13 +437,14 @@ class tmm
 			FROM ' . TMM_PREFIX_INSTANCES_TABLE . '
 			WHERE prefix_instance_id = ' . (int) $prefix_instance_id . $and;
 		$result = $db->sql_query($sql);
-		$row = $db->sql_fetchrow($result);
+		$row = $db->sql_fetchfield('prefix_id');
 		$db->sql_freeresult($result);
 		if(!$row)
 		{
 			return false;
 		}
-		
+		//New in RC7 -- Utilize the Moderator logs
+		add_log('mod', 0, $topic_id, 'LOG_PREFIX_REMOVED', self::parse_prefix($row));
 		$sql = 'DELETE
 			FROM ' . TMM_PREFIX_INSTANCES_TABLE . '
 			WHERE prefix_instance_id = ' . (int) $prefix_instance_id . $and;
@@ -479,6 +482,8 @@ class tmm
 		{
 			return false;
 		}
+		//New in RC7 -- Utilize the Moderator logs
+		add_log('mod', 0, $topic_id, 'LOG_PREFIXES_CLEARED', '');
 		
 		$sql = 'DELETE
 			FROM ' . TMM_PREFIX_INSTANCES_TABLE . '

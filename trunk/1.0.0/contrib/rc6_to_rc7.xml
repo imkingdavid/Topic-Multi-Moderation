@@ -33,6 +33,9 @@
 			<rev-version>1.0.0rc6</rev-version>
 			<changelog lang="en">
 				<change>[fix] some nitpicky validation stuff</change>
+				<change>[fix] blank page when you select "No" when applying a multi-mod (thanks mao43!)</change>
+				<change>[fix] only the last multi-mod in the list could be applied to a topic (thanks mao43!)</change>
+				<change>[new] logs actions in Moderator Log</change>
 			</changelog>
 		</entry>
 		<entry>
@@ -192,6 +195,7 @@
 	<copy>
 		<file from="root/includes/mods/functions_tmm.php" to="includes/mods/functions_tmm.php" />
 		<file from="root/includes/mods/functions_tmm_admin.php" to="includes/mods/functions_tmm_admin.php" />
+		<file from="root/language/en/mods/tmm.php" to="language/en/mods/tmm.php" />
 		<file from="root/tmm.php" to="tmm.php" />
 	</copy>
 	
