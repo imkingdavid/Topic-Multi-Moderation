@@ -129,7 +129,14 @@ class tmm
 		{
 			$move = move_topics($topic_id, self::$multi_mods_cache[$mod_id]['move_dest'], $forum_id, true);
 		}
-		return (empty(self::$error)) ? true : false;
+		
+		$return = (empty(self::$error)) ? true : false;
+		if($return)
+		{
+			//New in RC7 -- Utilize the Moderator logs
+			add_log('mod', $forum_id, $topic_id, 'LOG_TMM_APPLIED', self::$multi_mods_cache[$mod_id]['title']);
+		}
+		return $return;
 	}
 	
 	/*

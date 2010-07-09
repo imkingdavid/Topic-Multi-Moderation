@@ -58,6 +58,10 @@ $lang = array_merge($lang, array(
 	'TMM_MOVE'					=> 'Topic Moved',
 	'TMM_COPY'					=> 'Topic Copied',
 	'TMM_AUTOREPLY_BOOL'		=> 'Reply posted to topic',
+	
+	//Logs
+	'LOG_TMM_APPLIED'			=> '<strong>Applied multi-mod</strong><br />» %s',
+	
 	//Errors
 	'AUTOREPLY_ERROR'			=> 'Could not add reply',
 	'LOCK_ERROR'				=> 'Could not lock topic',
