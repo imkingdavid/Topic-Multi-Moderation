@@ -60,10 +60,21 @@ $lang = array_merge($lang, array(
 	'TMM_AUTOREPLY_BOOL'		=> 'Reply posted to topic',
 	
 	//Logs
+	// Moderator
 	'LOG_TMM_APPLIED'			=> '<strong>Applied multi-mod to topic</strong><br />» %s',
 	'LOG_PREFIX_APPLIED'		=> '<strong>Applied prefix to topic</strong><br />» %s',
 	'LOG_PREFIX_REMOVED'		=> '<strong>Removed prefix from topic</strong><br />» %s',
 	'LOG_PREFIXES_CLEARED'		=> '<strong>Removed all prefixes from topic</strong>',
+	// Admin
+	//  Multi-mods
+	'LOG_TMM_CREATED'			=> '<strong>Multi-mod created</strong><br />» %s',
+	'LOG_TMM_MODIFIED'			=> '<strong>Multi-mod modified</strong><br />» %s',
+	'LOG_TMM_DELETED'			=> '<strong>Multi-mod deleted</strong><br />» %s',
+	//  Prefixes
+	'LOG_PREFIX_CREATED'		=> '<strong>Prefix created</strong><br />» %s',
+	'LOG_PREFIX_MODIFIED'		=> '<strong>Prefix modified</strong><br />» %s',
+	'LOG_PREFIX_DELETED'		=> '<strong>Prefix deleted</strong><br />» %s',
+	
 	
 	//Errors
 	'AUTOREPLY_ERROR'			=> 'Could not add reply',

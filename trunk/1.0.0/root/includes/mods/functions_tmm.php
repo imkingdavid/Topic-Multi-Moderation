@@ -444,7 +444,7 @@ class tmm
 			return false;
 		}
 		//New in RC7 -- Utilize the Moderator logs
-		add_log('mod', 0, $topic_id, 'LOG_PREFIX_REMOVED', self::parse_prefix($row));
+		add_log('mod', 0, $topic_id, 'LOG_PREFIX_REMOVED', self::parse_prefix_instance($prefix_instance_id));
 		$sql = 'DELETE
 			FROM ' . TMM_PREFIX_INSTANCES_TABLE . '
 			WHERE prefix_instance_id = ' . (int) $prefix_instance_id . $and;

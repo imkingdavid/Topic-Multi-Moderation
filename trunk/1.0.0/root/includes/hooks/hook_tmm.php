@@ -21,11 +21,23 @@ function tmm_open()
 {
 	global $phpbb_root_path, $phpEx, $user, $table_prefix;
 	$user->add_lang('mods/tmm');
-	include($phpbb_root_path . 'includes/mods/tmm_constants.' . $phpEx);
-	include($phpbb_root_path . 'includes/mods/functions_tmm_cache.' . $phpEx);
-	include($phpbb_root_path . 'includes/mods/functions_tmm.' . $phpEx);
-	include($phpbb_root_path . 'includes/mods/functions_tmm_admin.' . $phpEx);
-	if(!function_exists('move_topics'))
+	if (!defined('TMM_VERSION'))
+	{
+		include($phpbb_root_path . 'includes/mods/tmm_constants.' . $phpEx);
+	}
+	if (!class_exists('tmm_cache'))
+	{
+		include($phpbb_root_path . 'includes/mods/functions_tmm_cache.' . $phpEx);
+	}
+	if (!class_exists('tmm'))
+	{
+		include($phpbb_root_path . 'includes/mods/functions_tmm.' . $phpEx);
+	}
+	if (!class_exists('tmm_admin'))
+	{
+		include($phpbb_root_path . 'includes/mods/functions_tmm_admin.' . $phpEx);
+	}
+	if (!function_exists('move_topics'))
 	{
 		include($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
 	}

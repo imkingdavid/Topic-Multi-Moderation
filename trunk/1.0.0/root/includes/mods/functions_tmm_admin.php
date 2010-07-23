@@ -95,14 +95,17 @@ class tmm_admin extends tmm
 		{
 			$sql = 'INSERT INTO ' . TMM_PREFIXES_TABLE . '
 				   ' . $db->sql_build_array('INSERT', $data);
-			$result = $db->sql_query($sql);
+			$db->sql_query($sql);
+			$next_id = $db->sql_nextid();
+			add_log('admin', 'LOG_PREFIX_CREATED', tmm::parse_prefix($next_id));
 		}
 		else if($mode == 'edit')
 		{
 			$sql = 'UPDATE ' . TMM_PREFIXES_TABLE . '
 					SET ' . $db->sql_build_array('UPDATE', $data) . '
 					WHERE prefix_id = ' . (int) $prefix_id;
-			$result = $db->sql_query($sql);
+			$db->sql_query($sql);
+			add_log('admin', 'LOG_PREFIX_MODIFIED', tmm::parse_prefix($prefix_id));
 		}
 		else
 		{
@@ -145,10 +148,12 @@ class tmm_admin extends tmm
 		if($mode == 'new')
 		{
 			$message = $user->lang[(($result) ? 'TMM_CREATED' : 'TMM_CREATE_ERROR')];
+			add_log('admin', 'LOG_TMM_CREATED', $data['tmm_title']);
 		}
 		else if($mode == 'update')
 		{
 			$message = $user->lang[(($result) ? 'TMM_EDITED' : 'TMM_EDIT_ERROR')];
+			add_log('admin', 'LOG_TMM_MODIFIED', $data['tmm_title']);
 		}
 		else
 		{
@@ -172,7 +177,7 @@ class tmm_admin extends tmm
 		{
 			return false;
 		}
-		
+		add_log('admin', 'LOG_PREFIX_DELETED', tmm::parse_prefix($prefix_id));
 		$sql = 'DELETE
 			FROM ' . TMM_PREFIXES_TABLE . '
 			WHERE prefix_id = ' . (int) $prefix_id;
@@ -199,7 +204,7 @@ class tmm_admin extends tmm
 	public static function delete_tmm($tmm_id)
 	{
 		global $db;
-		$sql = 'SELECT tmm_id
+		$sql = 'SELECT tmm_id,tmm_title
 			FROM ' . TMM_TABLE . '
 			WHERE tmm_id = ' . (int) $tmm_id;
 		$result = $db->sql_query($sql);
@@ -209,6 +214,7 @@ class tmm_admin extends tmm
 		{
 			return false;
 		}
+		add_log('admin', 'LOG_TMM_DELETED', $row['tmm_title']);
 		$sql = 'DELETE
 			FROM ' . TMM_TABLE . '
 			WHERE tmm_id = ' . (int) $tmm_id;
