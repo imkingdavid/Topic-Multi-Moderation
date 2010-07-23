@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml-stylesheet type="text/xsl" href="modx.prosilver.en.xsl"?>
+<!--For security purposes, please check: http://www.phpbb.com/mods/ for the latest version of this MOD. Although MODs are checked before being allowed in the MODs Database there is no guarantee that there are no security problems within the MOD. No support will be given for MODs not found within the MODs Database which can be found at http://www.phpbb.com/mods/-->
+<mod xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.phpbb.com/mods/xml/modx-1.2.5.xsd">
+<header>
+	<license>http://opensource.org/licenses/gpl-license.php GNU General Public License v2</license>
+
+	<title lang="en">Topic Multi-Moderation</title>
+	
+	<description lang="en">This MOD adds a quick and easy way to perform multiple moderation tasks with one click. Configurable via the ACP.</description>
+
+	<author-notes lang="en">NOTE: This MOD requires PHP 5 or greater.
+	If you would like to make a donation for my work done on this MOD as well as other MODs, you may do so by going to the demo/test board (http://www.phpbbdevelopers.net/) and clicking the Donate button in the header. All donations are voluntary but appreciated.</author-notes>
+
+	<author-group>
+		<author>
+			<username>imkingdavid</username>
+			<realname>David King</realname>
+			<homepage>http://www.phpbbdevelopers.net</homepage>
+			<email>imkingdavid@gmail.com</email>
+		</author>
+	</author-group>
+
+	<mod-version>1.0.0</mod-version>
+
+	<installation>
+		<level>intermediate</level>
+		<time>300</time>
+		<target-version>3.0.7-PL1</target-version>
+	</installation>
+	<history>
+		<entry>
+			<date>2010-07-04</date>
+			<rev-version>1.0.0rc6</rev-version>
+			<changelog lang="en">
+				<change>[fix] some nitpicky validation stuff</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2010-06-28</date>
+			<rev-version>1.0.0rc6</rev-version>
+			<changelog lang="en">
+				<change>[fix] errors pointed out during MOD validation</change>
+				<change>[fix] non-moderators cannot apply multi-mods</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2010-06-06</date>
+			<rev-version>1.0.0rc5</rev-version>
+			<changelog lang="en">
+				<change>[fix] spelling issue in language variable in ACP multi-mods add/edit page title (thanks Callum95)</change>
+				<change>[fix] error displayed on posting screen when no prefixes have been created (thanks Ratmaster)</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2010-06-26</date>
+			<rev-version>1.0.0rc6</rev-version>
+			<changelog lang="en">
+				<change>[fix] errors pointed out during MOD validation</change>
+				<change>[fix] non-moderators cannot apply multi-mods</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2010-05-29</date>
+			<rev-version>1.0.0rc4</rev-version>
+			<changelog lang="en">
+				<change>[fix] incompatibility with SEO friendly URL MOD when posting a new topic with prefixes</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2010-05-28</date>
+			<rev-version>1.0.0rc3</rev-version>
+			<changelog lang="en">
+				<change>[fix] language variable in PMs being overwritten</change>
+				<change>[fix] bug in ACP module when deleting multi-mods</change>
+				<change>[fix] method being declared twice</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2010-05-22</date>
+			<rev-version>1.0.0rc2</rev-version>
+			<changelog lang="en">
+				<change>[fix] apply prefix on new post</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2010-05-22</date>
+			<rev-version>1.0.0rc1</rev-version>
+			<changelog lang="en">
+				<change>[change] Uses hooks and static methods to reduce file edits, and cache to increase efficiency (thanks Erik Frerejean for the idea)</change>
+				<change>[add] Topic Prefixes show up in more locations, such as MCP and Search</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2010-05-02</date>
+			<rev-version>0.2.1</rev-version>
+			<changelog lang="en">
+				<change>[Change] Removed extraneous "Recheck" link from version checker</change>
+				<change>[Fix] Unable to add same prefix multiple times (unless applied by multi-mod)</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2010-05-01</date>
+			<rev-version>0.2.0</rev-version>
+			<changelog lang="en">
+				<change>[Change] Complete code rewrite</change>
+				<change>[Feature] Tokens in prefix (i.e. {USERNAME} and {DATE})</change>
+				<change>[Feature] Add multiple prefixes to topic</change>
+				<change>[Feature] Added more flexibility for better control per prefix and multi-mod</change>
+				<change>[Note] Not backwards compatible.</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2009-12-16</date>
+			<rev-version>0.1.4 BETA</rev-version>
+			<changelog lang="en">
+				<change>[Fix] bug in ACP prefixes edit module</change>
+				<change>[Fix] color swatch in ACP prefixes module</change>
+				<change>[Fix] for bug caused by another MOD (topic_status cannot be NULL)</change>
+				<change>[Note] never released</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2009-09-13</date>
+			<rev-version>0.1.3 BETA</rev-version>
+			<changelog lang="en">
+				<change>[Change]Changed the version numbering from 1.0.0 BETA # to 0.1.# BETA.</change>
+				<change>[Fix] errors generated in posting.php</change>
+				<change>[Fix] errors generated in viewtopic.php (thanks tbxn)</change>
+				<change>[Fix] made module() function in info/acp_tmm.php a public function (thanks tbxn)</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2009-09-01</date>
+			<rev-version>0.1.2 BETA</rev-version>
+			<changelog lang="en">
+				<change>[Change] Changed permission settings (now there are separte admin permissions, as well as separate forum-specific permissions for multi-mods and prefixes).</change>
+				<change>[Fix] Fixed various bugs in posting.php, posting_editor.html</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2009-09-01</date>
+			<rev-version>0.1.1 BETA</rev-version>
+			<changelog lang="en">
+				<change>[Fix] Fixed ANOTHER bug in prefix dropdown menu on posting</change>
+				<change>[Fix] Fixed various template bugs</change>
+				<change>[Fix] Fixed various viewforum, posting, and viewtopic bugs</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2009-08-31</date>
+			<rev-version>0.1.0 BETA</rev-version>
+			<changelog lang="en">
+				<change>[Fix] Fixed bug in prefix dropdown menu on posting</change>
+				<change>[Feature] Added copy ability for multi-mods</change>
+				<change>[Feature] Added UMIL automated install/uninstall/update file: tmm_install.php</change>
+				<change>[Feature] Verified AutoMOD compatibility</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2009-08-25</date>
+			<rev-version>0.0.3 ALPHA</rev-version>
+			<changelog lang="en">
+				<change>[Change] Added support for separate prefix use on posting.php (new thread and edit first post screen)</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2009-08-23</date>
+			<rev-version>0.0.2 ALPHA</rev-version>
+			<changelog lang="en">
+				<change>[Fix] Made a few fixes to the install.xml file</change>
+				<change>[Change] Changed database tables (added default value)</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2009-08-23</date>
+			<rev-version>0.0.1 ALPHA</rev-version>
+			<changelog lang="en">
+				<change>Completed bulk of the coding</change>
+				<change>Released first alpha version</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2009-08-15</date>
+			<rev-version>0.0.0 DEV</rev-version>
+			<changelog lang="en">
+				<change>Begun development</change>
+			</changelog>
+		</entry>
+	</history>
+	<link-group>
+		<link type="contrib" href="contrib/rc1_to_rc2.xml" lang="en">Update from RC1 to RC2</link>
+		<link type="contrib" href="contrib/rc2_to_rc3.xml" lang="en">Update from RC2 to RC3</link>
+		<link type="contrib" href="contrib/rc3_to_rc4.xml" lang="en">Update from RC3 to RC4</link>
+		<link type="contrib" href="contrib/rc4_to_rc5.xml" lang="en">Update from RC4 to RC5</link>
+		<link type="contrib" href="contrib/rc5_to_rc6.xml" lang="en">Update from RC5 to RC6</link>
+		<link type="contrib" href="contrib/rc6_to_rc7.xml" lang="en">Update from RC6 to RC7</link>
+	</link-group>
+</header>
+
+<action-group>
+	<copy>
+		<file from="root/*.*" to="*.*" />
+	</copy>
+	
+	<open src="posting.php">
+		<edit>
+			<find><![CDATA[$refresh	= (isset($_POST['add_file']) || isset($_POST['delete_file']) || isset($_POST['full_editor']) || isset($_POST['cancel_unglobalise']) || $save || $load) ? true : false;]]></find>
+			<inline-edit>
+				<inline-find><![CDATA[isset($_POST['cancel_unglobalise'])]]></inline-find>
+				<inline-action type="after-add"><![CDATA[ || isset($_POST['prefix_add']) || isset($_POST['prefix_remove']) || isset($_POST['prefix_clear'])]]></inline-action>
+			</inline-edit>
+		</edit>
+		<edit>
+			<find><![CDATA[// Load draft overview
+if ($load && ($mode == 'reply' || $mode == 'quote' || $mode == 'post') && $post_data['drafts'])
+{
+	load_drafts($topic_id, $forum_id);
+}]]></find>
+		<action type="after-add"><![CDATA[//! Begin TMM
+$prefix_id	= request_var('prefix_dropdown', 0);
+$prefix_instance_id = request_var('prefix', array(0));
+$prefix_cache = request_var('prefix_temp_cache', '');
+$action = (isset($_POST['prefix_add'])) ? 0 : false;
+$action = (isset($_POST['prefix_remove'])) ? 1 : $action;
+$action = (isset($_POST['prefix_clear'])) ? 2 : $action;
+$use_tmm = (($mode == 'edit' && $post_data['topic_first_post_id'] == $post_id) || $mode == 'post') ? true : false;
+if($use_tmm)
+{
+	$ids = (!$prefix_id) ? $prefix_instance_id : $prefix_id;
+	$temp_cache = tmm::do_posting_action($mode, $topic_id, $action, $ids, $prefix_cache);
+	$input = ($mode == 'edit') ? 'sql' : explode(',', $temp_cache);
+	$prefixes = tmm::load_topic_prefixes($topic_id, 'array', $input);
+	$prefix_select = tmm::get_prefixes_for_posting($topic_id, $forum_id, $temp_cache);
+	$prefixed = '';
+	if(!empty($prefixes))
+	{
+		foreach($prefixes AS $prefix)
+		{
+			$parsed = ($mode == 'edit') ? tmm::parse_prefix_instance($prefix) : tmm::parse_prefix($prefix);
+			$prefixed .= $parsed . ' <input type="checkbox" name="prefix[]" value="' . $prefix . '" /><br />';
+		}
+	}
+	$template->assign_vars(array(
+		'PREFIX_SELECT'		=> $prefix_select,
+		'ON_NEW_POST'		=> ($mode == 'post') ? true : false,
+		'APPLIED_PREFIXES'	=> $prefixed,
+		'PREFIX_TEMP_CACHE'	=> $temp_cache,
+	));	
+}
+$template->assign_var('TOPIC_PREFIX', tmm::load_topic_prefixes($topic_id));
+//! End TMM]]></action>
+		</edit>
+		<edit>
+			<find><![CDATA[$redirect_url = submit_post($mode, $post_data['post_subject'], $post_data['username'], $post_data['topic_type'], $poll, $data, $update_message, ($update_message || $update_subject) ? true : false);]]></find>
+			<action type="after-add"><![CDATA[			//! Begin TMM
+			if($mode == 'post' && !empty($prefixes) && is_array($prefixes))
+			{
+				$sql = 'SELECT topic_id
+					FROM ' . TOPICS_TABLE . '
+					ORDER BY topic_id DESC';
+				$result = $db->sql_query($sql);
+				$new_topic_id = $db->sql_fetchfield('topic_id');
+				$db->sql_freeresult($result);
+				foreach($prefixes AS $prefix)
+				{
+					tmm::apply_prefix($prefix, $new_topic_id);
+				}
+			}
+			//! End TMM]]></action>
+		</edit>
+	</open>
+	<open src="search.php">
+		<edit>	
+			<find><![CDATA[				'TOPIC_VIEWS'		=> $row['topic_views'],]]></find>
+			<action type="after-add"><![CDATA[				//! Begin TMM
+				'TOPIC_PREFIX'		=> tmm::load_topic_prefixes($row['topic_id']),
+				//! End TMM]]></action>
+		</edit>
+	</open>
+	<open src="viewforum.php">
+		<edit>	
+			<find><![CDATA['TOPIC_TYPE'		=> $topic_type,]]></find>
+			<action type="after-add"><![CDATA[			//! Begin TMM
+			'TOPIC_PREFIX'		=> tmm::load_topic_prefixes($row['topic_id']),
+			//! End TMM]]></action>
+		</edit>
+	</open>
+	<open src="viewtopic.php">
+		<edit>
+			<find><![CDATA[	'TOPIC_POSTER'	=> $topic_data['topic_poster'],]]></find>
+			<action type="after-add"><![CDATA[//! Begin TMM
+	'TOPIC_PREFIX'	=> tmm::load_topic_prefixes($topic_data['topic_id']),
+	'TMM_SELECT'	=> tmm::get_tmm_dropdown($topic_data['forum_id']),
+	//! End TMM]]></action>
+		</edit>
+	</open>
+	
+	<open src="styles/prosilver/template/posting_editor.html">
+		<edit>
+			<find><![CDATA[<!-- IF CAPTCHA_TEMPLATE and S_CONFIRM_CODE -->
+		<!-- DEFINE $CAPTCHA_TAB_INDEX = 3 -->
+		<!-- INCLUDE {CAPTCHA_TEMPLATE} -->
+	<!-- ENDIF -->
+	<!-- ENDIF -->]]></find>
+			<action type="after-add"><![CDATA[<!-- INCLUDE tmm_posting_body.html -->]]></action>
+		</edit>
+	</open>
+	
+	<open src="styles/prosilver/template/posting_layout.html">
+		<edit>	
+			<find><![CDATA[<h2><a href="{U_VIEW_TOPIC}">{TOPIC_TITLE}</a></h2>]]></find>
+			<inline-edit>
+				<inline-find><![CDATA[<h2>]]></inline-find>
+				<inline-action type="after-add">{TOPIC_PREFIX}</inline-action>
+			</inline-edit>
+		</edit>
+	</open>
+	
+	<open src="styles/prosilver/template/search_results.html">
+		<edit>	
+			<find><![CDATA[<a href="{searchresults.U_VIEW_TOPIC}" class="topictitle">{searchresults.TOPIC_TITLE}</a> {searchresults.ATTACH_ICON_IMG}]]></find>
+			<inline-edit>
+				<inline-find><![CDATA[<a href=]]></inline-find>
+				<inline-action type="before-add"><![CDATA[{searchresults.TOPIC_PREFIX}]]></inline-action>
+			</inline-edit>
+		</edit>
+		<edit>	
+			<find><![CDATA[<dd>{L_TOPIC}: <a href="{searchresults.U_VIEW_TOPIC}">{searchresults.TOPIC_TITLE}</a></dd>]]></find>
+			<inline-edit>
+				<inline-find><![CDATA[{L_TOPIC}: ]]></inline-find>
+				<inline-action type="after-add"><![CDATA[{searchresults.TOPIC_PREFIX}]]></inline-action>
+			</inline-edit>
+		</edit>
+	</open>
+		
+	<open src="styles/prosilver/template/viewforum_body.html">
+		<edit>	
+			<find><![CDATA[<dt<!-- IF topicrow.TOPIC_ICON_IMG and S_TOPIC_ICONS --> style="background-image: url({T_ICONS_PATH}{topicrow.TOPIC_ICON_IMG}); background-repeat: no-repeat;"<!-- ENDIF --> title="{topicrow.TOPIC_FOLDER_IMG_ALT}"><!-- IF topicrow.S_UNREAD_TOPIC --><a href="{topicrow.U_NEWEST_POST}">{NEWEST_POST_IMG}</a> <!-- ENDIF --><a href="{topicrow.U_VIEW_TOPIC}" class="topictitle">{topicrow.TOPIC_TITLE}</a>]]></find>
+			<inline-edit>
+				<inline-find><![CDATA[<a href="{topicrow.U_VIEW_TOPIC}" class="topictitle">{topicrow.TOPIC_TITLE}</a>]]></inline-find>
+				<inline-action type="before-add"><![CDATA[{topicrow.TOPIC_PREFIX}]]></inline-action>
+			</inline-edit>
+		</edit>
+	</open>
+	
+	<open src="styles/prosilver/template/viewtopic_body.html">
+		<edit>	
+			<find><![CDATA[<h2><a href="{U_VIEW_TOPIC}">{TOPIC_TITLE}</a></h2>]]></find>
+			<inline-edit>
+				<inline-find><![CDATA[<h2>]]></inline-find>
+				<inline-action type="after-add"><![CDATA[{TOPIC_PREFIX}]]></inline-action>
+			</inline-edit>
+		</edit>
+		<edit>	
+			<find><![CDATA[<!-- IF S_TOPIC_MOD -->
+	<form method="post" action="{S_MOD_ACTION}">
+	<fieldset class="quickmod">
+		<label for="quick-mod-select">{L_QUICK_MOD}:</label> {S_TOPIC_MOD} <input type="submit" value="{L_GO}" class="button2" />
+		{S_FORM_TOKEN}
+	</fieldset>
+	</form>
+<!-- ENDIF -->]]></find>
+			<action type="after-add"><![CDATA[<!-- IF TMM_SELECT -->
+	<br clear="right" />
+	<form method="post" action="{S_TMM_ACTION}">
+    <fieldset class="quickmod">
+    	<label for="tmm-mod-select">{L_MULTI_MODS}:</label> {TMM_SELECT} <input type="submit" value="{L_GO}" class="button2" />
+    </fieldset>
+    </form>
+<!-- ENDIF -->]]></action>
+		</edit>
+	</open>
+	<open src="includes/mcp/mcp_topic.php">
+		<edit>
+			<find><![CDATA[$topic_id = request_var('t', 0);
+	$topic_info = get_topic_data(array($topic_id), false, true);]]></find>
+			<action type="after-add"><![CDATA[	//! Begin TMM
+	$template->assign_var('TOPIC_PREFIX', tmm::load_topic_prefixes($topic_id));
+	//! End TMM]]></action>
+		</edit>
+	</open>
+	<open src="styles/prosilver/template/mcp_topic.html">
+		<edit>
+			<find><![CDATA[<h2><a href="{U_VIEW_TOPIC}">{L_TOPIC}: {TOPIC_TITLE}</a></h2>]]></find>
+			<inline-edit>
+				<inline-find><![CDATA[{L_TOPIC}: ]]></inline-find>
+				<inline-action type="after-add"><![CDATA[{TOPIC_PREFIX} ]]></inline-action>
+			</inline-edit>
+		</edit>
+	</open>
+	<open src="includes/mcp/mcp_forum.php">
+		<edit>
+			<find><![CDATA[$template->assign_block_vars('topicrow', $topic_row);]]></find>
+			<action type="before-add"><![CDATA[//! Begin TMM
+			$topic_row = array_merge($topic_row, array(
+			'TOPIC_PREFIX'	=> tmm::load_topic_prefixes($topic_id),
+		));
+		//! End TMM]]></action>
+		</edit>
+	</open>
+	<open src="styles/prosilver/template/mcp_forum.html">
+		<edit>
+			<find><![CDATA[<a href="{topicrow.U_VIEW_TOPIC}" class="topictitle">{topicrow.TOPIC_TITLE}</a>]]></find>
+			<inline-edit>
+				<inline-find><![CDATA[<a href="{topicrow.U_VIEW_TOPIC}" class="topictitle">{topicrow.TOPIC_TITLE}</a>]]></inline-find>
+				<inline-action type="before-add"><![CDATA[{topicrow.TOPIC_PREFIX}]]></inline-action>
+			</inline-edit>
+		</edit>
+	</open>
+	<open src="includes/mcp/mcp_queue.php">
+		<edit>
+			<find><![CDATA[$forum_list_approve = get_forum_list('m_approve', false, true);
+				$forum_list_read = array_flip(get_forum_list('f_read', true, true)); // Flipped so we can isset() the forum IDs]]></find>
+			<action type="before-add"><![CDATA[//! Begin TMM
+				$template->assign_var('TOPIC_PREFIX', tmm::load_topic_prefixes($topic_id));
+				//! End TMM]]></action>
+		</edit>
+	</open>
+	<open src="styles/prosilver/template/mcp_queue.html">
+		<edit>
+			<find><![CDATA[<!-- IF S_TOPICS --><br /><!-- ELSE -->{L_TOPIC}: <a href="{postrow.U_TOPIC}">{postrow.TOPIC_TITLE}</a> <br /><!-- ENDIF -->]]></find>
+			<inline-edit>
+				<inline-find><![CDATA[<a href="{postrow.U_TOPIC}">]]></inline-find>
+				<inline-action type="before-add"><![CDATA[{TOPIC_PREFIX} ]]></inline-action>
+			</inline-edit>
+		</edit>
+	</open>
+	<php-installer>tmm_install.php</php-installer>
+	<diy-instructions lang="en"><![CDATA[Make sure all files have been uploaded to the proper locations. Run the SQL install file, tmm_install.php, in your web browser and delete the file upon script completion. Purge your forum cache and refresh your changed templates.
+	You will find the ACP Modules in the Posting tab in the ACP.
+	If you appreciate my work and would like to donate to me in order to support the development of this and other MODs, please do so by visiting http://www.phpbbdevelopers.net/ and clicking Donate in the navigation menu. All amounts are appreciated, and no donation is required for use of this MOD.]]>
+	</diy-instructions>
+</action-group>
+</mod>
