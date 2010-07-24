@@ -35,6 +35,7 @@
 			<changelog lang="en">
 				<change>[fix] some nitpicky validation stuff</change>
 				<change>[fix] incompatibility with ultimate points system fixed</change>
+				<change>[fix] prefixes are now copied when a topic is copied using a multimod</change>
 				<change>[new] utilize native admin and moderator log system</change>
 				<change>[change] lock option now toggles between locked/unlocked based on topics current status, instead of only locking it</change>
 				<change>[change] sticky option now allows you to change a topic to sticky, announcement, or global announcement.</change>
