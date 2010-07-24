@@ -59,7 +59,7 @@ $lang = array_merge($lang, array(
 	'BBCODEALLOW'				=> 'BBCode and Smileys are allowed',
 	'TMM_FORUMS_EXPLAIN'		=> 'This multi-mod can be used in the selected forums. To select or deselect one or more forums, hold control and click on the forum name.',
 	'TMM_GROUPS_EXPLAIN'		=> 'These groups have permission to use this multi-mod in the selected forums. To select or deselect one or more groups, hold control and click on the group name.',
-	'TMM_USERS_EXPLAIN'			=> 'These users have permission to use this multi-mod in the selected forums, regardless of the groups chosen above. Enter the ID of each user followed by a comma and no space. e.g. 2,4,6',
+	'TMM_USERS_EXPLAIN'			=> 'These users have permission to use this multi-mod in the selected forums, regardless of the groups chosen above. Enter the <strong>username</strong> of each user followed by a comma and no space. e.g. user,jack,jane',
 	
 //! Tasks
 	'YES'						=> 'Yes',
@@ -68,10 +68,23 @@ $lang = array_merge($lang, array(
 	'NO'						=> 'No',
 	'DISABLE'					=> 'Disable',
 	'DISABLED'					=> 'Disabled',
-	'LOCK'						=> 'Lock this topic?',
-	'LOCK_EXPLAIN'				=> 'If Yes, the topic will be locked.',
-	'STICKY'					=> 'Make this topic sticky?',
-	'STICKY_EXPLAIN'			=> 'If Yes, the topic will be stickied.',
+	// Changes in RC7
+	//	-- Lock Topic has become Toggle Locked status
+	'LOCK'						=> 'Toggle Lock/Unlock status?',
+	'LOCK_EXPLAIN'				=> 'If Yes, the topic will be locked or unlocked, depending on its current status.',
+	
+	//	-- Stick Topic has become Alter Topic Type
+	'STICKY'					=> 'Alter topic type?',
+	'STICKY_EXPLAIN'			=> 'Leave as is, or make it normal, a sticky, an announcement, or a global announcement.',
+	// -- And add the possible choices for topic types
+	'TOPIC_LEAVE'				=> 'Leave As Is',
+	'TOPIC_NORMAL'				=> 'Normal Topic',
+	'TOPIC_STICKY'				=> 'Stick Topic',
+	'TOPIC_ANNOUNCE'			=> 'Announce Topic',
+	'TOPIC_GLOBAL'				=> 'Global Announce Topic',
+	
+	'NO_PREFIXES'				=> 'No prefixes',
+	
 	'MOVE'						=> 'Move this topic?',
 	'MOVE_EXPLAIN'				=> 'If Yes, the topic will be moved to the destination forum set below.',
 	'COPY'						=> 'Copy this topic?',
@@ -112,7 +125,7 @@ $lang = array_merge($lang, array(
 	'TOKENS_EXPLAIN'			=> 'The following tokens can be used as placeholders for variable inforumation:<br />{USERNAME} becomes the username of the person who applied the prefix.<br />{DATE} becomes the date on which the prefix was applied.',
 	'PREFIX_FORUMS_EXPLAIN'		=> 'This prefix can be used in the selected forums. To select or deselect one or more forums, hold control and click on the forum name.',
 	'PREFIX_GROUPS_EXPLAIN'		=> 'These groups have permission to use this prefix in the selected forums. To select or deselect one or more groups, hold control and click on the group name.',
-	'PREFIX_USERS_EXPLAIN'		=> 'These users have permission to use this prefix in the selected forums, regardless of the groups chosen above. Enter the ID of each user followed by a comma and no space. e.g. 2,4,6',
+	'PREFIX_USERS_EXPLAIN'		=> 'These users have permission to use this prefix in the selected forums, regardless of the groups chosen above. Enter the <strong>username</strong> of each user followed by a comma and no space. e.g. user,jack,jane',
 	
 //! Version Check
 	'LATEST_VERSION'			=> 'Latest Version:',

@@ -29,13 +29,15 @@
 	</installation>
 	<history>
 		<entry>
-			<date>2010-07-04</date>
-			<rev-version>1.0.0rc6</rev-version>
+			<date>2010-07-23</date>
+			<rev-version>1.0.0rc7</rev-version>
 			<changelog lang="en">
 				<change>[fix] some nitpicky validation stuff</change>
-				<change>[fix] blank page when you select "No" when applying a multi-mod (thanks mao43!)</change>
-				<change>[fix] only the last multi-mod in the list could be applied to a topic (thanks mao43!)</change>
-				<change>[new] logs actions in Moderator Log</change>
+				<change>[fix] incompatibility with ultimate points system fixed</change>
+				<change>[new] utilize native admin and moderator log system</change>
+				<change>[change] lock option now toggles between locked/unlocked based on topics current status, instead of only locking it</change>
+				<change>[change] sticky option now allows you to change a topic to sticky, announcement, or global announcement.</change>
+				<change>[change] allows entry of username or userid in the ACP module, instead of just userid</change>
 			</changelog>
 		</entry>
 		<entry>
@@ -188,6 +190,7 @@
 		<link type="contrib" href="rc2_to_rc3.xml" lang="en">Update from RC2 to RC3</link>
 		<link type="contrib" href="rc3_to_rc4.xml" lang="en">Update from RC3 to RC4</link>
 		<link type="contrib" href="rc4_to_rc5.xml" lang="en">Update from RC4 to RC5</link>
+		<link type="contrib" href="rc5_to_rc6.xml" lang="en">Update from RC5 to RC6</link>
 	</link-group>
 </header>
 

@@ -294,7 +294,66 @@ class tmm_admin extends tmm
 			}
 			$s_prefix_options .= '<option value="' . $row['prefix_id'] . '"' . $selected . '><span style="color:#' . $row['prefix_color_hex'] . ';">' . $row['prefix_title'] . '</span></option>';
 		}
+		//--new in RC7 -- at least have one value if there are no prefixes
+		if(empty($s_prefix_options))
+		{
+			$s_prefix_options = '<option value="0" disabled="disabled">' . $user->lang['NO_PREFIXES'] . '</option>';
+		}
 		$db->sql_freeresult($result);
 		return $s_prefix_options;
+	}
+	
+	// new in RC7
+	public static function get_userid_from_username($username)
+	{
+		global $db;
+		$username = $db->sql_escape($username);
+		$sql = 'SELECT user_id
+			FROM ' . USERS_TABLE . "
+			WHERE username = '$username'";
+		$result = $db->sql_query($sql);
+		$user_id = $db->sql_fetchfield('user_id');
+		$db->sql_freeresult($result);
+		return $user_id;
+	}
+	// new in RC7
+	public static function get_username_from_userid($user_id)
+	{
+		global $db;
+		$sql = 'SELECT username
+			FROM ' . USERS_TABLE . '
+			WHERE user_id = \'' . (int) $user_id . '\'';
+		$result = $db->sql_query($sql);
+		$username = $db->sql_fetchfield('username');
+		$db->sql_freeresult($result);
+		return $username;
+	}
+	
+	public static function toggle_username_id($in_type, $input)
+	{
+		global $db;
+		//just in case...
+		$output = $input;
+		switch($in_type)
+		{
+			default:
+			case 'username':
+				$output = self::get_userid_from_username($input);
+				if(!$output)
+				{
+					$output = $input;
+				}
+				
+			break;
+			
+			case 'id':
+				$input = (int) $input;
+				if(is_int($input))
+				{
+					$output = self::get_username_from_userid($input);
+				}
+			break;
+		}
+		return $output;
 	}
 }

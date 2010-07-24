@@ -59,6 +59,8 @@ $lang = array_merge($lang, array(
 	'TMM_COPY'					=> 'Topic Copied',
 	'TMM_AUTOREPLY_BOOL'		=> 'Reply posted to topic',
 	
+	'NO_PREFIXES'				=> 'No prefixes',
+	
 	//Logs
 	// Moderator
 	'LOG_TMM_APPLIED'			=> '<strong>Applied multi-mod to topic</strong><br />» %s',

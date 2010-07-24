@@ -30,10 +30,15 @@
 	</installation>
 	<history>
 		<entry>
-			<date>2010-07-04</date>
-			<rev-version>1.0.0rc6</rev-version>
+			<date>2010-07-23</date>
+			<rev-version>1.0.0rc7</rev-version>
 			<changelog lang="en">
 				<change>[fix] some nitpicky validation stuff</change>
+				<change>[fix] incompatibility with ultimate points system fixed</change>
+				<change>[new] utilize native admin and moderator log system</change>
+				<change>[change] lock option now toggles between locked/unlocked based on topics current status, instead of only locking it</change>
+				<change>[change] sticky option now allows you to change a topic to sticky, announcement, or global announcement.</change>
+				<change>[change] allows entry of username or userid in the ACP module, instead of just userid</change>
 			</changelog>
 		</entry>
 		<entry>

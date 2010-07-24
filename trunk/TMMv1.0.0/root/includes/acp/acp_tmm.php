@@ -81,7 +81,8 @@ class acp_tmm
 						'COPYWHERE'			=> $copy_where_forum_list,
 						
 					));
-					$actions = array('LOCK', 'STICKY', 'MOVE', 'COPY', 'AUTOREPLY_BOOL');
+					// Default all actions to no or the lowest available
+					$actions = array('LOCK', 'MOVE', 'COPY', 'AUTOREPLY_BOOL');
 					foreach($actions AS $action)
 					{
 						$template->assign_vars(array(
@@ -89,6 +90,13 @@ class acp_tmm
 							"{$action}_NO"	=> 'checked="checked"',
 						));
 					}
+					$template->assign_vars(array(
+						'TYPE_LEAVE'		=> ' checked="checked"',
+						'TYPE_NORMAL'		=> '',
+						'TYPE_STICKY'		=> '',
+						'TYPE_ANNOUNCE'		=> '',
+						'TYPE_GLOBAL'		=> '',
+					));
 				}
 				if($action == 'edit' && !($submit || $create))
 				{
@@ -98,16 +106,24 @@ class acp_tmm
 					$result = $db->sql_query($sql);
 					$row = $db->sql_fetchrow($result);
 					$db->sql_freeresult($result);
-					$actions = array('lock', 'sticky', 'move', 'copy', 'autoreply_bool');
+					$actions = array('lock', 'move', 'copy', 'autoreply_bool');
 					foreach($actions AS $action)
 					{
 						$uppercase = strtoupper($action);
 						$template->assign_vars(array(
-							"{$uppercase}_YES"	=> ($row['tmm_' . $action] == 1) ? 'checked="checked"' : '',
-							"{$uppercase}_NO"	=> ($row['tmm_' . $action] == 1) ? '' : 'checked="checked"',
+							"{$uppercase}_YES"	=> ($row['tmm_' . $action] == 1) ? ' checked="checked"' : '',
+							"{$uppercase}_NO"	=> ($row['tmm_' . $action] == 1) ? '' : ' checked="checked"',
 						));
 					}
-					
+					// figure out what topic type should be selected
+					$topic_type = $row['tmm_sticky'];
+					$template->assign_vars(array(
+						'TYPE_LEAVE'		=> ($topic_type === -1) ? ' checked="checked"' : '',
+						'TYPE_NORMAL'		=> ($topic_type === POST_NORMAL) ? ' checked="checked"' : '',
+						'TYPE_STICKY'		=> ($topic_type === POST_STICKY) ? ' checked="checked"' : '',
+						'TYPE_ANNOUNCE'		=> ($topic_type === POST_ANNOUNCE) ? ' checked="checked"' : '',
+						'TYPE_GLOBAL'		=> ($topic_type === POST_GLOBAL) ? ' checked="checked"' : '',
+					));
 					$template->assign_vars(array(
 						'TMM_TITLE'			=> $row['tmm_title'],
 						'TMM_DESC'	 		=> $row['tmm_desc'],
@@ -126,6 +142,17 @@ class acp_tmm
 					$group_options = tmm_admin::get_group_select($group_ids);
 					$prefix_ids = explode(",", $row['tmm_prefix_id']);
 					$prefix_options = tmm_admin::get_prefix_select($prefix_ids);
+					
+					// new in rc7
+					// change those user ids to usernames
+					$user_ids = explode(',', $row['tmm_users']);
+					
+					foreach($user_ids as $key => $user_id)
+					{
+						$user_ids[$key] = tmm_admin::toggle_username_id('id', $user_id);
+					}
+					
+					$row['tmm_users'] = implode(',', $user_ids);
 
 					$template->assign_vars(array(
 						'U_ACTION'	=> $this->u_action . '&amp;action=edit',
@@ -148,13 +175,22 @@ class acp_tmm
 					$fid = implode(',', $forum_id);
 					$gid = implode(',', $group_id);
 					$pid = implode(',', $prefix_id);
+					
+					// new in rc7
+					// change usernames to userids for storage
+					$usernames = explode(',', request_var('user_ids', ''));
+					foreach($usernames as $key => $username)
+					{
+						$usernames[$key] = tmm_admin::toggle_username_id('username', $username);
+					}
+					$users = implode(',', $usernames);
 					$data = array(
 						'tmm_title'			=> utf8_normalize_nfc(request_var('title', '', true)),
 						'desc'				=> utf8_normalize_nfc(request_var('desc', '', true)),
 						'prefix_id'			=> $pid,
 						'forum_id'			=> $fid,
 						'group_id'			=> $gid,
-						'user_ids'			=> request_var('user_ids', ''),
+						'user_ids'			=> $users,
 						'lock_option'		=> request_var('lock_option', 0),
 						'sticky_option'		=> request_var('sticky_option', 0),
 						'copy_option'		=> request_var('copy_option', 0),
@@ -275,6 +311,15 @@ class acp_tmm
 					$result = $db->sql_query($sql);
 					$row = $db->sql_fetchrow($result);
 					$db->sql_freeresult($result);
+					
+					// new in rc7 - allow usernames (force usernames to be shown)
+					$user_ids = explode(',', $row['prefix_users']);
+					foreach($user_ids as $key => $user_id)
+					{
+						$user_ids[$key] = tmm_admin::toggle_username_id('id', $user_id);
+					}
+					$row['prefix_users'] = implode(',', $user_ids);
+					
 					$template->assign_vars(array(
 						'PREFIX_NAME'	=> utf8_normalize_nfc($row['prefix_name']),
 						'PREFIX_TITLE' 	=> utf8_normalize_nfc($row['prefix_title']),
@@ -300,6 +345,15 @@ class acp_tmm
 					$forum_id = request_var('forum_id', array('' => 0));
 					$group_id = request_var('group_id', array('' => 0));
 					$prefix_users = request_var('user_ids', '');
+					
+					// new in rc7 - allow usernames (force usernames to be shown)
+					$prefix_users = explode(',', $prefix_users);
+					foreach($prefix_users as $key => $username)
+					{
+						$prefix_users[$key] = tmm_admin::toggle_username_id('username', $username);
+					}
+					$prefix_users = implode(',', $prefix_users);
+					$row['prefix_users'] = implode(',', $user_ids);
 					
 					$prefix_forums = implode(',', $forum_id);
 					$prefix_groups = implode(',', $group_id);

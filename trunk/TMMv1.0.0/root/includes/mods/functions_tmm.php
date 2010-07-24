@@ -103,15 +103,15 @@ class tmm
 		}
 		if(self::$multi_mods_cache[$mod_id]['lock'] == 1)
 		{
-			$lock = self::lock_topic($topic_id);
+			$lock = self::toggle_lock($topic_id);
 			if(!$lock)
 			{
 				self::$error[] = $user->lang['LOCK_ERROR'];
 			}
 		}
-		if(self::$multi_mods_cache[$mod_id]['sticky'] == 1)
+		if(self::$multi_mods_cache[$mod_id]['sticky'] > -1)
 		{
-			$stick = self::stick_topic($topic_id);
+			$stick = self::alter_topic_type($topic_id, self::$multi_mods_cache[$mod_id]['sticky']);
 			if(!$stick)
 			{
 				self::$error[] = $user->lang['STICK_ERROR'];
@@ -145,11 +145,24 @@ class tmm
 	Parameters
 		int $topic_id	- (optional) ID of the topic
 	*/
-	public static function lock_topic($topic_id)
+	public static function toggle_lock($topic_id)
 	{
 		global $db;
+		// -- New in RC7; now toggles the Lock/Unlock status
+		// First get the current locked status (either locked or unlocked)
+		$sql = 'SELECT topic_status
+			FROM ' . TOPICS_TABLE . '
+			WHERE topic_id = ' . (int) $topic_id;
+		$result = $db->sql_query($sql);
+		$old_status = $db->sql_fetchfield('topic_status');
+		$db->sql_freeresult($result);
+		
+		// Now determine if we are locking or unlocking the topic
+		$new_status = ($old_status === ITEM_UNLOCKED) ? ITEM_LOCKED : ITEM_UNLOCKED;
+		
+		// And finally update the topic with the new status
 		$sql = 'UPDATE ' . TOPICS_TABLE . '
-				SET topic_status = ' . ITEM_LOCKED . '
+				SET topic_status = ' . $new_status . '
 				WHERE topic_id = ' . (int) $topic_id . '
 					AND topic_moved_id = 0';
 		$result = $db->sql_query($sql);
@@ -159,16 +172,33 @@ class tmm
 	}
 	
 	/*
-	Change the topic type to sticky for the specified topic
-	
+	Change the topic type
+		
 	Parameters
 		int $topic_id	- ID of the topic
+		int $type 		- The type to change to; -1 is leave as is
 	*/
-	public static function stick_topic($topic_id)
+	public static function alter_topic_type($topic_id, $type = -1)
 	{
 		global $db;
+		// -- New in RC 7
+		// This function alters the topic type.
+		
+		// So first we get the current type.
+		$sql = 'SELECT topic_type
+			FROM ' . TOPICS_TABLE . '
+			WHERE topic_id = ' . (int) $topic_id;
+		$result = $db->sql_query($sql);
+		$old_type = $db->sql_fetchfield('topic_type');
+		$db->sql_freeresult($result);
+		
+		// Now we decide what to do.
+		// If the old type is -1, leave it as is. Otherwise, make it the new type
+		$new_type = ($type === -1) ? $old_type : $type;
+		
+		// And now do it.
 		$sql = 'UPDATE ' . TOPICS_TABLE . '
-						SET topic_type = ' . POST_STICKY . '
+						SET topic_type = ' . $new_type . '
 						WHERE topic_id = ' . (int) $topic_id . '
 						AND topic_moved_id = 0';
 		$result = $db->sql_query($sql);
@@ -632,6 +662,11 @@ class tmm
 				}
 				$prefixes_options .= '<option value="' . $prefix['id'] . '"' . $disabled . '>' . $prefix['name'] . '</option>';
 			}
+		}
+		//--new in RC7 -- at least have one value if there are no prefixes
+		if(empty($prefix_options))
+		{
+			$prefix_options = '<option value="0" disabled="disabled">' . $user->lang['NO_PREFIXES'] . '</option>';
 		}
 		$type = ($type == 'multiple') ? 'multiple="multiple"' : '';
 		return (empty($prefixes_options)) ? '' : '<select name="prefix_dropdown"' . $type . '><option value="0" disabled="disabled" selected="selected">&nbsp;</option>' . $prefixes_options . '</select>';
