@@ -124,8 +124,7 @@ class tmm
 			// new in RC7 apply prefixes to the copied topic as well
 			
 			// First get the prefixes applied to the old topic.
-			$old_prefixes = self::load_topic_prefixes($topic_id, 'array', 'sql', 'instances');
-			$prefixes = explode(',', $old_prefixes);
+			$prefixes = self::load_topic_prefixes($topic_id, 'array', 'sql', 'prefixes');
 			$fails = 0;
 			foreach($prefixes AS $prefix)
 			{
@@ -307,17 +306,26 @@ class tmm
 		int $prefix_id - ID of the prefix
 		
 	Return
-		$row - Holds prefix data from cache
+		self::$prefixes_cache[$prefix_id] - Holds prefix data from cache
 	*/
 	public static function load_prefix($prefix_id)
 	{
 		global $db, $template, $user, $phpbb_root_path;
+		// If the cache has not yet been loaded.
+		if(!is_array(self::$prefixes_cache))
+		{
+			// load it
+			self::$prefixes_cache = self::$tmm_cache->get_prefixes();
+		}
+		// see if the prefix is in the cache
 		if(!array_key_exists($prefix_id, self::$prefixes_cache))
 		{
+			// if not, leave
 			return false;
 		}
 		else
 		{
+			// otherwise, return the info about it
 			return self::$prefixes_cache[$prefix_id];
 		}
 	}
@@ -437,7 +445,6 @@ class tmm
 		// First we make sure the prefix exists. If not, it's pointless to run.
 		if(!in_array($prefix_id, array_keys(self::$prefixes_cache)))
 		{
-			echo $prefix_id;
 			return false;
 		}
 		$sql_ary = array(
@@ -455,10 +462,7 @@ class tmm
 		{
 			return false;
 		}
-		else
-		{
-			return true;
-		}
+		return true;
 	}
 	
 	/*

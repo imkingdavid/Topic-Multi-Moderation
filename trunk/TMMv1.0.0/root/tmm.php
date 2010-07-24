@@ -89,24 +89,30 @@ if(!in_array($multimod, $tmm_options))
 	trigger_error('INVALID_MULTI_MOD');
 }
 ///-----------
-$possible_actions = array('lock', 'sticky', 'copy', 'move', 'autoreply_bool', 'prefix');
+$possible_actions = array('lock', 'copy', 'sticky', 'move', 'autoreply_bool', 'prefix');
 $actions = array(); // will be populated in a minute
 foreach ($possible_actions AS $possible_action)
 {
-	if ($possible_action != 'prefix')
+	if ($possible_action == 'prefix' || $possible_action == 'sticky')
 	{
-		if($tmm_cache[$multimod][$possible_action] != 0)
+		// special case for altering topic type
+		if ($possible_action == 'sticky' && $tmm_cache[$multimod]['sticky'] != -1)
 		{
-			$actions[] = $possible_action;
+			$actions[] = 'sticky';
 		}
-	}
-	else
-	{
-		if (!empty($tmm_cache[$multimod]['tmm_prefix_id']))
+		// special case for prefixes
+		if ($possible_action == 'prefix' && !empty($tmm_cache[$multimod]['prefix']))
 		{
 			$actions['prefix'] = 'prefix';
 			$prefixes = explode(',', $tmm_cache[$multimod]['prefix']);
 			$prefix_string = tmm::parse_prefix_array($prefixes);
+		}
+	}
+	else
+	{
+		if($tmm_cache[$multimod][$possible_action] != 0)
+		{
+			$actions[] = $possible_action;
 		}
 	}
 }
@@ -148,7 +154,7 @@ else
 		if(!is_numeric($action))
 		{
 			$action = strtoupper($action);
-			$message .= ($action == 'TMM_PREFIX_ID') ? sprintf($user->lang['TMM_PREFIX_ID'], $prefix_string) : $user->lang['TMM_' . $action];
+			$message .= ($action == 'PREFIX') ? sprintf($user->lang['TMM_PREFIX'], $prefix_string) : $user->lang['TMM_' . $action];
 			$message .= '<br />';
 		}
 	}
