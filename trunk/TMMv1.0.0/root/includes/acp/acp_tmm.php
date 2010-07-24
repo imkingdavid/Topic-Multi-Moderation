@@ -118,11 +118,11 @@ class acp_tmm
 					// figure out what topic type should be selected
 					$topic_type = $row['tmm_sticky'];
 					$template->assign_vars(array(
-						'TYPE_LEAVE'		=> ($topic_type === -1) ? ' checked="checked"' : '',
-						'TYPE_NORMAL'		=> ($topic_type === POST_NORMAL) ? ' checked="checked"' : '',
-						'TYPE_STICKY'		=> ($topic_type === POST_STICKY) ? ' checked="checked"' : '',
-						'TYPE_ANNOUNCE'		=> ($topic_type === POST_ANNOUNCE) ? ' checked="checked"' : '',
-						'TYPE_GLOBAL'		=> ($topic_type === POST_GLOBAL) ? ' checked="checked"' : '',
+						'TYPE_LEAVE'		=> ($topic_type == -1) ? ' checked="checked"' : '',
+						'TYPE_NORMAL'		=> ($topic_type == POST_NORMAL) ? ' checked="checked"' : '',
+						'TYPE_STICKY'		=> ($topic_type == POST_STICKY) ? ' checked="checked"' : '',
+						'TYPE_ANNOUNCE'		=> ($topic_type == POST_ANNOUNCE) ? ' checked="checked"' : '',
+						'TYPE_GLOBAL'		=> ($topic_type == POST_GLOBAL) ? ' checked="checked"' : '',
 					));
 					$template->assign_vars(array(
 						'TMM_TITLE'			=> $row['tmm_title'],
@@ -353,7 +353,6 @@ class acp_tmm
 						$prefix_users[$key] = tmm_admin::toggle_username_id('username', $username);
 					}
 					$prefix_users = implode(',', $prefix_users);
-					$row['prefix_users'] = implode(',', $user_ids);
 					
 					$prefix_forums = implode(',', $forum_id);
 					$prefix_groups = implode(',', $group_id);

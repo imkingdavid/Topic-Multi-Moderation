@@ -77,6 +77,7 @@ class tmm
 		if(self::$multi_mods_cache[$mod_id]['autoreply_bool'] == 1)
 		{
 			$poster = (self::$multi_mods_cache[$mod_id]['autoreply_poster'] != 0) ? self::$multi_mods_cache[$mod_id]['autoreply_poster'] : 0;
+			echo $poster;
 			$auto_reply = self::auto_reply(self::$multi_mods_cache[$mod_id]['autoreply_text'], $topic_id, $forum_id, $poster, true, true);
 			if(!$auto_reply)
 			{
@@ -120,7 +121,21 @@ class tmm
 		if(self::$multi_mods_cache[$mod_id]['copy'] == 1)
 		{
 			$copy = self::copy_topic($topic_id, self::$multi_mods_cache[$mod_id]['copy_dest'], $forum_id);
-			if(!$copy)
+			// new in RC7 apply prefixes to the copied topic as well
+			
+			// First get the prefixes applied to the old topic.
+			$old_prefixes = self::load_topic_prefixes($topic_id, 'array', 'sql', 'instances');
+			$prefixes = explode(',', $old_prefixes);
+			$fails = 0;
+			foreach($prefixes AS $prefix)
+			{
+				$pre = self::apply_prefix($prefix, $copy);
+				if(!$pre)
+				{
+					$fails++;
+				}
+			}
+			if(!$copy || $fails < 0)
 			{
 				self::$error[] = self::$multi_mods_cache[$mod_id]['copy_dest'] . '<br />' . $user->lang['COPY_ERROR'];
 			}
@@ -158,8 +173,8 @@ class tmm
 		$db->sql_freeresult($result);
 		
 		// Now determine if we are locking or unlocking the topic
-		$new_status = ($old_status === ITEM_UNLOCKED) ? ITEM_LOCKED : ITEM_UNLOCKED;
-		
+		$new_status = ($old_status == ITEM_UNLOCKED) ? ITEM_LOCKED : ITEM_UNLOCKED;
+
 		// And finally update the topic with the new status
 		$sql = 'UPDATE ' . TOPICS_TABLE . '
 				SET topic_status = ' . $new_status . '
@@ -963,7 +978,7 @@ class tmm
 		sync('forum', 'forum_id', $to_forum_id);
 		set_config_count('num_topics', sizeof($new_topic_id_list), true);
 		set_config_count('num_posts', $total_posts, true);
-		return true;
+		return $new_topic_id;
 	}
 	
 	/**

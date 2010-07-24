@@ -95,7 +95,7 @@ class tmm_admin extends tmm
 		{
 			$sql = 'INSERT INTO ' . TMM_PREFIXES_TABLE . '
 				   ' . $db->sql_build_array('INSERT', $data);
-			$db->sql_query($sql);
+			$result = $db->sql_query($sql);
 			$next_id = $db->sql_nextid();
 			add_log('admin', 'LOG_PREFIX_CREATED', tmm::parse_prefix($next_id));
 		}
@@ -104,7 +104,7 @@ class tmm_admin extends tmm
 			$sql = 'UPDATE ' . TMM_PREFIXES_TABLE . '
 					SET ' . $db->sql_build_array('UPDATE', $data) . '
 					WHERE prefix_id = ' . (int) $prefix_id;
-			$db->sql_query($sql);
+			$result = $db->sql_query($sql);
 			add_log('admin', 'LOG_PREFIX_MODIFIED', tmm::parse_prefix($prefix_id));
 		}
 		else

@@ -95,7 +95,7 @@ foreach ($possible_actions AS $possible_action)
 {
 	if ($possible_action != 'prefix')
 	{
-		if($tmm_cache[$multimod][$possible_action] == 1)
+		if($tmm_cache[$multimod][$possible_action] != 0)
 		{
 			$actions[] = $possible_action;
 		}
