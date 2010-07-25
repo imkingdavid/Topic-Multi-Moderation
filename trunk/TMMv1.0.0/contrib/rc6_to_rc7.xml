@@ -34,6 +34,8 @@
 			<changelog lang="en">
 				<change>[fix] some nitpicky validation stuff</change>
 				<change>[fix] incompatibility with ultimate points system fixed</change>
+				<change>[fix] prefixes are now copied when a topic is copied using a multimod</change>
+				<change>[fix] post auto-reply as another user</change>
 				<change>[new] utilize native admin and moderator log system</change>
 				<change>[change] lock option now toggles between locked/unlocked based on topics current status, instead of only locking it</change>
 				<change>[change] sticky option now allows you to change a topic to sticky, announcement, or global announcement.</change>
@@ -196,10 +198,7 @@
 
 <action-group>
 	<copy>
-		<file from="root/includes/mods/functions_tmm.php" to="includes/mods/functions_tmm.php" />
-		<file from="root/includes/mods/functions_tmm_admin.php" to="includes/mods/functions_tmm_admin.php" />
-		<file from="root/language/en/mods/tmm.php" to="language/en/mods/tmm.php" />
-		<file from="root/tmm.php" to="tmm.php" />
+		<file from="root/*.*" to="*.*" />
 	</copy>
 	
 	<diy-instructions lang="en"><![CDATA[Yep, that's right, no file edits. All of the changes were in included files that need to be overwritten, or else in install.xml, which don't apply to you since you're updating. Cheers!

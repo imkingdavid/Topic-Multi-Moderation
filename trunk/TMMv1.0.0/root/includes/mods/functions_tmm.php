@@ -77,7 +77,6 @@ class tmm
 		if(self::$multi_mods_cache[$mod_id]['autoreply_bool'] == 1)
 		{
 			$poster = (self::$multi_mods_cache[$mod_id]['autoreply_poster'] != 0) ? self::$multi_mods_cache[$mod_id]['autoreply_poster'] : 0;
-			echo $poster;
 			$auto_reply = self::auto_reply(self::$multi_mods_cache[$mod_id]['autoreply_text'], $topic_id, $forum_id, $poster, true, true);
 			if(!$auto_reply)
 			{
@@ -234,7 +233,7 @@ class tmm
 	*/	
 	public static function auto_reply($text, $topic_id, $forum_id, $user_id = 0, $bbcode = true, $smilies = true)
 	{
-		global $user, $db;
+		global $user, $auth, $db;
 		if(!function_exists('submit_post'))
 		{
 			global $phpbb_root_path, $phpEx;
@@ -245,15 +244,16 @@ class tmm
 			WHERE topic_id = ' . (int) $topic_id;
 		$result = $db->sql_query($sql);
 		$topicrow = $db->sql_fetchrow($result);
-		if($user_id == 0)
+		if($user_id != 0 && $user_id != $user->data['user_id'])
 		{
-			$sql = 'SELECT username
+			$sql = 'SELECT username, user_ip
 				FROM ' . USERS_TABLE . '
 				WHERE user_id = ' . (int) $user_id;
 			$result = $db->sql_query($sql);
-			$username = $db->sql_fetchrow($result);
+			$new_user = $db->sql_fetchrow($result);
 			$db->sql_freeresult($result);
-			$username = $username['username'];
+			$username = $new_user['username'];
+			$user_ip = $new_user['user_ip'];
 		}
 		else
 		{
@@ -288,8 +288,32 @@ class tmm
 			'forum_name'        => '',
 			'enable_indexing'   => true,
 		);
-		
-		if(!submit_post('reply', 'Re: ' . $topicrow['topic_title'], $username, POST_NORMAL, $poll, $data))
+		// Let's do something extremely hackish here to allow it to post as another user.
+		// Of course this only applies if the wanted poster is not the current user
+		if($user_id != 0 && $user_id != $user->data['user_id'])
+		{
+			// first we make a temporary variable to hold the current user's ID and IP and Auth
+			$temp_id = $user->data['user_id'];
+			$temp_ip = $user->data['user_ip'];
+			$temp_username = $user->data['username'];
+			$temp_auth = $auth;
+			
+			// now we replace those with the other user's stuff.
+			$user->data['user_id'] = $user_id;
+			$user->data['user_ip'] = $user_ip;
+			$user->data['username'] = $username;
+			$auth->acl($user->data);
+		}
+		$submit = submit_post('reply', 'Re: ' . $topicrow['topic_title'], '', POST_NORMAL, $poll, $data);
+		if($user_id != 0 && $user_id != $user->data['user_id'])
+		{
+			// and then we put it all back.
+			$user->data['user_id'] = $temp_id;
+			$user->data['user_ip'] = $temp_ip;
+			$user->data['username'] = $temp_username;
+			$auth->acl($user->data);
+		}
+		if(!$submit)
 		{
 			return false;
 		}
