@@ -30,17 +30,19 @@
 	</installation>
 	<history>
 		<entry>
-			<date>2010-07-23</date>
+			<date>2010-08-13</date>
 			<rev-version>1.0.0rc7</rev-version>
 			<changelog lang="en">
 				<change>[fix] some nitpicky validation stuff</change>
 				<change>[fix] incompatibility with ultimate points system fixed</change>
 				<change>[fix] prefixes are now copied when a topic is copied using a multimod</change>
 				<change>[fix] post auto-reply as another user</change>
+				<change>[fix] error about class being redeclared for some people</change>
 				<change>[new] utilize native admin and moderator log system</change>
 				<change>[change] lock option now toggles between locked/unlocked based on topics current status, instead of only locking it</change>
 				<change>[change] sticky option now allows you to change a topic to sticky, announcement, or global announcement.</change>
 				<change>[change] allows entry of username or userid in the ACP module, instead of just userid</change>
+				<change>[change] using native phpBB javascript method dE() to hide un-needed fields in the multi-mod add/edit page of the ACP (thanks for the idea, Arkshine)</change>
 			</changelog>
 		</entry>
 		<entry>

@@ -35,29 +35,29 @@
         </dl>
         <dl>
             <dt><label for="move_option">{L_MOVE}:</label><br />{L_MOVE_EXPLAIN}</dt>
-            <dd><label><input name="move_option" type="radio" class="radio" value="1"{MOVE_YES} />&nbsp;{L_YES}</label><label>&nbsp;<input name="move_option" type="radio" class="radio" value="0"{MOVE_NO} />&nbsp;{L_NO}</label></dd>
+            <dd><label><input name="move_option" type="radio" class="radio" onclick="dE('movewhere', '1', 'block')" value="1"{MOVE_YES} />&nbsp;{L_YES}</label><label>&nbsp;<input name="move_option" type="radio" class="radio" onclick="dE('movewhere', '-1', 'block')" value="0"{MOVE_NO} />&nbsp;{L_NO}</label></dd>
         </dl>
-        <dl>
+        <dl id="movewhere"<!-- IF not MOVE_YES --> style="display:none"<!-- ENDIF -->>
             <dt><label for="movewhere">{L_WHERE}:</label><br /></dt>
             <dd><select name="movewhere">{MOVEWHERE}</select></dd>
         </dl>
         <dl>
             <dt><label for="copy_option">{L_COPY}:</label><br />{L_COPY_EXPLAIN}</dt>
-            <dd><label><input name="copy_option" type="radio" class="radio" value="1"{COPY_YES} />&nbsp;{L_YES}</label><label>&nbsp;<input name="copy_option" type="radio" class="radio" value="0"{COPY_NO} />&nbsp;{L_NO}</label></dd>
+            <dd><label><input name="copy_option" type="radio" class="radio" onclick="dE('copywhere', '1', 'block')" value="1"{COPY_YES} />&nbsp;{L_YES}</label><label>&nbsp;<input name="copy_option" type="radio" class="radio" onclick="dE('copywhere', '-1', 'block')" value="0"{COPY_NO} />&nbsp;{L_NO}</label></dd>
         </dl>
-        <dl>
+        <dl id="copywhere"<!-- IF not COPY_YES --> style="display:none"<!-- ENDIF -->>
             <dt><label for="copywhere">{L_WHERE}:</label><br /></dt>
             <dd><select name="copywhere">{COPYWHERE}</select></dd>
         </dl>
         <dl>
             <dt><label for="autoreply">{L_AUTOREPLY}</label><br />{L_AUTOREPLY_EXPLAIN}</dt>
-            <dd><label><input name="autoreply" type="radio" class="radio" value="1"{AUTOREPLY_BOOL_YES} />&nbsp;{L_YES}</label><label>&nbsp;<input name="autoreply" type="radio" class="radio" value="0"{AUTOREPLY_BOOL_NO} />&nbsp;{L_NO}</label></dd>
+            <dd><label><input name="autoreply" type="radio" class="radio" onclick="dE('autoresponse', '1', 'block');dE('autoreply_poster', '1', 'block')" value="1"{AUTOREPLY_BOOL_YES} />&nbsp;{L_YES}</label><label>&nbsp;<input name="autoreply" type="radio" class="radio" onclick="dE('autoresponse', '-1', 'block');dE('autoreply_poster', '-1', 'block')" value="0"{AUTOREPLY_BOOL_NO} />&nbsp;{L_NO}</label></dd>
         </dl>
-        <dl>
+        <dl id="autoresponse"<!-- IF not AUTOREPLY_BOOL_YES --> style="display:none"<!-- ENDIF -->>
             <dt><label for="autoresponse">{L_AUTORESPONSE}:</label><br />{L_AUTORESPONSE_EXPLAIN}</dt>
             <dd><textarea name="autoresponse" cols="10" rows="10">{AUTORESPONSE}</textarea></dd>
         </dl>
-        <dl>
+        <dl id="autoreply_poster"<!-- IF not AUTOREPLY_BOOL_YES --> style="display:none"<!-- ENDIF -->>
         	<dt><label for="autoreply_poster">{L_AUTOREPLY_POSTER}</label><br />{L_AUTOREPLY_POSTER_EXPLAIN}</dt>
             <dd><input type="text" name="autoreply_poster" value="{AUTOREPLY_POSTER}" /></dd>
         </dl>
