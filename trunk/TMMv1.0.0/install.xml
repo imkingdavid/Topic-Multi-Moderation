@@ -42,7 +42,7 @@
 				<change>[change] lock option now toggles between locked/unlocked based on topics current status, instead of only locking it</change>
 				<change>[change] sticky option now allows you to change a topic to sticky, announcement, or global announcement.</change>
 				<change>[change] allows entry of username or userid in the ACP module, instead of just userid</change>
-				<change>[change] using native phpBB javascript method dE() to hide un-needed fields in the multi-mod add/edit page of the ACP (thanks for the idea, Arkshine)</change>
+				<change>[change] using native phpBB javascript method dE() to hide un-needed fields in the multi-mod add/edit page of the ACP (thanks Arkshine)</change>
 			</changelog>
 		</entry>
 		<entry>

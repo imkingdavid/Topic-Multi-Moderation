@@ -4,7 +4,7 @@
 <p>{L_ACP_TMM_EXPLAIN}</p>
 <!-- INCLUDE acp_tmm_version_check.html -->
 
-<form id="tmm" method="post" action="{U_ACTION}">
+<form id="tmm" name="tmm" method="post" action="{U_ACTION}">
     <fieldset>
 <!-- IF S_EDIT -->                                
         <legend>{L_ACP_TMM_ADD_EDIT}</legend>
@@ -55,7 +55,7 @@
         </dl>
         <dl id="autoresponse"<!-- IF not AUTOREPLY_BOOL_YES --> style="display:none"<!-- ENDIF -->>
             <dt><label for="autoresponse">{L_AUTORESPONSE}:</label><br />{L_AUTORESPONSE_EXPLAIN}</dt>
-            <dd><textarea name="autoresponse" cols="10" rows="10">{AUTORESPONSE}</textarea></dd>
+            <dd><!-- INCLUDE tmm_posting_buttons.html --><textarea name="autoresponse" cols="10" rows="10">{AUTORESPONSE}</textarea></dd>
         </dl>
         <dl id="autoreply_poster"<!-- IF not AUTOREPLY_BOOL_YES --> style="display:none"<!-- ENDIF -->>
         	<dt><label for="autoreply_poster">{L_AUTOREPLY_POSTER}</label><br />{L_AUTOREPLY_POSTER_EXPLAIN}</dt>

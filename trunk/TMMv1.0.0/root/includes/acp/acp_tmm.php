@@ -63,7 +63,6 @@ class acp_tmm
 					$data = array(
 						'tmm_title' => utf8_normalize_nfc(request_var('tmm_title', '', true)),
 					);
-					
 					$prefix_select = tmm_admin::get_prefix_select(0);
 					$parents_list = make_forum_select(0, false, false, false, false);
 					$move_where_forum_list = make_forum_select(false, false, false, true, true);
@@ -98,6 +97,21 @@ class acp_tmm
 						'TYPE_GLOBAL'		=> '',
 					));
 				}
+				// new in RC7 - posting buttons in the ACP area
+				// need to get the bbcodes
+				if (!function_exists('display_custom_bbcodes'))
+				{
+					include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
+				}
+				$user->add_lang('posting');
+				display_custom_bbcodes();
+				$template->assign_vars(array(
+					'S_BBCODE_ALLOWED'	=> true,
+					'S_BBCODE_QUOTE'	=> true,
+					'S_BBCODE_IMG'		=> true,
+					'S_LINKS_ALLOWED'	=> true,
+					'S_BBCODE_FLASH'	=> true,
+				));
 				if($action == 'edit' && !($submit || $create))
 				{
 					$sql = 'SELECT *
