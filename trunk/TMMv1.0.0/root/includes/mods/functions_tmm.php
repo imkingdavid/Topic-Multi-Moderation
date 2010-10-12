@@ -28,6 +28,11 @@ class tmm
 	public static $prefixes_cache = ''; // the array of cached prefixes
 	public static $temp_cache = ''; // temporary cache of prefixes for use in posting.php
 	
+	const ACTION_PREFIX_ADD = 0;
+	const ACTION_PREFIX_REMOVE = 1;
+	const ACTION_PREFIX_REMOVE_ALL = 2;
+	
+	
 	/*
 	Initialize the MOD.
 	No paramters or return
@@ -1031,11 +1036,11 @@ class tmm
 	{
 		if($mode == 'edit')
 		{
-			if($action === 0)
+			if($action === self::ACTION_PREFIX_ADD)
 			{
 				tmm::apply_prefix($ids, $topic_id);
 			}
-			if($action === 1)
+			if($action === self::ACTION_PREFIX_REMOVE)
 			{
 				if(!is_array($ids))
 				{
@@ -1046,7 +1051,7 @@ class tmm
 					tmm::remove_topic_prefix($id, $topic_id);
 				}
 			}
-			if($action === 2)
+			if($action === self::ACTION_PREFIX_REMOVE_ALL)
 			{
 				tmm::remove_topic_prefixes($topic_id);
 			}
@@ -1054,18 +1059,18 @@ class tmm
 		}
 		else
 		{
-			if($action === 0)
+			if($action === self::ACTION_PREFIX_ADD)
 			{
 				$temp_cache .= $ids . ',';
 			}
-			if($action === 1)
+			if($action === self::ACTION_PREFIX_REMOVE)
 			{
 				foreach($ids AS $id)
 				{
 					$temp_cache = preg_replace('/' . $id . ',/', '', $temp_cache, 1);
 				}
 			}
-			if($action === 2)
+			if($action === self::ACTION_PREFIX_REMOVE_ALL)
 			{
 				$temp_cache = '';
 			}

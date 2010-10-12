@@ -293,7 +293,7 @@ class acp_tmm
 			$action = request_var('action', '');
 			$submit = (isset($_POST['submit'])) ? true : false;
 			$create = (isset($_POST['create'])) ? true : false;
-			$prefix_id = request_var('id', (int) 0);
+			$prefix_id = request_var('id', 0);
 													 
 			$form_name = 'acp_prefix';
 			$form_key = add_form_key('acp_prefix');

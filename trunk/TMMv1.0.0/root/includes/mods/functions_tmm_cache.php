@@ -32,7 +32,7 @@ class tmm_cache extends acm
 	public function get_multi_mods()
 	{
 		global $db;
-		if(!empty($prefixes_cached))
+		if(!empty(self::$multi_mods_cached))
 		{
 			return self::$multi_mods_cached;
 		}
@@ -74,7 +74,7 @@ class tmm_cache extends acm
 	public function get_prefixes()
 	{
 		global $db;
-		if(!empty($prefixes_cached))
+		if(!empty(self::$prefixes_cached))
 		{
 			return self::$prefixes_cached;
 		}

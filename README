@@ -19,17 +19,11 @@ moderation actions in fewer clicks. This allows moderation to occur
 more efficiently and can be a big help on larger board.
 
 Implemented moderation actions include:
-	locking a topic
+	toggle locked status on topic
 	moving a topic
 	copying a topic
-	replying to a topic
-	stickying a topic
+	automatically replying to a topic
+	changing topic type
 	adding a topic prefix (new feature not present in phpBB by default)
-
-Planned actions include:
-	unlock
-    unstick
-    remove prefix
-    announce/unannounce (global or local)
     
 Topic prefixes may also be implemented separately from multi-mods.
