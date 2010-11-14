@@ -44,7 +44,7 @@ function tmm_open()
 	tmm::start();
 }
 //don't break the UMIL install
-if(!defined('UMIL_AUTO'))
+if(!defined('UMIL_AUTO') && !defined('IN_INSTALL'))
 {
 	$phpbb_hook->register('phpbb_user_session_handler', 'tmm_open');
 }
