@@ -79,7 +79,7 @@ class tmm
 		}
 		
 		//Check each mutli-mod action to see if it should be done.
-		if(self::$multi_mods_cache[$mod_id]['autoreply_bool'] == 1)
+		if(self::$multi_mods_cache[$mod_id]['autoreply_bool'])
 		{
 			$poster = (self::$multi_mods_cache[$mod_id]['autoreply_poster'] != 0) ? self::$multi_mods_cache[$mod_id]['autoreply_poster'] : 0;
 			$auto_reply = self::auto_reply(self::$multi_mods_cache[$mod_id]['autoreply_text'], $topic_id, $forum_id, $poster, true, true);
@@ -88,7 +88,7 @@ class tmm
 				self::$error[] = $user->lang['AUTOREPLY_ERROR'];
 			}
 		}
-		if(self::$multi_mods_cache[$mod_id]['prefix'] != '')
+		if(self::$multi_mods_cache[$mod_id]['prefix'])
 		{
 			// Allow for multiple prefixes to be applied with one multi-mod ^_^
 			$prefixes = explode(',', self::$multi_mods_cache[$mod_id]['prefix']);
@@ -106,7 +106,7 @@ class tmm
 				self::$error[] = sprintf($user->lang['PREFIX_ERROR'], $fails);
 			}
 		}
-		if(self::$multi_mods_cache[$mod_id]['lock'] == 1)
+		if(self::$multi_mods_cache[$mod_id]['lock'])
 		{
 			$lock = self::toggle_lock($topic_id);
 			if(!$lock)
@@ -122,7 +122,7 @@ class tmm
 				self::$error[] = $user->lang['STICK_ERROR'];
 			}
 		}
-		if(self::$multi_mods_cache[$mod_id]['copy'] == 1)
+		if(self::$multi_mods_cache[$mod_id]['copy'])
 		{
 			$copy = self::copy_topic($topic_id, self::$multi_mods_cache[$mod_id]['copy_dest'], $forum_id);
 			// new in RC7 apply prefixes to the copied topic as well
@@ -138,12 +138,12 @@ class tmm
 					$fails++;
 				}
 			}
-			if(!$copy || $fails < 0)
+			if(!$copy || $fails)
 			{
 				self::$error[] = self::$multi_mods_cache[$mod_id]['copy_dest'] . '<br />' . $user->lang['COPY_ERROR'];
 			}
 		}
-		if(self::$multi_mods_cache[$mod_id]['move'] == 1)
+		if(self::$multi_mods_cache[$mod_id]['move'])
 		{
 			$move = move_topics($topic_id, self::$multi_mods_cache[$mod_id]['move_dest'], $forum_id, true);
 		}
@@ -510,7 +510,7 @@ class tmm
 		// Make sure that the instance ID exists.
 		//	Topic ID is just there for added precaution to make sure you're actually deleting the right one,
 		//		but isn't required.
-		$and = ($topic_id != 0) ? ' AND topic_id = ' . (int) $topic_id : '';
+		$and = ($topic_id) ? ' AND topic_id = ' . (int) $topic_id : '';
 		$sql = 'SELECT prefix_id
 			FROM ' . TMM_PREFIX_INSTANCES_TABLE . '
 			WHERE prefix_instance_id = ' . (int) $prefix_instance_id . $and;
@@ -604,7 +604,7 @@ class tmm
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
-		if(!$row)
+		if(empty($row))
 		{
 			return false;
 		}
