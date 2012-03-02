@@ -35,12 +35,7 @@ class tmm_admin extends tmm
 
 		$info = get_remote_file('www.phpbbdevelopers.net', '/modver',
 				'tmm.txt', $errstr, $errno);
-	
-		if ($info === false)
-		{
-			return false;
-		}
-	
+
 		return $info;
 	}
 	/*
