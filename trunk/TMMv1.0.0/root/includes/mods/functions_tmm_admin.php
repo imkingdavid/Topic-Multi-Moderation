@@ -15,7 +15,7 @@
 *
 */
 
-if(!defined('IN_PHPBB'))
+if (!defined('IN_PHPBB'))
 {
 	exit;
 }
@@ -49,7 +49,7 @@ class tmm_admin extends tmm
 		$info = self::obtain_latest_mod_version_info();
 		$info = explode("\n", $info);
 		$modversion = trim($info[0]);
-		if(!$modversion)
+		if (!$modversion)
 		{
 			$vermsg = $user->lang['SERVER_DOWN'];
 			$version = '';
@@ -58,7 +58,7 @@ class tmm_admin extends tmm
 		else
 		{
 			$up2date = (version_compare(TMM_VERSION, $modversion, '>=') == 1) ? 1 : 0;
-			$vermsg = ($up2date == 1) ? $user->lang['UP_2_DATE'] : $user->lang['NOT_UP_2_DATE'];
+			$vermsg = ($up2date) ? $user->lang['UP_2_DATE'] : $user->lang['NOT_UP_2_DATE'];
 		}
 		$template->assign_vars(array(
 			'CURRENT_VERSION'	=> TMM_VERSION,
@@ -75,18 +75,22 @@ class tmm_admin extends tmm
 	public static function submit_prefix($mode = 'add', $prefix_options = array(), $prefix_id = 0, $u_action = '')
 	{
 		global $db, $user, $tmm;
+
 		$error = '';
-		if($mode == 'edit' && $prefix_id == 0)
+
+		if ($mode == 'edit' && $prefix_id)
 		{
 			return false;
 		}
+
 		$data = array();
-		foreach($prefix_options AS $key => $value)
+
+		foreach ($prefix_options AS $key => $value)
 		{
 			$data[$key] = $value;
 		}
 		
-		if($mode == 'add')
+		if ($mode == 'add')
 		{
 			$sql = 'INSERT INTO ' . TMM_PREFIXES_TABLE . '
 				   ' . $db->sql_build_array('INSERT', $data);
@@ -94,7 +98,7 @@ class tmm_admin extends tmm
 			$next_id = $db->sql_nextid();
 			add_log('admin', 'LOG_PREFIX_CREATED', tmm::parse_prefix($next_id));
 		}
-		else if($mode == 'edit')
+		else if ($mode == 'edit')
 		{
 			$sql = 'UPDATE ' . TMM_PREFIXES_TABLE . '
 					SET ' . $db->sql_build_array('UPDATE', $data) . '
@@ -106,11 +110,12 @@ class tmm_admin extends tmm
 		{
 			$result = false;
 		}
-		if($mode == 'add')
+
+		if ($mode == 'add')
 		{
 			$message = $user->lang[(($result) ? 'PREFIX_CREATED' : 'PREFIX_CREATE_ERROR')];
 		}
-		else if($mode == 'edit')
+		else if ($mode == 'edit')
 		{
 			$message = $user->lang[(($result) ? 'PREFIX_EDITED' : 'PREFIX_EDIT_ERROR')];
 		}
@@ -118,7 +123,9 @@ class tmm_admin extends tmm
 		{
 			$message = $user->lang['NO_MODE'];
 		}
+
 		tmm::$tmm_cache->clear_tmm_cache();
+
 		$message .= adm_back_link($u_action);
 		trigger_error($message);
 	}
@@ -127,11 +134,12 @@ class tmm_admin extends tmm
 	public static function submit_tmm($mode = 'new', $tmm_options = array(), $tmm_id = 0, $u_action = '')
 	{
 		global $db, $user;
-		foreach($tmm_options AS $option => $value)
+		foreach ($tmm_options AS $option => $value)
 		{
 			$data[$option] = $value;
 		}
-		if($mode == 'new')
+
+		if ($mode == 'new')
 		{
 			$sql = 'INSERT INTO ' . TMM_TABLE . ' ' . $db->sql_build_array('INSERT', $data);
 		}
@@ -139,13 +147,15 @@ class tmm_admin extends tmm
 		{
 			$sql = 'UPDATE ' . TMM_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $data) . ' WHERE tmm_id = ' . (int) $tmm_id;
 		}
+
 		$result = $db->sql_query($sql);
-		if($mode == 'new')
+
+		if ($mode == 'new')
 		{
 			$message = $user->lang[(($result) ? 'TMM_CREATED' : 'TMM_CREATE_ERROR')];
 			add_log('admin', 'LOG_TMM_CREATED', $data['tmm_title']);
 		}
-		else if($mode == 'update')
+		else if ($mode == 'update')
 		{
 			$message = $user->lang[(($result) ? 'TMM_EDITED' : 'TMM_EDIT_ERROR')];
 			add_log('admin', 'LOG_TMM_MODIFIED', $data['tmm_title']);
@@ -154,7 +164,9 @@ class tmm_admin extends tmm
 		{
 			$message = $user->lang['NO_MODE'];
 		}
+
 		tmm::$tmm_cache->clear_tmm_cache();
+
 		$message .= adm_back_link($u_action);
 		trigger_error($message);
 	}
@@ -162,22 +174,27 @@ class tmm_admin extends tmm
 	public static function delete_prefix($prefix_id)
 	{
 		global $db;
+
 		$sql = 'SELECT prefix_id
 			FROM ' . TMM_PREFIXES_TABLE . '
 			WHERE prefix_id = ' . (int) $prefix_id;
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
-		if(!$row)
+		
+		if (!$row)
 		{
 			return false;
 		}
+
 		add_log('admin', 'LOG_PREFIX_DELETED', tmm::parse_prefix($prefix_id));
+
 		$sql = 'DELETE
 			FROM ' . TMM_PREFIXES_TABLE . '
 			WHERE prefix_id = ' . (int) $prefix_id;
 		$result = $db->sql_query($sql);
-		if(!$result)
+
+		if (!$result)
 		{
 			return false;
 		}
@@ -187,11 +204,13 @@ class tmm_admin extends tmm
 			FROM ' . TMM_PREFIX_INSTANCES_TABLE . '
 			WHERE prefix_id = ' . (int) $prefix_id;
 		$result = $db->sql_query($sql);
-		if(!$result)
+
+		if (!$result)
 		{
 			return false;
 		}
 		$db->sql_freeresult($result);
+
 		tmm::$tmm_cache->clear_tmm_cache();
 		return true;
 	}
@@ -205,20 +224,24 @@ class tmm_admin extends tmm
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
-		if(!$row)
+
+		if (!$row)
 		{
 			return false;
 		}
+
 		add_log('admin', 'LOG_TMM_DELETED', $row['tmm_title']);
 		$sql = 'DELETE
 			FROM ' . TMM_TABLE . '
 			WHERE tmm_id = ' . (int) $tmm_id;
 		$result = $db->sql_query($sql);
-		if(!$result)
+
+		if (!$result)
 		{
 			return false;
 		}
 		$db->sql_freeresult($result);
+
 		tmm::$tmm_cache->clear_tmm_cache();
 		return true;
 	}
@@ -238,9 +261,9 @@ class tmm_admin extends tmm
 		$s_group_options = '';
 		while ($row = $db->sql_fetchrow($result))
 		{
-			if($group_id != 0)
+			if ($group_id != 0)
 			{
-				if(is_array($group_id))
+				if (is_array($group_id))
 				{
 					$selected = (in_array($row['group_id'], $group_id)) ? ' selected="selected"' : '';
 				}
@@ -272,9 +295,9 @@ class tmm_admin extends tmm
 		$s_prefix_options = '';
 		while ($row = $db->sql_fetchrow($result))
 		{
-			if($prefix_id != 0)
+			if ($prefix_id != 0)
 			{
-				if(is_array($prefix_id))
+				if (is_array($prefix_id))
 				{
 					$selected = (in_array($row['prefix_id'], $prefix_id)) ? ' selected="selected"' : '';
 				}
@@ -290,7 +313,7 @@ class tmm_admin extends tmm
 			$s_prefix_options .= '<option value="' . $row['prefix_id'] . '"' . $selected . '><span style="color:#' . $row['prefix_color_hex'] . ';">' . $row['prefix_title'] . '</span></option>';
 		}
 		//--new in RC7 -- at least have one value if there are no prefixes
-		if(empty($s_prefix_options))
+		if (empty($s_prefix_options))
 		{
 			$s_prefix_options = '<option value="0" disabled="disabled">' . $user->lang['NO_PREFIXES'] . '</option>';
 		}
@@ -334,7 +357,7 @@ class tmm_admin extends tmm
 			default:
 			case 'username':
 				$output = self::get_userid_from_username($input);
-				if(!$output)
+				if (!$output)
 				{
 					$output = $input;
 				}
@@ -343,7 +366,7 @@ class tmm_admin extends tmm
 			
 			case 'id':
 				$input = (int) $input;
-				if(is_int($input))
+				if (is_int($input))
 				{
 					$output = self::get_username_from_userid($input);
 				}

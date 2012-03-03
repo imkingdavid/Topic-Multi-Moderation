@@ -19,15 +19,18 @@ if(!defined('IN_PHPBB'))
 	exit;
 }
 
-// Prefix caching -- Stolen/Adapted from Erik Frerejean's Subject Prefixes MOD
+// Caching -- Stolen/Adapted from Erik Frerejean's Subject Prefixes MOD
 if (!class_exists('acm'))
 {
 	require($phpbb_root_path . 'includes/acm/acm_' . $acm_type . '.' . $phpEx);
 }
+
 class tmm_cache extends acm
 {
-	private static $prefixes_cached = array(); // an array of all of the prefixes
-	private static $multi_mods_cached = array(); // an array of all of the multi-mods.
+	// an array of all of the prefixes
+	private static $prefixes_cached = array();
+	// an array of all of the multi-mods.
+	private static $multi_mods_cached = array();
 	
 	public function get_multi_mods()
 	{
