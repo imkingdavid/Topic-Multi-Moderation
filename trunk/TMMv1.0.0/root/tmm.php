@@ -89,6 +89,9 @@ if(!in_array($multimod, $tmm_options))
 	trigger_error('INVALID_MULTI_MOD');
 }
 ///-----------
+// note to self:
+// At some point I should separate these out into "plugin-able" actions.
+// putting this here so I don't forget.
 $possible_actions = array('lock', 'copy', 'sticky', 'move', 'autoreply_bool', 'prefix');
 $actions = array(); // will be populated in a minute
 foreach ($possible_actions AS $possible_action)
