@@ -665,32 +665,8 @@ class tmm
 		}
 		$groups = group_memberships(false,$user->data['user_id']);
 		
-		$prefixes = array();
-		self::$prefixes_cache = (empty(self::$prefixes_cache)) ? array(0) : self::$prefixes_cache;
-		foreach(self::$prefixes_cache AS $prefix_id)
-		{
-			$temp_forums = explode(',', $prefix_id['forums']);
-			$temp_groups = explode(',', $prefix_id['groups']);
-			if(in_array($forum_id, $temp_forums))
-			{
-				foreach($groups AS $group)
-				{
-					if(in_array($group['group_id'], $temp_groups))
-					{
-						if(!in_array($prefix_id, $prefixes))
-						{
-							$prefixes[] = $prefix_id;
-						}
-					}
-				}
-			}
-			$prefix_users = $prefix_id['users'];
-			$prefix_users = explode(',', $prefix_users);
-			if(in_array($user->data['user_id'], $prefix_users))
-			{
-				$prefixes[] = $prefix_id;
-			}
-		}
+		$prefixes = self::get_prefixes_user_can_use($forum_id);
+
 		$prefixes_options = '';
 		if(!is_array($excluded_ids))
 		{
@@ -773,6 +749,57 @@ class tmm
 		}
 		$type = ($type == 'multiple') ? 'multiple="multiple"'  : '';
 		return (empty($tmm_options)) ? '' : '<select name="tmm_select"' . $type . '>' . $tmm_options . '</select>';
+	}
+
+	/*
+	Gets the array of prefix IDs that a user is able to use in a given forum
+	
+	Parameters
+		$forum_id	- ID of the forum to look in
+	
+	Return
+		Array of IDs (or empty array)
+	*/
+	public static function get_prefixes_user_can_use($forum_id)
+	{
+		global $user, $db, $phpbb_root_path, $phpEx;
+		//Make sure the method is available
+		if(!function_exists('group_memberships'))
+		{
+			include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+		}
+		$groups = group_memberships(false,$user->data['user_id']);
+		
+		$prefixes = array();
+		self::$prefixes_cache = (empty(self::$prefixes_cache)) ? array(0) : self::$prefixes_cache;
+		foreach(self::$prefixes_cache AS $prefix_id)
+		{
+			$temp_forums = explode(',', $prefix_id['forums']);
+			$temp_groups = explode(',', $prefix_id['groups']);
+			if(in_array($forum_id, $temp_forums))
+			{
+				$prefix_users = $prefix_id['users'];
+				$prefix_users = explode(',', $prefix_users);
+				if(in_array($user->data['user_id'], $prefix_users))
+				{
+					$prefixes[] = $prefix_id;
+					continue;
+				}
+				foreach($groups AS $group)
+				{
+					if(in_array($group['group_id'], $temp_groups))
+					{
+						if(!in_array($prefix_id, $prefixes))
+						{
+							$prefixes[] = $prefix_id;
+							break;
+						}
+					}
+				}
+			}
+		}
+
+		return sizeof($prefixes) ? $prefixes : array();
 	}
 	
 	/*
